@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Utils/Home";
 import Appointment from "./pages/Utils/Appointment";
@@ -118,30 +117,30 @@ export const theme = extendTheme({
 /*======================================*/
 
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          "    https://hospital-management-r7hc.onrender.com/api/v1/user/patient/me",
-          { withCredentials: true }
-        );
-        setIsAuthenticated(true);
-        setUser(response.data.user);
-      } catch (error) {
-        setIsAuthenticated(false);
-        setUser({});
-      }
-    };
-    fetchUser();
-  }, [isAuthenticated]);
+  // const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "    https://hospital-management-r7hc.onrender.com/api/v1/user/patient/me",
+  //         { withCredentials: true }
+  //       );
+  //       setIsAuthenticated(true);
+  //       setUser(response.data.user);
+  //     } catch (error) {
+  //       setIsAuthenticated(false);
+  //       setUser({});
+  //     }
+  //   };
+  //   fetchUser();
+  // }, [isAuthenticated]);
 
   return (
     <>
       {/* <ThemeProvider theme={myTheme}>
         <CssBaseline /> */}
       {/* <SimpleBar style={{ maxHeight: "100vh" }}> */}
-      <ChakraProvider theme={theme}>
+      {/* <ChakraProvider theme={theme}>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -160,9 +159,12 @@ const App = () => {
             <Route path="/*" element={<Login />}></Route>
           </Routes>
         </Router>
-      </ChakraProvider>
+      </ChakraProvider> */}
       {/* </SimpleBar> */}
       {/* </ThemeProvider> */}
+
+    <h1 className="text-blue-600 border-l">hii</h1>
+
     </>
   );
 };
