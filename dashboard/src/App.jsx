@@ -6,7 +6,6 @@ import AddNewAdmin from "./pages/AddNewAdmin";
 import Doctor from "./pages/Doctor";
 import Message from "./pages/Message";
 import SideBar from "./pages/SideBar";
-import axios from "axios";
 import { Context } from "./main";
 import "./App.css";
 import Login from "./pages/Login";
@@ -14,6 +13,7 @@ import ProtectedRoute from "./Component/ProtectedRoute";
 import UserProfile from "./Component/userprofile/UserProfile";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
+import api from "./utils/axios";
 
 /*============================Chakra UI============================*/
 export const theme = extendTheme({
@@ -84,43 +84,52 @@ export const theme = extendTheme({
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          "    https://hospital-management-r7hc.onrender.com/api/v1/user/admin/me",
-          { withCredentials: true }
-        );
-        setIsAuthenticated(true);
-        setUser(response.data.user);
+        const response = await api.get("/user/admin/me", {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          withCredentials: true
+        });
+        
+        if (response.data?.user) {
+          setIsAuthenticated(true);
+          setUser(response.data.user);
+        } else {
+          setIsAuthenticated(false);
+          setUser({});
+        }
       } catch (error) {
+        console.error("Error fetching admin user:", error);
         setIsAuthenticated(false);
         setUser({});
       }
     };
-    fetchUser();
-  }, [isAuthenticated]);
+
+    // Only fetch user if not already authenticated
+    if (!isAuthenticated) {
+      fetchUser();
+    }
+  }, []); // Remove isAuthenticated from dependencies to prevent infinite loop
 
   return (
-    <>
-      <ChakraProvider theme={theme}>
-        <Router>
-          <Routes>
-            <Route path="/" element={<DashBoard />} />
-            <Route path="/admin/addNewDoctor" element={<AddNewDoctor />} />
-            <Route path="/admin/addNewAdmin" element={<AddNewAdmin />} />
-            <Route path="/admin/doctor" element={<Doctor />} />
-
-            <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/admin/message" element={<Message />} />
-            {/* <Route path="/admin" element={<ProtectedRoute />}>
-              
-            </Route> */}
-          </Routes>
-        </Router>
-      </ChakraProvider>
-    </>
+    <ChakraProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<DashBoard />} />
+          <Route path="/admin/addNewDoctor" element={<AddNewDoctor />} />
+          <Route path="/admin/addNewAdmin" element={<AddNewAdmin />} />
+          <Route path="/admin/doctor" element={<Doctor />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/admin/message" element={<Message />} />
+        </Routes>
+      </Router>
+    </ChakraProvider>
   );
 };
 

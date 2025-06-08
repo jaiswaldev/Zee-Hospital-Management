@@ -13,80 +13,106 @@ import axios from "axios";
 import { toast } from "react-toastify";
 // import "./../App";
 
+const API_URL = "http://localhost:3000/api/v1";
+
 const SideBar = () => {
   const [show, setShow] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await axios
-      .get(
-        "    https://hospital-management-r7hc.onrender.com/api/v1/user/admin/logout",
+    if (isLoggingOut) return; // Prevent multiple clicks
+    
+    setIsLoggingOut(true);
+    try {
+      console.log("Attempting to logout...");
+      const response = await axios.get(
+        `${API_URL}/user/admin/logout`,
         {
           withCredentials: true,
+          headers: {
+            'Accept': 'application/json'
+          },
+          timeout: 10000 // 10 second timeout
         }
-      )
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+      );
+      
+      console.log("Logout response:", response.data);
+      toast.success(response.data.message || "Logged out successfully");
+      setIsAuthenticated(false);
+      navigate("/login"); // Navigate to login page after successful logout
+    } catch (error) {
+      console.error("Logout error:", error);
+      if (!error.response) {
+        toast.error("Network error. Please check your internet connection.");
+      } else {
+        const errorMessage = error.response?.data?.message || "Failed to logout. Please try again.";
+        toast.error(errorMessage);
+      }
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
-
-  const navigateTo = useNavigate();
 
   const gotoHomePage = () => {
-    navigateTo("/");
-    setShow(!show);
+    navigate("/");
+    setShow(false);
   };
+
   const gotoDoctorsPage = () => {
-    navigateTo("/admin/doctor");
-    setShow(!show);
+    navigate("/admin/doctor");
+    setShow(false);
   };
+
   const gotoMessagesPage = () => {
-    navigateTo("/admin/message");
-    setShow(!show);
+    navigate("/admin/message");
+    setShow(false);
   };
+
   const gotoAddNewDoctor = () => {
-    navigateTo("/admin/addNewDoctor");
-    setShow(!show);
+    navigate("/admin/addNewDoctor");
+    setShow(false);
   };
+
   const gotoAddNewAdmin = () => {
-    navigateTo("/admin/addNewAdmin");
-    setShow(!show);
+    navigate("/admin/addNewAdmin");
+    setShow(false);
   };
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <>
-      <nav
-        style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
-        className={show ? "show sidebar" : "sidebar"}
-      >
+      <nav className={show ? "show sidebar" : "sidebar"}>
         <div className="links">
-          <TiHome onClick={gotoHomePage} />
-          <FaUserDoctor onClick={gotoDoctorsPage} />
-
-          <IoPersonAddSharp onClick={gotoAddNewDoctor} />
-          <MdAddModerator onClick={gotoAddNewAdmin} />
-          <AiFillMessage onClick={gotoMessagesPage} />
-          <RiLogoutBoxFill onClick={handleLogout} />
+          <TiHome onClick={gotoHomePage} title="Home" />
+          <FaUserDoctor onClick={gotoDoctorsPage} title="Doctors" />
+          <IoPersonAddSharp onClick={gotoAddNewDoctor} title="Add New Doctor" />
+          <MdAddModerator onClick={gotoAddNewAdmin} title="Add New Admin" />
+          <AiFillMessage onClick={gotoMessagesPage} title="Messages" />
+          <RiLogoutBoxFill 
+            onClick={handleLogout} 
+            title="Logout"
+            style={{ cursor: isLoggingOut ? 'not-allowed' : 'pointer' }}
+          />
         </div>
       </nav>
-      <div
-        className="wrapper"
-        style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
-      >
-        {" "}
+      <div className="wrapper">
         {show ? (
           <RxCross2
             style={{ strokeWidth: "1", fontSize: "80px" }}
             className="hamburger"
-            onClick={() => setShow(!show)}
+            onClick={() => setShow(false)}
+            title="Close Menu"
           />
         ) : (
           <GiHamburgerMenu
             className="hamburger"
-            onClick={() => setShow(!show)}
+            onClick={() => setShow(true)}
+            title="Open Menu"
           />
         )}
       </div>

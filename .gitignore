@@ -1,5 +1,6 @@
 backend/.env
-
+frontend/.env
+dashboard/.env
 backend/node_modules
 
 frontend/node_modules

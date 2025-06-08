@@ -1,130 +1,134 @@
 import React, { useContext, useState } from "react";
-
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross2 } from "react-icons/rx";
-import { color } from "framer-motion";
-// import "../Css.css";
+
 const Navbar = () => {
   const [show, setShow] = useState(true);
-  const { isAuthenticated, setIsAuthenticated, user, setUser } =
-    useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, user, setUser } = useContext(Context);
   const navigate = useNavigate();
+
   const handleLogout = async () => {
-    await axios
-      .get(
-        "    https://hospital-management-r7hc.onrender.com/api/v1/user/patient/logout",
-        {
-          withCredentials: true,
-        }
-      )
-      .then((resp) => {
-        toast.success(resp.data.message);
-        setIsAuthenticated(false);
-        setUser({});
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+    try {
+      const response = await axios.get(
+        "https://hospital-management-r7hc.onrender.com/api/v1/user/patient/logout",
+        { withCredentials: true }
+      );
+      toast.success(response.data.message);
+      setIsAuthenticated(false);
+      setUser({});
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Logout failed");
+    }
   };
 
   const gotoLogin = () => {
     navigate("/login");
-    // toast.error("Hello");
   };
+
   const goToProfile = (value) => {
-    if (value == "Profile") navigate("/user/profile");
+    if (value === "Profile") navigate("/user/profile");
   };
 
   return (
-    <>
-      <nav
-        style={{
-          position: "fixed",
+    <nav style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: "#4164e3",
+      padding: "1rem",
+      zIndex: 1220,
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      color: "white"
+    }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Link to="/" style={{ color: "white", textDecoration: "none", fontSize: "1.5rem", fontWeight: "bold" }}>
+          ZeeCare
+        </Link>
+      </div>
 
-          zIndex: "1220",
-        }}
-        className="container header"
-      >
-        <div className="nav-col logo">
-          {" "}
-          <img src="/logo1.png" alt="logo" className="logo-img" />
-        </div>
-        <div className={show ? "navLinkss showmenu" : "navLinkss"}>
-          <div className="links">
-            <Link className="nav-col" to={"/"}>
-              HOME
-            </Link>
-            {isAuthenticated ? (
-              <Link className="nav-col" to={"/appointment"}>
-                APPOINTMENT
-              </Link>
-            ) : (
-              <Link className="nav-col" to={"/register"}>
-                REGISTER
-              </Link>
-            )}
-            <div>
-              <select
-                className="select-nav"
-                onChange={(e) => {
-                  goToProfile(e.target.value);
-                }}
-              >
-                <option value="Services">SERVICES</option>
-                {user ? (
-                  <option value="Profile">Profile</option>
-                ) : (
-                  <option value="Emergency">Emergency</option>
-                )}
-                <option value="Normal">Normal</option>
-              </select>
-            </div>
-            <Link className="nav-col" to={"/doctors"}>
-              DOCTORS
-            </Link>
-            <Link className="nav-col" to={"/about"}>
-              ABOUT US
-            </Link>
-          </div>
-          {isAuthenticated ? (
-            <button
-              style={{ backgroundColor: "black" }}
-              className="btn nav-col"
-              onClick={handleLogout}
-            >
-              LOGOUT
-            </button>
+      <div style={{
+        display: show ? "flex" : "none",
+        gap: "2rem",
+        alignItems: "center"
+      }}>
+        <Link to="/" style={{ color: "white", textDecoration: "none" }}>HOME</Link>
+        {isAuthenticated ? (
+          <Link to="/appointment" style={{ color: "white", textDecoration: "none" }}>APPOINTMENT</Link>
+        ) : (
+          <Link to="/register" style={{ color: "white", textDecoration: "none" }}>REGISTER</Link>
+        )}
+        <select
+          onChange={(e) => goToProfile(e.target.value)}
+          style={{
+            backgroundColor: "transparent",
+            color: "white",
+            border: "1px solid white",
+            padding: "0.5rem",
+            borderRadius: "4px"
+          }}
+        >
+          <option value="Services">SERVICES</option>
+          {user ? (
+            <option value="Profile">Profile</option>
           ) : (
-            <button
-              style={{ backgroundColor: "black" }}
-              className="  btn nav-col"
-              onClick={gotoLogin}
-            >
-              LOGIN
-            </button>
+            <option value="Emergency">Emergency</option>
           )}
-        </div>
-        <div className="hamburger">
-          {show ? (
-            <GiHamburgerMenu
-              style={{ color: "white" }}
-              className="ham-hov"
-              onClick={() => setShow(!show)}
-            />
-          ) : (
-            <RxCross2
-              style={{ color: "white", strokeWidth: "1", fontSize: "28px" }}
-              className="ham-hov"
-              onClick={() => setShow(!show)}
-            />
-          )}
-        </div>
-      </nav>
-    </>
+          <option value="Normal">Normal</option>
+        </select>
+        <Link to="/doctors" style={{ color: "white", textDecoration: "none" }}>DOCTORS</Link>
+        <Link to="/about" style={{ color: "white", textDecoration: "none" }}>ABOUT US</Link>
+        {isAuthenticated ? (
+          <button
+            onClick={handleLogout}
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              border: "none",
+              padding: "0.5rem 1rem",
+              borderRadius: "4px",
+              cursor: "pointer"
+            }}
+          >
+            LOGOUT
+          </button>
+        ) : (
+          <button
+            onClick={gotoLogin}
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              border: "none",
+              padding: "0.5rem 1rem",
+              borderRadius: "4px",
+              cursor: "pointer"
+            }}
+          >
+            LOGIN
+          </button>
+        )}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {show ? (
+          <GiHamburgerMenu
+            style={{ color: "white", fontSize: "24px", cursor: "pointer" }}
+            onClick={() => setShow(!show)}
+          />
+        ) : (
+          <RxCross2
+            style={{ color: "white", fontSize: "24px", cursor: "pointer" }}
+            onClick={() => setShow(!show)}
+          />
+        )}
+      </div>
+    </nav>
   );
 };
 
