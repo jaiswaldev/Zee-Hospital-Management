@@ -24,24 +24,35 @@ import {
   HStack,
   Button,
 } from "@chakra-ui/react";
+
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchData = async () => {
       try {
-        const { data } = await axios.get(
-          "    https://hospital-management-r7hc.onrender.com/api/v1/appointment/getAppointment",
+        // Fetch appointments
+        const appointmentsResponse = await axios.get(
+          "https://hospital-management-r7hc.onrender.com/api/v1/appointment/getAppointment",
           { withCredentials: true }
         );
-        setAppointments(data.appointment);
+        setAppointments(appointmentsResponse.data.appointment);
+
+        // Fetch doctors
+        const doctorsResponse = await axios.get(
+          "https://hospital-management-r7hc.onrender.com/api/v1/user/doctors",
+          { withCredentials: true }
+        );
+        setDoctors(doctorsResponse.data.doctors);
       } catch (error) {
+        console.error("Error fetching data:", error);
         setAppointments([]);
-        console.log(data);
+        setDoctors([]);
       }
     };
-    fetchAppointments();
+    fetchData();
   }, []);
 
   const handleUpdateStatus = async (appointmentId, status) => {
@@ -92,19 +103,17 @@ const Dashboard = () => {
                 <h5>{admin && `${admin.firstName} ${admin.lastName}`}</h5>
               </div>
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Facilis, nam molestias. Eaque molestiae ipsam commodi neque.
-                Assumenda repellendus necessitatibus itaque.
+                Welcome to your dashboard. Here you can manage appointments and view important statistics.
               </p>
             </div>
           </div>
           <div style={{ backgroundColor: "	#ADD8E6" }} className="secondBox">
             <p>Total Appointments</p>
-            <h3>1500</h3>
+            <h3>{appointments.length}</h3>
           </div>
           <div className="thirdBox">
             <p>Registered Doctors</p>
-            <h3>10</h3>
+            <h3>{doctors.length}</h3>
           </div>
         </div>
         <div className="banner" zIndex="-1">

@@ -1,6 +1,6 @@
 class ApiError extends Error {
   constructor(
-    message="something went wrong", 
+    message = "something went wrong",
     statusCode,
     errors = [],
     stack = ""
@@ -25,8 +25,8 @@ export const ErrorHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
 
   if (err.code === 11000) {
-    const message = `Duplicate ${Object.keys(err.keyValue)} Entered`,
-      err = new ApiError(message, 400);
+    const message = `Duplicate ${Object.keys(err.keyValue)} Entered`;
+    err = new ApiError(message, 400);
   }
   if (err.name === "JsonWebTokenError") {
     const message = `Json Web Token is invalid, Try again!`;
@@ -37,8 +37,8 @@ export const ErrorHandler = (err, req, res, next) => {
     err = new ApiError(message, 400);
   }
   if (err.name === "CastError") {
-    const message = `Invalid ${err.path}`,
-      err = new ApiError(message, 400);
+    const message = `Invalid ${err.path}`;
+    err = new ApiError(message, 400);
   }
 
   const errorMessage = err.errors
@@ -49,12 +49,12 @@ export const ErrorHandler = (err, req, res, next) => {
 
   return res.status(err.statusCode).json({
     success: false,
-    // message: err.message,
     message: errorMessage,
   });
 };
 
-export  default ErrorHandler;
+export { ApiError };
+export default ErrorHandler;
 
 
 
