@@ -75,8 +75,8 @@ const Department = () => {
       <div
         style={{
           marginBottom: "30px",
+          zindex:2,
         }}
-        zIndex="2"
         className="container department"
       >
         <h2>Departments</h2>

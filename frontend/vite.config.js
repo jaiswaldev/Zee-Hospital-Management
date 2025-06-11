@@ -8,4 +8,11 @@ export default defineConfig({
      react(),
      tailwindcss(),
   ],
+  corePlugins: {
+    // optional: to reduce default CSS
+    scrollbar: false,
+  },
+  server: {
+    host: true, // or use "0.0.0.0"
+  },
 })

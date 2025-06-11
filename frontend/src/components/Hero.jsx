@@ -4,7 +4,7 @@ import React from "react";
 const Hero = ({ title, imageUrl }) => {
   return (
     <>
-      <div className="hero container">
+      <div className="hero overflow-hidden p-10">
         <div className="banner">
           <h1>{title}</h1>
           <p>

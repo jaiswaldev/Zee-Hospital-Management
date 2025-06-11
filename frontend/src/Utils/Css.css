@@ -9,6 +9,10 @@
 
 body {
   background: #e5e5e5;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
 }
 .btn {
   padding: 7px 20px;
@@ -76,7 +80,7 @@ h6 {
 .hero {
   display: flex;
   gap: 50px;
-  padding-top: 120px;
+  padding-top: 0;
   padding-bottom: 120px;
   position: relative;
 }
@@ -618,23 +622,22 @@ footer .logo-img{
 }
 
 
-body {
-	margin:0;
-	padding:0;
-	height:100%
-}
-
 .header {
-	position:fixed;
-	width:100%;
-	left:0;
-	top:0;
-	/* background:red; */
-	height:110px;
-	opacity:1;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 80px;
+  opacity: 1;
   background: #0e8797;
   border-radius: 0px;
   z-index: 9999;
+}
+.content {
+  position: relative;
+  width: 100%;
+  margin-top: 80px;
+  overflow-x: hidden;
 }
 .footer {
   
@@ -642,13 +645,6 @@ body {
 
   background: #0e8797;
 
-}
-.content {
-	position:absolute;
-	top:110px;
-	width:100%;
-	
-	overflow:auto;
 }
 .ham-hov:hover{
   cursor: pointer;

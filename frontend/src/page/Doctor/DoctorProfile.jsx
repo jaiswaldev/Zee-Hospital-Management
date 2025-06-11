@@ -16,8 +16,8 @@ import { BsFacebook } from "react-icons/bs";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { IoLogoLinkedin } from "react-icons/io5";
 import ReadMoreLess from "../../component/ReadMore";
-import Navbar from "../../component/Navbar";
-import Footer from "../../component/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import { transform } from "framer-motion";
 import Cover from "../../component/userprofile/Cover";
 

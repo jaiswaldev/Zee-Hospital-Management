@@ -14,8 +14,8 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import Navbar from "../../../component/Navbar";
-import Footer from "../../../component/Footer";
+import Navbar from "../../../components/Navbar";
+import Footer from "../../../components/Footer";
 import { BsFacebook } from "react-icons/bs";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { IoLogoLinkedin } from "react-icons/io5";

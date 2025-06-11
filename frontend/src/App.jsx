@@ -1,28 +1,43 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Utils/Home";
-import Appointment from "./pages/Utils/Appointment";
-import Register from "./pages/Utils/Register";
-import Login from "./pages/Utils/Login";
-import AboutUs from "./pages/Utils/AboutUs";
-import "react-toastify/dist/ReactToastify.css";
-import { ThemeProvider } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Context } from "./main";
-import axios from "axios";
-import Contact from "./pages/contact/Contact";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
-import UserProfile from "./component/userprofile/UserProfile";
+import { ThemeProvider } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme } from "@mui/material/styles";
 import SimpleBar from "simplebar-react";
+
+
+import "./Utils/Css.css";
+import Home from "./pages/Home";
+import AboutUs from "./pages/AboutUs";
+import Blog from "./pages/blog";
+import Register from "./components/Register";
+import Login from "./components/Login";
+
+
+
+import Appointment from "./Utils/Appointment";
+
+
+
+import "react-toastify/dist/ReactToastify.css";
+
+import { Context } from "./main";
+import axios from "axios";
+import Contact from "./page/contact/Contact";
+
+import UserProfile from "./component/userprofile/UserProfile";
+
 import ProtectedRoute from "./component/ProtectedRoute";
-import Doctors from "./pages/Doctor/Doctors";
-import DoctorProfile from "./pages/Doctor/DoctorProfile";
+import Doctors from "./page/Doctor/Doctors";
+import DoctorProfile from "./page/Doctor/DoctorProfile";
 import DepartmentPage from "./component/DepartmentComp";
 import DepartmentMain from "./component/DepartmentMain";
 
-import DoctorViewProfile from "./pages/Doctor/Doctor'sview/DoctorViewProfile";
-import DoctorWrapper from "./pages/Doctor/Doctor'sview/DoctorWrapper";
+import DoctorViewProfile from "./page/Doctor/Doctor'sview/DoctorViewProfile";
+import DoctorWrapper from "./page/Doctor/Doctor'sview/DoctorWrapper";
+
 /*============================Chakra UI============================*/
 export const theme = extendTheme({
   colors: {
@@ -91,29 +106,29 @@ export const theme = extendTheme({
 /*======================================*/
 
 /*============================Material UI============================*/
-// export const myTheme = createTheme({
-//   palette: {
-//     primary: {
-//       main: "#e91e63",
-//     },
-//     secondary: {
-//       main: "#f48fb1",
-//     },
-//     alternate: {
-//       main: "#fff",
-//     },
-//     text: {
-//       secondary: "#212121",
-//     },
-//   },
-//   typography: {
-//     fontFamily: "Quicksand",
-//     fontWeightLight: 400,
-//     fontWeightRegular: 500,
-//     fontWeightMedium: 600,
-//     fontWeightBold: 700,
-//   },
-// });
+export const myTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#e91e63",
+    },
+    secondary: {
+      main: "#f48fb1",
+    },
+    alternate: {
+      main: "#fff",
+    },
+    text: {
+      secondary: "#212121",
+    },
+  },
+  typography: {
+    fontFamily: "Quicksand",
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+  },
+});
 /*======================================*/
 
 const App = () => {
@@ -137,34 +152,36 @@ const App = () => {
 
   return (
     <>
-      {/* <ThemeProvider theme={myTheme}>
-        <CssBaseline /> */}
-      {/* <SimpleBar style={{ maxHeight: "100vh" }}> */}
-      {/* <ChakraProvider theme={theme}>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/doctors" element={<Doctors />} />
+      <ThemeProvider theme={myTheme}>
+        <CssBaseline />
+        {/* <SimpleBar style={{ maxHeight: "100vh" }}> */}
+          <ChakraProvider theme={theme}>
+            
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/blog" element={<Blog />} />
+                {/* <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} /> */}
+
+                
+                {/* <Route path="/doctors" element={<Doctors />} />
             <Route path="/doctorView" element={<DoctorWrapper />} />
             <Route path="/dept" element={<DepartmentMain />} />
             <Route path="/appointment" element={<Appointment />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            
+            
             <Route path="/contact" element={<Contact />} />
             <Route path="/user" element={<ProtectedRoute />}>
               <Route path="profile" element={<UserProfile />} />
             </Route>
             <Route path="/doctorProfile" element={<DoctorProfile />} />
-            <Route path="/*" element={<Login />}></Route>
-          </Routes>
-        </Router>
-      </ChakraProvider> */}
-      {/* </SimpleBar> */}
-      {/* </ThemeProvider> */}
-
-    <h1 className="text-blue-600 border-l">hii</h1>
-
+            <Route path="/*" element={<Login />}></Route> */}
+              </Routes>
+           
+          </ChakraProvider>
+        {/* </SimpleBar> */}
+      </ThemeProvider>
     </>
   );
 };

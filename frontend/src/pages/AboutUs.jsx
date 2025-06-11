@@ -1,15 +1,15 @@
 import React from "react";
-import Hero from "../../component/Hero";
-import Biography from "../../component/Biography";
-import Navbar from "../../component/Navbar";
-import Footer from "../../component/Footer";
+import Hero from "../components/Hero";
+import Biography from "../components/Biography";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 //import '../Css.css'
 
 const AboutUs = () => {
   return (
     <>
       <Navbar />
-      <div className="content">
+      <div className="pt-20">
         <Hero
           title={"Learn More About Us | ZeeCare Medical Institute"}
           imageUrl={"/about.png"}

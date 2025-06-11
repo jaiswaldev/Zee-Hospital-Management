@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../../component/Navbar";
-import Hero from "../../component/Hero";
-import AppointementForm from "../../component/AppointementForm";
-import Footer from "../../component/Footer";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import AppointementForm from "../component/AppointementForm";
+import Footer from "../components/Footer";
 //import "../Css.css";
 
 const Appointment = () => {
