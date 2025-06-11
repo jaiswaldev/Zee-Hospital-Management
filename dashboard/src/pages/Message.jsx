@@ -5,64 +5,99 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SideBar from "./SideBar";
 
+const API_URL = "http://localhost:3000/api/v1";
+
 const Message = () => {
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigate = useNavigate();
+
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
     const fetchMessages = async () => {
       try {
-        const { data } = await axios.get(
-          "    https://hospital-management-r7hc.onrender.com/api/v1/message/messages",
-          { withCredentials: true }
+        console.log("Fetching messages...");
+        const response = await axios.get(
+          `${API_URL}/message/messages`,
+          {
+            withCredentials: true,
+            headers: {
+              'Accept': 'application/json'
+            },
+            timeout: 10000 // 10 second timeout
+          }
         );
-        setMessages(data.messages);
+        console.log("Messages response:", response.data);
+        if (response.data && response.data.messages) {
+          setMessages(response.data.messages);
+        } else {
+          setMessages([]);
+        }
       } catch (error) {
-        console.log(error.response.data.message);
-        toast.error(error.response.data.message);
+        console.error("Error fetching messages:", error);
+        if (!error.response) {
+          setError("Network error. Please check your internet connection.");
+          toast.error("Network error. Please check your internet connection.");
+        } else {
+          const errorMessage = error.response?.data?.message || "Failed to fetch messages";
+          setError(errorMessage);
+          toast.error(errorMessage);
+        }
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchMessages();
-  }, []);
+  }, [isAuthenticated, navigate]);
 
   if (!isAuthenticated) {
-    return navigate("/login");
+    return null;
   }
+
   return (
     <>
       <SideBar />
-      <section
-        className="page messages"
-        style={{ backgroundColor: " #0e8797 " }}
-      >
-        <h1 style={{ color: "white" }}>MESSAGE</h1>
+      <section className="page messages" style={{ backgroundColor: "#0e8797" }}>
+        <h1 style={{ color: "white" }}>MESSAGES</h1>
         <div className="banner">
-          {messages && messages.length > 0 ? (
-            messages.map((element) => {
-              return (
-                <div className="card" key={element._id}>
-                  <div className="details">
-                    <p>
-                      First Name: <span>{element.firstName}</span>
-                    </p>
-                    <p>
-                      Last Name: <span>{element.lastName}</span>
-                    </p>
-                    <p>
-                      Email: <span>{element.email}</span>
-                    </p>
-                    <p>
-                      Phone: <span>{element.phone}</span>
-                    </p>
-                    <p>
-                      Message: <span>{element.message}</span>
-                    </p>
-                  </div>
+          {loading ? (
+            <div className="loading">Loading messages...</div>
+          ) : error ? (
+            <div className="error">{error}</div>
+          ) : messages && messages.length > 0 ? (
+            messages.map((element) => (
+              <div className="card" key={element._id}>
+                <div className="details">
+                  <p>
+                    First Name: <span>{element.firstName}</span>
+                  </p>
+                  <p>
+                    Last Name: <span>{element.lastName}</span>
+                  </p>
+                  <p>
+                    Email: <span>{element.email}</span>
+                  </p>
+                  <p>
+                    Phone: <span>{element.phone}</span>
+                  </p>
+                  <p>
+                    Message: <span>{element.message}</span>
+                  </p>
                 </div>
-              );
-            })
+              </div>
+            ))
           ) : (
-            <h1>No Messages!</h1>
+            <div className="no-messages">
+              <h2>No Messages</h2>
+              <p>There are no messages to display at this time.</p>
+            </div>
           )}
         </div>
       </section>

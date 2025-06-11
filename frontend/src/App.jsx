@@ -1,5 +1,19 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+<<<<<<< HEAD
+=======
+import Home from "./pages/Utils/Home";
+import Appointment from "./pages/Utils/Appointment";
+import Register from "./pages/Utils/Register";
+import Login from "./pages/Utils/Login";
+import AboutUs from "./pages/Utils/AboutUs";
+import "react-toastify/dist/ReactToastify.css";
+import { ThemeProvider, createTheme } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Context } from "./main";
+import axios from "axios";
+import Contact from "./pages/contact/Contact";
+>>>>>>> 53fda2c9b186f7632ce2c80ea7b45137813be5af
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { ThemeProvider } from "@mui/material";
@@ -34,11 +48,43 @@ import Doctors from "./page/Doctor/Doctors";
 import DoctorProfile from "./page/Doctor/DoctorProfile";
 import DepartmentPage from "./component/DepartmentComp";
 import DepartmentMain from "./component/DepartmentMain";
+<<<<<<< HEAD
 
 import DoctorViewProfile from "./page/Doctor/Doctor'sview/DoctorViewProfile";
 import DoctorWrapper from "./page/Doctor/Doctor'sview/DoctorWrapper";
 
 /*============================Chakra UI============================*/
+=======
+import DoctorViewProfile from "./pages/Doctor/Doctor'sview/DoctorViewProfile";
+import DoctorWrapper from "./pages/Doctor/Doctor'sview/DoctorWrapper";
+
+// Material UI Theme
+const myTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#e91e63",
+    },
+    secondary: {
+      main: "#f48fb1",
+    },
+    alternate: {
+      main: "#fff",
+    },
+    text: {
+      secondary: "#212121",
+    },
+  },
+  typography: {
+    fontFamily: "Quicksand",
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+  },
+});
+
+// Chakra UI Theme
+>>>>>>> 53fda2c9b186f7632ce2c80ea7b45137813be5af
 export const theme = extendTheme({
   colors: {
     brand: {
@@ -103,6 +149,7 @@ export const theme = extendTheme({
     },
   },
 });
+<<<<<<< HEAD
 /*======================================*/
 
 /*============================Material UI============================*/
@@ -130,27 +177,30 @@ export const myTheme = createTheme({
   },
 });
 /*======================================*/
+=======
+>>>>>>> 53fda2c9b186f7632ce2c80ea7b45137813be5af
 
 const App = () => {
-  // const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "    https://hospital-management-r7hc.onrender.com/api/v1/user/patient/me",
-  //         { withCredentials: true }
-  //       );
-  //       setIsAuthenticated(true);
-  //       setUser(response.data.user);
-  //     } catch (error) {
-  //       setIsAuthenticated(false);
-  //       setUser({});
-  //     }
-  //   };
-  //   fetchUser();
-  // }, [isAuthenticated]);
+  const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          "https://hospital-management-r7hc.onrender.com/api/v1/user/patient/me",
+          { withCredentials: true }
+        );
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+      } catch (error) {
+        setIsAuthenticated(false);
+        setUser({});
+      }
+    };
+    fetchUser();
+  }, [isAuthenticated]);
 
   return (
+<<<<<<< HEAD
     <>
       <ThemeProvider theme={myTheme}>
         <CssBaseline />
@@ -166,6 +216,15 @@ const App = () => {
 
                 
                 {/* <Route path="/doctors" element={<Doctors />} />
+=======
+    <ThemeProvider theme={myTheme}>
+      <CssBaseline />
+      <SimpleBar style={{ maxHeight: "100vh" }}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/doctors" element={<Doctors />} />
+>>>>>>> 53fda2c9b186f7632ce2c80ea7b45137813be5af
             <Route path="/doctorView" element={<DoctorWrapper />} />
             <Route path="/dept" element={<DepartmentMain />} />
             <Route path="/appointment" element={<Appointment />} />
@@ -176,6 +235,7 @@ const App = () => {
               <Route path="profile" element={<UserProfile />} />
             </Route>
             <Route path="/doctorProfile" element={<DoctorProfile />} />
+<<<<<<< HEAD
             <Route path="/*" element={<Login />}></Route> */}
               </Routes>
            
@@ -183,6 +243,13 @@ const App = () => {
         {/* </SimpleBar> */}
       </ThemeProvider>
     </>
+=======
+            <Route path="/*" element={<Login />}></Route>
+          </Routes>
+        </Router>
+      </SimpleBar>
+    </ThemeProvider>
+>>>>>>> 53fda2c9b186f7632ce2c80ea7b45137813be5af
   );
 };
 

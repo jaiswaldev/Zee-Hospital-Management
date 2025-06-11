@@ -22,6 +22,7 @@ const router = express.Router();
 router.post("/patientregister", patientRegister);
 router.post("/login", login);
 router.post("/admin/addnew", isAdminAuthentication, addNewAdmin);
+router.post("/admin/first", addNewAdmin);
 router.get("/doctors", getAllDoctors);
 router.get("/admin/me", isAdminAuthentication, getUserDetails);
 router.get("/patient/me", isPatientAuthentication, getUserDetails);
