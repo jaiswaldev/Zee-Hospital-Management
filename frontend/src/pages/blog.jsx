@@ -125,7 +125,7 @@ const Blog = () => {
   return (
    <>
       <Navbar />
-      <div className="pt-20">
+      <div className="pt-15">
       {/* Header */}
       <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

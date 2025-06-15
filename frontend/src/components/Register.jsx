@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import axios from "axios";
 import {
   Select,
   SelectContent,
@@ -15,6 +16,13 @@ import { User, UserPlus, Stethoscope, Heart } from "lucide-react";
 import { toast } from "sonner";
 
 const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
+
+  const Backend_API = import.meta.env.VITE_BACKEND_URL;
+  // if (!Backend_API) {
+  //   console.error("VITE_BACKEND_URL is not defined in .env file");
+  //   return <div>Error: Backend API URL is not configured.</div>;
+  // }
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -32,8 +40,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
     qualifications: "",
     hospitalAffiliation: "",
     // Patient specific fields
-    emergencyContactName: "",
-    emergencyContactPhone: "",
+    emergencyContactNumber: "",
     medicalHistory: "",
     allergies: "",
     bloodGroup: "",
@@ -54,25 +61,64 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Basic validation
-    if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
+  if (formData.password !== formData.confirmPassword) {
+    toast.error("Passwords do not match.");
+    return;
+  }
+  if (formData.password.length < 6) {
+    toast.error("Password must be at least 6 characters.");
+    return;
+  }
+  
+  try {
+    const registrationData = { 
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+      phone: formData.phone,
+      dateOfBirth: formData.dateOfBirth,
+      gender: formData.gender,
+      address: formData.address,
+    };
+
+    if (selectedRole === "patient") {
+      registrationData.emergencyContactNumber = formData.emergencyContactNumber;
+      registrationData.medicalHistory = formData.medicalHistory;
+      registrationData.allergies = formData.allergies;
+      registrationData.bloodGroup = formData.bloodGroup;
+    } else if (selectedRole === "doctor") {
+      registrationData.licenseNumber = formData.licenseNumber;
+      registrationData.specialization = formData.specialization;
+      registrationData.experience = formData.experience;
+      registrationData.qualifications = formData.qualifications;
+      registrationData.hospitalAffiliation = formData.hospitalAffiliation;
     }
+  
+    const endpoint = 
+      selectedRole === "patient"
+        ? `${Backend_API}/patient/register`
+        : `${Backend_API}/doctor/register`;
 
-    if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return;
-    }
+    const res = await axios.post(endpoint, registrationData);
+    const data = res.data;  // <-- axios handles JSON parsing automatically
 
-    // Simulate registration success
-    toast.success(`Registration successful! Welcome, ${formData.firstName}!`);
-    console.log("Registration data:", { role: selectedRole, ...formData });
+    toast.success(data?.message || "Registration successful!");
+    console.log("Registration successful.", data);
+  
     onSwitchToLogin();
-  };
+
+  } catch (err) {
+    console.error("Registration error.", err);
+    toast.error(err?.response?.data?.message || err?.message || "An error occurred during registration.");
+  }
+};
+
+
+
 
   const doctorSpecializations = [
     "Cardiology",
@@ -115,7 +161,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
 
         {/* Registration Form */}
         {selectedRole && (
-          <Card className="shadow-xl border-0 bg-white/90 backdrop-blur-sm">
+           <Card className="shadow-xl border-0 bg-white/90 backdrop-blur-sm">
             <CardHeader className="text-center pb-4">
               <div className="flex items-center justify-center mb-4">
                 {selectedRole === "doctor" ? (
@@ -128,8 +174,8 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                 Register as {selectedRole === "doctor" ? "Doctor" : "Patient"}
               </CardTitle>
               <div className="flex justify-start mt-2 text-gray-600 hover:text-gray-900">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={onBackToRoleSelector}
                   className=""
                 >
@@ -148,7 +194,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                   </div>
 
                   <div className=" md:grid-cols-2 gap-4 flex flex-col">
-                    <div >
+                    <div>
                       <Label htmlFor="firstName">First Name *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
                         <Input
@@ -157,7 +203,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                           value={formData.firstName}
                           type="text"
                           onChange={handleInputChange}
-                          required
+                          // required
                           className="mt-1"
                         />
                       </div>
@@ -166,97 +212,110 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                     <div>
                       <Label htmlFor="lastName">Last Name *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        type="text"
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                      />
+                        <Input
+                          id="lastName"
+                          name="lastName"
+                          value={formData.lastName}
+                          type="text"
+                          onChange={handleInputChange}
+                          // required
+                          className="mt-1"
+                        />
                       </div>
                     </div>
 
                     <div>
                       <Label htmlFor="email">Email Address *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                      />
+                        <Input
+                          id="email"
+                          name="email"
+                          autoComplete="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          // required
+                          className="mt-1"
+                        />
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="phone">Phone Number *</Label>
+                      <Label htmlFor="phone">Phone Number </Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                      />
+                        <Input
+                          id="phone"
+                          name="phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          className="mt-1"
+                        />
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                      <Label htmlFor="dateOfBirth">Date of Birth </Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                      <Input
-                        id="dateOfBirth"
-                        name="dateOfBirth"
-                        type="date"
-                        value={formData.dateOfBirth}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                      />
+                        <Input
+                          id="dateOfBirth"
+                          name="dateOfBirth"
+                          type="date"
+                          value={formData.dateOfBirth}
+                          onChange={handleInputChange}
+                          className="mt-1"
+                        />
                       </div>
                     </div>
 
                     <div>
                       <Label htmlFor="gender">Gender *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                      <Select
-                        onValueChange={(value) =>
-                          handleSelectChange("gender", value)
-                        }
-                      >
-                        
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select gender" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white h-35 cursor-pointer">
-                          <SelectItem value="male" className="hover:bg-amber-50">Male</SelectItem>
-                          <SelectItem value="female" className="hover:bg-amber-50">Female</SelectItem>
-                          <SelectItem value="other" className="hover:bg-amber-50">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <Select
+                          onValueChange={(value) =>
+                            handleSelectChange("gender", value)
+                          }
+                          // required
+                        >
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select gender" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white h-35 cursor-pointer">
+                            <SelectItem
+                              value="Male"
+                              className="hover:bg-amber-50"
+                            >
+                              Male
+                            </SelectItem>
+                            <SelectItem
+                              value="Female"
+                              className="hover:bg-amber-50"
+                            >
+                              Female
+                            </SelectItem>
+                            <SelectItem
+                              value="Other"
+                              className="hover:bg-amber-50"
+                            >
+                              Other
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-4">
-                    <Label htmlFor="address">Address *</Label>
+                    <Label htmlFor="address">Address </Label>
                     <div className="border-cyan-400 outline rounded-md shadow-sm">
-                    <Textarea
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1"
-                      rows={3}
-                    />
+                      <Textarea
+                        id="address"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                        className="mt-1"
+                        rows={3}
+                      />
                     </div>
                   </div>
                 </div>
@@ -272,58 +331,62 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                     <div className="md:grid-cols-2 gap-4 flex flex-col">
                       <div>
                         <Label htmlFor="licenseNumber">
-                          Medical License Number *
+                          Medical License Number 
                         </Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                        <Input
-                          id="licenseNumber"
-                          name="licenseNumber"
-                          value={formData.licenseNumber}
-                          onChange={handleInputChange}
-                          required
-                          className="mt-1"
-                        />
+                          <Input
+                            id="licenseNumber"
+                            name="licenseNumber"
+                            value={formData.licenseNumber}
+                            onChange={handleInputChange}
+                            // required
+                            className="mt-1"
+                          />
                         </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="specialization">Specialization *</Label>
+                        <Label htmlFor="specialization">Specialization </Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                        <Select
-                          onValueChange={(value) =>
-                            handleSelectChange("specialization", value)
-                          }
-                        >
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select specialization" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white h-50">
-                            {doctorSpecializations.map((spec) => (
-                              <SelectItem key={spec} value={spec.toLowerCase()} className="hover:bg-amber-50">
-                                {spec}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          <Select
+                            onValueChange={(value) =>
+                              handleSelectChange("specialization", value)
+                            }
+                          >
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select specialization" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white h-50">
+                              {doctorSpecializations.map((spec) => (
+                                <SelectItem
+                                  key={spec}
+                                  value={spec.toLowerCase()}
+                                  className="hover:bg-amber-50"
+                                >
+                                  {spec}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
 
                       <div>
                         <Label htmlFor="experience">
-                          Years of Experience *
+                          Years of Experience 
                         </Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                        <Input
-                          id="experience"
-                          name="experience"
-                          type="number"
-                          min="0"
-                          max="50"
-                          value={formData.experience}
-                          onChange={handleInputChange}
-                          required
-                          className="mt-1"
-                        />
+                          <Input
+                            id="experience"
+                            name="experience"
+                            type="number"
+                            min="0"
+                            max="50"
+                            value={formData.experience}
+                            onChange={handleInputChange}
+                            // required
+                            className="mt-1"
+                          />
                         </div>
                       </div>
 
@@ -332,30 +395,30 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                           Hospital Affiliation
                         </Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                        <Input
-                          id="hospitalAffiliation"
-                          name="hospitalAffiliation"
-                          value={formData.hospitalAffiliation}
-                          onChange={handleInputChange}
-                          className="mt-1"
-                        />
+                          <Input
+                            id="hospitalAffiliation"
+                            name="hospitalAffiliation"
+                            value={formData.hospitalAffiliation}
+                            onChange={handleInputChange}
+                            className="mt-1"
+                          />
                         </div>
                       </div>
                     </div>
 
                     <div className="mt-4">
-                      <Label htmlFor="qualifications">Qualifications *</Label>
+                      <Label htmlFor="qualifications">Qualifications </Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm">
-                      <Textarea
-                        id="qualifications"
-                        name="qualifications"
-                        value={formData.qualifications}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="e.g., MBBS, MD, Fellowship details..."
-                        className="mt-1"
-                        rows={3}
-                      />
+                        <Textarea
+                          id="qualifications"
+                          name="qualifications"
+                          value={formData.qualifications}
+                          onChange={handleInputChange}
+                          // required
+                          placeholder="e.g., MBBS, MD, Fellowship details..."
+                          className="mt-1"
+                          rows={3}
+                        />
                       </div>
                     </div>
                   </div>
@@ -372,55 +435,43 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                       <div>
                         <Label htmlFor="bloodGroup">Blood Group</Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                        <Select
-                          onValueChange={(value) =>
-                            handleSelectChange("bloodGroup", value)
-                          }
-                        >
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select blood group" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white h-50">
-                            {bloodGroups.map((group) => (
-                              <SelectItem key={group} value={group} className="hover:bg-amber-50">
-                                {group}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="emergencyContactName">
-                          Emergency Contact Name *
-                        </Label>
-                        <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                        <Input
-                          id="emergencyContactName"
-                          name="emergencyContactName"
-                          value={formData.emergencyContactName}
-                          onChange={handleInputChange}
-                          required
-                          className="mt-1"
-                        />
+                          <Select
+                            onValueChange={(value) =>
+                              handleSelectChange("bloodGroup", value)
+                            }
+                          >
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select blood group" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white h-50">
+                              {bloodGroups.map((group) => (
+                                <SelectItem
+                                  key={group}
+                                  value={group}
+                                  className="hover:bg-amber-50"
+                                >
+                                  {group}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
 
                       <div>
                         <Label htmlFor="emergencyContactPhone">
-                          Emergency Contact Phone *
+                          Emergency Contact Number *
                         </Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                        <Input
-                          id="emergencyContactPhone"
-                          name="emergencyContactPhone"
-                          type="tel"
-                          value={formData.emergencyContactPhone}
-                          onChange={handleInputChange}
-                          required
-                          className="mt-1"
-                        />
+                          <Input
+                            id="emergencyContactNumber"
+                            name="emergencyContactNumber"
+                            type="tel"
+                            value={formData.emergencyContactPhone}
+                            onChange={handleInputChange}
+                            // required
+                            className="mt-1"
+                          />
                         </div>
                       </div>
                     </div>
@@ -429,30 +480,30 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                       <div>
                         <Label htmlFor="allergies">Known Allergies</Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm">
-                        <Textarea
-                          id="allergies"
-                          name="allergies"
-                          value={formData.allergies}
-                          onChange={handleInputChange}
-                          placeholder="List any known allergies..."
-                          className="mt-1"
-                          rows={3}
-                        />
+                          <Textarea
+                            id="allergies"
+                            name="allergies"
+                            value={formData.allergies}
+                            onChange={handleInputChange}
+                            placeholder="List any known allergies..."
+                            className="mt-1"
+                            rows={3}
+                          />
                         </div>
                       </div>
 
                       <div>
                         <Label htmlFor="medicalHistory">Medical History</Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm">
-                        <Textarea
-                          id="medicalHistory"
-                          name="medicalHistory"
-                          value={formData.medicalHistory}
-                          onChange={handleInputChange}
-                          placeholder="Brief medical history..."
-                          className="mt-1"
-                          rows={3}
-                        />
+                          <Textarea
+                            id="medicalHistory"
+                            name="medicalHistory"
+                            value={formData.medicalHistory}
+                            onChange={handleInputChange}
+                            placeholder="Brief medical history..."
+                            className="mt-1"
+                            rows={3}
+                          />
                         </div>
                       </div>
                     </div>
@@ -469,19 +520,20 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                     <div>
                       <Label htmlFor="password">Password *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                      <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                        minLength={6}
-                      />
+                        <Input
+                          id="password"
+                          name="password"
+                          type="password"
+                          autoComplete="new-password"
+                          value={formData.password}
+                          onChange={handleInputChange}
+                          // required
+                          className="mt-1"
+                          minLength={8}
+                        />
                       </div>
                       <div className="text-sm text-gray-500 mt-1">
-                        Minimum 6 characters*
+                        Minimum 8 characters*
                       </div>
                     </div>
 
@@ -490,48 +542,43 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                         Confirm Password *
                       </Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
-                      <Input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type="password"
-                        value={formData.confirmPassword}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1"
-                        minLength={6}
-                      />
+                        <Input
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          type="password"
+                          autoComplete="new-password"
+                          value={formData.confirmPassword}
+                          onChange={handleInputChange}
+                          // required
+                          className="mt-1"
+                          minLength={6}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Submit Button */}
-                <div className={`w-full h-10 flex items-center justify-center rounded-xl text-lg font-semibold transition-all duration-200 ${
-                      selectedRole === "doctor"
-                        ? "bg-blue-600 hover:bg-blue-700"
-                        : "bg-green-600 hover:bg-green-700"
-                    }`}>
-                  <Button
-                    type="submit"
-                    
-                  >
-                    Register
-                  </Button>
+                <div
+                  className={`w-full h-10 flex items-center justify-center rounded-xl text-lg font-semibold transition-all duration-200 ${
+                    selectedRole === "doctor"
+                      ? "bg-blue-600 hover:bg-blue-700"
+                      : "bg-green-600 hover:bg-green-700"
+                  }`}
+                >
+                  <Button type="submit">Register</Button>
                 </div>
               </form>
             </CardContent>
           </Card>
+        
         )}
       </div>
 
       <div className="mt-2 text-xl text-gray-600 flex justify-end">
         Already Registered?{" "}
         <div className="text-blue-600 hover:text-blue-800 font-medium ml-1">
-          <button
-            onClick={onSwitchToLogin}
-          >
-            Login
-          </button>
+          <button onClick={onSwitchToLogin}>Login</button>
         </div>
       </div>
     </div>

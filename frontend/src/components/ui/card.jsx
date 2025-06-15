@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { cn } from "../../Utils/Cn";
 
-const Card = forwardRef((props, ref) => {
+const Card = forwardRef(function Card(props, ref) {
   const { className, ...rest } = props;
   return (
     <div
@@ -16,19 +16,15 @@ const Card = forwardRef((props, ref) => {
 });
 Card.displayName = "Card";
 
-const CardHeader = forwardRef((props, ref) => {
+const CardHeader = forwardRef(function CardHeader(props, ref) {
   const { className, ...rest } = props;
   return (
-    <div
-      ref={ref}
-      className={cn("flex flex-col space-y-1.5 p-6", className)}
-      {...rest}
-    />
+    <div ref={ref} className={cn("flex flex-col space-y-1.5 p-6", className)} {...rest} />
   );
 });
 CardHeader.displayName = "CardHeader";
 
-const CardTitle = forwardRef((props, ref) => {
+const CardTitle = forwardRef(function CardTitle(props, ref) {
   const { className, ...rest } = props;
   return (
     <h3
@@ -40,27 +36,21 @@ const CardTitle = forwardRef((props, ref) => {
 });
 CardTitle.displayName = "CardTitle";
 
-const CardDescription = forwardRef((props, ref) => {
+const CardDescription = forwardRef(function CardDescription(props, ref) {
   const { className, ...rest } = props;
   return (
-    <p
-      ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
-      {...rest}
-    />
+    <p ref={ref} className={cn("text-sm text-muted-foreground", className)} {...rest} />
   );
 });
 CardDescription.displayName = "CardDescription";
 
-const CardContent = forwardRef((props, ref) => {
+const CardContent = forwardRef(function CardContent(props, ref) {
   const { className, ...rest } = props;
-  return (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...rest} />
-  );
+  return <div ref={ref} className={cn("p-6 pt-0", className)} {...rest} />;
 });
 CardContent.displayName = "CardContent";
 
-const CardFooter = forwardRef((props, ref) => {
+const CardFooter = forwardRef(function CardFooter(props, ref) {
   const { className, ...rest } = props;
   return (
     <div ref={ref} className={cn("flex items-center p-6 pt-0", className)} {...rest} />
