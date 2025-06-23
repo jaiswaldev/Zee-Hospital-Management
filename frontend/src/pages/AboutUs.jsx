@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 const AboutUs = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="pt-15">
         <Hero
           title={"Learn More About Us | ZeeCare Medical Institute"}

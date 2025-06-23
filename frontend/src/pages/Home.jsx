@@ -9,7 +9,7 @@ import Footer from "../components/Footer";
 const Home = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div style={{ overflowX: "hidden" }} className="pt-15 gap-0">
         <Carousel />
           <Hero

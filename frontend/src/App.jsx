@@ -1,5 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { ThemeProvider } from "@mui/material";
@@ -9,6 +14,7 @@ import SimpleBar from "simplebar-react";
 
 import { Toaster } from "sonner";
 import "./Utils/Css.css";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Blog from "./pages/blog";
@@ -157,23 +163,33 @@ export const theme = extendTheme({
 /*======================================*/
 
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "https://hospital-management-r7hc.onrender.com/api/v1/user/patient/me",
-  //         { withCredentials: true }
-  //       );
-  //       setIsAuthenticated(true);
-  //       setUser(response.data.user);
-  //     } catch (error) {
-  //       setIsAuthenticated(false);
-  //       setUser({});
-  //     }
-  //   };
-  //   fetchUser();
-  // }, [isAuthenticated]);
+  const location = useLocation();
+
+  const getAuthState = () => {
+    if (location.pathname === "/doctor/dashboard") {
+      return {
+        isLoggedIn: true,
+        userRole: "doctor",
+        userName: "Dr. Sarah Johnson",
+        userAvatar: undefined,
+      };
+    } else if (location.pathname === "/patient/dashboard") {
+      return {
+        isLoggedIn: true,
+        userRole: "patient",
+        userName: "John Doe",
+        userAvatar: undefined,
+      };
+    }
+    return {
+      isLoggedIn: false,
+      userRole: undefined,
+      userName: undefined,
+      userAvatar: undefined,
+    };
+  };
+
+  const authState = getAuthState();
 
   return (
     <>
@@ -182,6 +198,7 @@ const App = () => {
         <CssBaseline />
         {/* <SimpleBar style={{ maxHeight: "100vh" }}> */}
         <ChakraProvider theme={theme}>
+          <Navbar {...authState} />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<AboutUs />} />

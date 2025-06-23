@@ -19,7 +19,7 @@ const Blog = () => {
     category: "Medical Research",
     author: "Dr. Raj Boom",
     authorRole: "Chief of Radiology",
-    authorImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah"
+    authorImage: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
   };
 
   const articles = [
@@ -123,87 +123,98 @@ const Blog = () => {
   };
 
   return (
-   <>
-      <Navbar />
+    <>
+      {/* <Navbar /> */}
       <div className="pt-15">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto ">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">ZeeCare Blogs</h1>
-            <p className="text-lg md:text-xl text-blue-100">
-              Latest news, medical research, and updates from our hospital
-            </p>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Featured Article */}
-        <section className="mb-16">
-          <FeaturedArticle article={featuredArticle} />
-        </section>
-
-        {/* Grid and Sidebar */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-2/3">
-            <ArticleGrid
-              articles={filteredArticles}
-              activeCategory={activeCategory}
-              onCategoryChange={handleCategoryChange}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-          </div>
-
-          <div className="lg:w-1/3">
-            <div className="sticky top-8">
-              <BlogSidebar
-                recentPosts={recentPosts}
-                popularTags={popularTags}
-                onTagClick={(tag) => handleCategoryChange(tag)}
-              />
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-12 mt-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-8 md:mb-0">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Hospital Management System
-              </h3>
-              <p className="text-gray-600">
-                Providing quality healthcare and information
+        {/* Header */}
+        <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto ">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                ZeeCare Blogs
+              </h1>
+              <p className="text-lg md:text-xl text-blue-100">
+                Latest news, medical research, and updates from our hospital
               </p>
             </div>
-            <div className="flex flex-wrap gap-6">
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Terms of Service
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Contact Us
-              </a>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Featured Article */}
+          <section className="mb-16">
+            <FeaturedArticle article={featuredArticle} />
+          </section>
+
+          {/* Grid and Sidebar */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="lg:w-2/3">
+              <ArticleGrid
+                articles={filteredArticles}
+                activeCategory={activeCategory}
+                onCategoryChange={handleCategoryChange}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+
+            <div className="lg:w-1/3">
+              <div className="sticky top-8">
+                <BlogSidebar
+                  recentPosts={recentPosts}
+                  popularTags={popularTags}
+                  onTagClick={(tag) => handleCategoryChange(tag)}
+                />
+              </div>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-gray-200 text-center text-gray-600">
-            <p>
-              © {new Date().getFullYear()} Hospital Management System. All
-              rights reserved.
-            </p>
+        </main>
+
+        {/* Footer */}
+        <footer className="bg-white border-t border-gray-200 py-12 mt-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="mb-8 md:mb-0">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Hospital Management System
+                </h3>
+                <p className="text-gray-600">
+                  Providing quality healthcare and information
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-6">
+                <a
+                  href="#"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  Privacy Policy
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  Terms of Service
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </div>
+            <div className="mt-8 pt-8 border-t border-gray-200 text-center text-gray-600">
+              <p>
+                © {new Date().getFullYear()} Hospital Management System. All
+                rights reserved.
+              </p>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
       </div>
-   </>
-  );  
+    </>
+  );
 };
 
 export default Blog;

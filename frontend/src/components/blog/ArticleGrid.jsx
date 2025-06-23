@@ -79,7 +79,7 @@ const ArticleGrid = ({ articles = [], activeCategory, onCategoryChange, currentP
 
       {totalPages > 1 && (
         <div className="mt-12">
-          <Pagination>
+          {/* <Pagination> */}
             <PaginationContent className="flex-wrap justify-center gap-2">
               <PaginationItem>
                 <PaginationPrevious
@@ -115,7 +115,7 @@ const ArticleGrid = ({ articles = [], activeCategory, onCategoryChange, currentP
                 />
               </PaginationItem>
             </PaginationContent>
-          </Pagination>
+          {/* </Pagination> */}
         </div>
       )}
     </div>

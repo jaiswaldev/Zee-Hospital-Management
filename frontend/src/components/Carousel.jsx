@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
+
 const slides = [
   {
     title: "24/7 Emergency Care",
@@ -44,16 +45,16 @@ const Carousel = () => {
 
   return (
     <div className="w-full">
-      <div ref={sliderRef} className="keen-slider rounded-xl shadow-lg overflow-hidden">
+      <div ref={sliderRef} className="keen-slider  shadow-lg overflow-hidden">
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="keen-slider__slide relative h-[300px] md:h-[400px]"
+            className="keen-slider__slide relative h-[300px] lg:h-[400px]"
           >
             <img
               src={slide.img}
               alt={slide.title}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-[300px]"
             />
             <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-start px-6 md:px-16 text-white">
               <h2 className="text-xl md:text-3xl font-semibold">{slide.title}</h2>
