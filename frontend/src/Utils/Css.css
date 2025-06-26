@@ -8,7 +8,7 @@
 } */
 
 body {
-  background: #e5e5e5;
+  background: gray;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -512,7 +512,7 @@ nav svg {
 }
 @media (max-width: 1100px) {
   nav {
-    background: #ffffffbf;
+    background: #ffffff;
     position: fixed;
     top: 0;
     left: 0;
@@ -532,7 +532,7 @@ nav svg {
     left: 0;
     height: 100%;
     width: 400px;
-    background: #ffffffbf;
+    background: #ffffff;
     top: 79px;
     color: black!important
   }
@@ -547,7 +547,7 @@ nav svg {
     left: -100%;
     width: 400px;
     height: 100%;
-    background: #ffffffbf;
+    background: #ffffff;
     top: 79px;
     color: black!important;
   }

@@ -1,22 +1,55 @@
-// components/ui/tabs.jsx
-import { useState } from "react";
+import React, { forwardRef } from "react";
+import * as TabsPrimitive from "@radix-ui/react-tabs";
+import { cn } from "../../Utils/Cn";
 
-export const Tabs = ({ children }) => <div>{children}</div>;
+const Tabs = TabsPrimitive.Root;
 
-export const TabsList = ({ children }) => (
-  <div className="flex border-b mb-4">{children}</div>
-);
+const TabsList = forwardRef(function TabsList(props, ref) {
+  const { className, ...rest } = props;
 
-export const TabsTrigger = ({ label, isActive, onClick }) => (
-  <button
-    className={`px-4 py-2 text-sm font-medium ${
-      isActive ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500"
-    }`}
-    onClick={onClick}
-  >
-    {label}
-  </button>
-);
+  return (
+    <TabsPrimitive.List
+      ref={ref}
+      className={cn(
+        "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+        className
+      )}
+      {...rest}
+    />
+  );
+});
+TabsList.displayName = TabsPrimitive.List.displayName;
 
-export const TabsContent = ({ isActive, children }) =>
-  isActive ? <div>{children}</div> : null;
+const TabsTrigger = forwardRef(function TabsTrigger(props, ref) {
+  const { className, ...rest } = props;
+
+  return (
+    <TabsPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+        className
+      )}
+      {...rest}
+    />
+  );
+});
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+
+const TabsContent = forwardRef(function TabsContent(props, ref) {
+  const { className, ...rest } = props;
+
+  return (
+    <TabsPrimitive.Content
+      ref={ref}
+      className={cn(
+        "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        className
+      )}
+      {...rest}
+    />
+  );
+});
+TabsContent.displayName = TabsPrimitive.Content.displayName;
+
+export { Tabs, TabsList, TabsTrigger, TabsContent };

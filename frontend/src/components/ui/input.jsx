@@ -1,9 +1,7 @@
-// components/ui/input.jsx
-
-import React from "react";
+import React, { forwardRef } from "react";
 import { cn } from "../../Utils/Cn";
 
-const Input = React.forwardRef((props, ref) => {
+const Input = forwardRef(function Input(props, ref) {
   const { className, type, ...rest } = props;
 
   return (
@@ -18,7 +16,5 @@ const Input = React.forwardRef((props, ref) => {
     />
   );
 });
-
-Input.displayName = "Input";
 
 export { Input };

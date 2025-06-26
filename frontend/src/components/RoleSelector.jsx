@@ -17,7 +17,7 @@ const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
       <div className="flex flex-row gap-4 justify-center">
         {/* Doctor Card */}
         <Card className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-blue-500 bg-gray-200 backdrop-blur-sm flex-1 ">
-          <CardContent className="p-6 text-center items-center flex flex-col">
+          <CardContent className="p-4 text-center items-center flex flex-col">
             <div className="bg-blue-100 rounded-full p-4 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
               <Stethoscope className="h-6 w-6 text-blue-600" />
             </div>
@@ -28,16 +28,16 @@ const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
               Register as a medical professional to manage patients and
               appointments.
             </div>
-            <div class="mt-2 text-gray-400">
-              <div class="flex items-center gap-2">
+            <div className="mt-2 text-gray-400">
+              <div className="flex items-center gap-2">
                 <span>✓</span>
                 <div>Manage patient records</div>
               </div>
-              <div class="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span>✓</span>
                 <div>Schedule appointments</div>
               </div>
-              <div class="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span>✓</span>
                 <div>Digital prescriptions</div>
               </div>
@@ -52,7 +52,7 @@ const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
 
         {/* Patient Card */}
         <Card className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-blue-500 bg-gray-200 backdrop-blur-sm flex-1 ">
-          <CardContent className="p-6 text-center items-center flex flex-col">
+          <CardContent className="p-4 text-center items-center flex flex-col">
             <div className="bg-blue-100 rounded-full p-4 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
               <User className="h-6 w-6 text-green-600" />
             </div>
@@ -63,16 +63,16 @@ const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
               Register as a patient to book appointments and access medical
               records.
             </div>
-            <div class="mt-2 text-gray-400 ">
-              <div class="flex items-center gap-2">
+            <div className="mt-2 text-gray-400 ">
+              <div className="flex items-center gap-2">
                 <span>✓</span>
                 <div>Book appointments</div>
               </div>
-              <div class="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span>✓</span>
                 <div>View medical records</div>
               </div>
-              <div class="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span>✓</span>
                 <div>Prescription tracking</div>
               </div>
