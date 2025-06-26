@@ -4,7 +4,7 @@ import { Stethoscope, User } from "lucide-react";
 
 const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
   return (
-    <div className="max-w-3xl mx-auto mb-4 h-100">
+    <div className="max-w-3xl mx-auto mb-4 h-100 px-2 sm:px-0">
       <div className="text-center mb-2">
         <div className="text-l font-bold text-gray-900 mb-2">
           Choose Your Role
@@ -14,9 +14,12 @@ const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
         </div>
       </div>
 
-      <div className="flex flex-row gap-4 justify-center">
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
         {/* Doctor Card */}
-        <Card className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-blue-500 bg-gray-200 backdrop-blur-sm flex-1 ">
+        <Card
+          onClick={() => onRoleSelect("doctor")}
+          className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-1 border-gray-400 hover:border-blue-400 bg-gray-200 backdrop-blur-sm flex-1 "
+        >
           <CardContent className="p-4 text-center items-center flex flex-col">
             <div className="bg-blue-100 rounded-full p-4 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
               <Stethoscope className="h-6 w-6 text-blue-600" />
@@ -42,16 +45,15 @@ const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
                 <div>Digital prescriptions</div>
               </div>
             </div>
-            <div className="mt-4 text-xl">
-              <Button onClick={() => onRoleSelect("doctor")}>
-                Register as Doctor
-              </Button>
-            </div>
+            <div className="mt-4 text-l font-bold">Register as Doctor</div>
           </CardContent>
         </Card>
 
         {/* Patient Card */}
-        <Card className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-blue-500 bg-gray-200 backdrop-blur-sm flex-1 ">
+        <Card
+          onClick={() => onRoleSelect("patient")}
+          className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-1 border-gray-400 hover:border-blue-400 bg-gray-200 backdrop-blur-sm flex-1 "
+        >
           <CardContent className="p-4 text-center items-center flex flex-col">
             <div className="bg-blue-100 rounded-full p-4 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
               <User className="h-6 w-6 text-green-600" />
@@ -77,25 +79,19 @@ const RoleSelector = ({ onRoleSelect, onSwitchToLogin }) => {
                 <div>Prescription tracking</div>
               </div>
             </div>
-            <div className="mt-4 text-xl">
-              <Button onClick={() => onRoleSelect("patient")}>
-                Register as Patient
-              </Button>
-            </div>
+            <div className="mt-4 text-l font-bold">Register as Patient</div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="mt-2 text-xl text-gray-600 flex justify-end">
+      <div className="mt-2 text-xl text-gray-600 flex justify-end items-center">
         Already Registered?{" "}
-        <div className="text-blue-600 hover:text-blue-800 font-medium ml-1">
-          <button
-            onClick={onSwitchToLogin}
-            
-          >
-            Login
-          </button>
-        </div>
+        <Button
+          onClick={onSwitchToLogin}
+          className="text-blue-600 hover:text-blue-800 font-bold cursor-pointer text-xl"
+        >
+          Login
+        </Button>
       </div>
     </div>
   );

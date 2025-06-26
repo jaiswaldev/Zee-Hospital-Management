@@ -7,14 +7,19 @@ import api from "../utils/axios";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
 
   const validateForm = () => {
-    if (!email || !password) {
-      toast.error("Email and password are required");
+    if (!email || !password || !confirmPassword) {
+      toast.error("All fields are required");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
       return false;
     }
     if (!email.includes("@")) {
@@ -33,7 +38,9 @@ const Login = () => {
     try {
       const response = await api.post("/login", {
         email,
-        password
+        password,
+        confirmPassword,
+        role: "Admin"
       });
       
       if (response.data) {
@@ -42,6 +49,7 @@ const Login = () => {
         navigateTo("/");
         setEmail("");
         setPassword("");
+        setConfirmPassword("");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -112,6 +120,7 @@ const Login = () => {
             type="email"
             placeholder="Email"
             value={email}
+            autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}
             style={{
               padding: "0.75rem",
@@ -124,7 +133,21 @@ const Login = () => {
             type="password"
             placeholder="Password"
             value={password}
+            autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
+            style={{
+              padding: "0.75rem",
+              border: "1px solid #ddd",
+              borderRadius: "4px",
+              fontSize: "1rem"
+            }}
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            autoComplete="new-password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
             style={{
               padding: "0.75rem",
               border: "1px solid #ddd",

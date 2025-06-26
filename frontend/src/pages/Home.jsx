@@ -12,12 +12,12 @@ const Home = () => {
       {/* <Navbar /> */}
       <div style={{ overflowX: "hidden" }} className="pt-15 gap-0">
         <Carousel />
-          <Hero
-            title={
-              "Welcome to ZeeCare Medical Institute | Your Trusted Health Partner"
-            }
-            imageUrl={"/hero.png"}
-          />
+        <Hero
+          title={
+            "Welcome to ZeeCare Medical Institute | Your Trusted Health Partner"
+          }
+          imageUrl={"/hero.png"}
+        />
         <Biography imageUrl={"/about.png"} />
         <Department />
 
