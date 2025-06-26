@@ -2,8 +2,8 @@ import React from "react";
 import "./User.css";
 import Cover from "./Cover";
 import MainArea from "./MainArea";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 const UserProfile = () => {
   return (

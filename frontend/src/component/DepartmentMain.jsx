@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import DepartmentPage from "./DepartmentComp";
-import Footer from "./Footer";
+import Footer from "../components/Footer";
 
 const DepartmentMain = () => {
   return (

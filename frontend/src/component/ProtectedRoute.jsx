@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Navigate, useNavigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../main";
-import Login from "../pages/Utils/Login";
+import Login from "../components/Login";
 
 export function ProtectedRoute() {
   const { user, isAuthenticated } = useContext(Context);

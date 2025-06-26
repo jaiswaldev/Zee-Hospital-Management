@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useConst } from "@chakra-ui/react";
