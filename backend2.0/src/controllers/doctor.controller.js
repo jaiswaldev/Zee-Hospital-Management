@@ -208,7 +208,7 @@ const logindoctor = asynchandler(async (req, res) => {
     return (
       res
         .status(200)
-        // .cookie("accessToken", AccessToken, options)
+        .cookie("accessToken", AccessToken, options)
         .cookie("refreshToken", RefreshToken, options)
         .json(
           new ApiResponse(
@@ -216,8 +216,7 @@ const logindoctor = asynchandler(async (req, res) => {
             {
               user: loggedInDoctor,
               role: role,
-              AccessToken,
-              RefreshToken,
+              // Do NOT return AccessToken or RefreshToken in response body in production
             },
             "Doctor Logged In Successfully!!"
           )
@@ -231,4 +230,28 @@ const logindoctor = asynchandler(async (req, res) => {
   throw new ApiError(400, "Invalid Role Selected!!");
 });
 
-export { Registerdoctor, logindoctor };
+const logoutdoctor = asynchandler(async(req,res)=>{
+   //delete refereshtoken from database.
+   //delete cookies from user.
+   await Doctor.findByIdAndUpdate(
+      req.user._id,
+      {
+         $unset : {
+            refreshToken: ""
+         }
+      },
+      {
+         new: true
+      }
+   )
+   const options= {
+      httpOnly:true,
+      secure:true,
+      sameSite: "Strict"
+   }
+   return res.status(200).clearCookie("accessToken",options)
+   .clearCookie("refreshToken",options)
+   .json(new ApiResponse(200,{},"Successfully LoggedOut!!"))
+})
+
+export { Registerdoctor, logindoctor, logoutdoctor };

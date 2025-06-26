@@ -16,7 +16,6 @@ import { User, UserPlus, Stethoscope, Heart } from "lucide-react";
 import { toast } from "sonner";
 
 const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
-
   const Backend_API = import.meta.env.VITE_BACKEND_URL;
   // if (!Backend_API) {
   //   console.error("VITE_BACKEND_URL is not defined in .env file");
@@ -62,63 +61,64 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (formData.password !== formData.confirmPassword) {
-    toast.error("Passwords do not match.");
-    return;
-  }
-  if (formData.password.length < 6) {
-    toast.error("Password must be at least 6 characters.");
-    return;
-  }
-  
-  try {
-    const registrationData = { 
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      password: formData.password,
-      phone: formData.phone,
-      dateOfBirth: formData.dateOfBirth,
-      gender: formData.gender,
-      address: formData.address,
-    };
-
-    if (selectedRole === "patient") {
-      registrationData.emergencyContactNumber = formData.emergencyContactNumber;
-      registrationData.medicalHistory = formData.medicalHistory;
-      registrationData.allergies = formData.allergies;
-      registrationData.bloodGroup = formData.bloodGroup;
-    } else if (selectedRole === "doctor") {
-      registrationData.licenseNumber = formData.licenseNumber;
-      registrationData.specialization = formData.specialization;
-      registrationData.experience = formData.experience;
-      registrationData.qualifications = formData.qualifications;
-      registrationData.hospitalAffiliation = formData.hospitalAffiliation;
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
     }
-  
-    const endpoint = 
-      selectedRole === "patient"
-        ? `${Backend_API}/patient/register`
-        : `${Backend_API}/doctor/register`;
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      return;
+    }
 
-    const res = await axios.post(endpoint, registrationData);
-    const data = res.data;  // <-- axios handles JSON parsing automatically
+    try {
+      const registrationData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth,
+        gender: formData.gender,
+        address: formData.address,
+      };
 
-    toast.success(data?.message || "Registration successful!");
-    console.log("Registration successful.", data);
-  
-    onSwitchToLogin();
+      if (selectedRole === "patient") {
+        registrationData.emergencyContactNumber =
+          formData.emergencyContactNumber;
+        registrationData.medicalHistory = formData.medicalHistory;
+        registrationData.allergies = formData.allergies;
+        registrationData.bloodGroup = formData.bloodGroup;
+      } else if (selectedRole === "doctor") {
+        registrationData.licenseNumber = formData.licenseNumber;
+        registrationData.specialization = formData.specialization;
+        registrationData.experience = formData.experience;
+        registrationData.qualifications = formData.qualifications;
+        registrationData.hospitalAffiliation = formData.hospitalAffiliation;
+      }
 
-  } catch (err) {
-    console.error("Registration error.", err);
-    toast.error(err?.response?.data?.message || err?.message || "An error occurred during registration.");
-  }
-};
+      const endpoint =
+        selectedRole === "patient"
+          ? `${Backend_API}/patient/auth/register`
+          : `${Backend_API}/doctor/auth/register`;
 
+      const res = await axios.post(endpoint, registrationData);
+      const data = res.data; // <-- axios handles JSON parsing automatically
 
+      toast.success(data?.message || "Registration successful!");
+      // console.log("Registration successful.", data);
 
+      onSwitchToLogin();
+    } catch (err) {
+      // console.error("Registration error.", err);
+      toast.error(
+        err?.response?.data?.message ||
+          err?.message ||
+          "An error occurred during registration."
+      );
+    }
+  };
 
   const doctorSpecializations = [
     "Cardiology",
@@ -139,8 +139,8 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
   return (
-    <div className="h-100 p-4 md:p-8 overflow-y-auto">
-      <div className="mx-auto min-w-xl">
+    <div className="h-100 p-2 sm:p-4 md:p-8 overflow-y-auto">
+      <div className="mx-auto w-full max-w-2xl">
         {/* Header */}
         <div className="text-center ">
           <div className="flex items-center justify-center mb-2">
@@ -161,7 +161,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
 
         {/* Registration Form */}
         {selectedRole && (
-           <Card className="shadow-xl border-0 bg-white/90 backdrop-blur-sm">
+          <Card className="shadow-xl border-0 bg-white/90 backdrop-blur-sm">
             <CardHeader className="text-center pb-4">
               <div className="flex items-center justify-center mb-4">
                 {selectedRole === "doctor" ? (
@@ -173,14 +173,12 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
               <CardTitle className="text-xl font-semibold text-gray-900">
                 Register as {selectedRole === "doctor" ? "Doctor" : "Patient"}
               </CardTitle>
-              <div className="flex justify-start mt-2 text-gray-600 hover:text-gray-900">
-                <Button
-                  variant="ghost"
-                  onClick={onBackToRoleSelector}
-                  className=""
-                >
-                  ← Back
-                </Button>
+
+              <div
+                onClick={onBackToRoleSelector}
+                className="flex justify-start mt-2 text-gray-600 hover:text-gray-900 cursor-pointer w-fit"
+              >
+                ← Back
               </div>
             </CardHeader>
 
@@ -193,7 +191,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                     Personal Information
                   </div>
 
-                  <div className=" md:grid-cols-2 gap-4 flex flex-col">
+                  <div className="md:grid md:grid-cols-2 gap-4 flex flex-col">
                     <div>
                       <Label htmlFor="firstName">First Name *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
@@ -328,10 +326,10 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                       Professional Information
                     </div>
 
-                    <div className="md:grid-cols-2 gap-4 flex flex-col">
+                    <div className="md:grid md:grid-cols-2 gap-4 flex flex-col">
                       <div>
                         <Label htmlFor="licenseNumber">
-                          Medical License Number 
+                          Medical License Number
                         </Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
                           <Input
@@ -372,9 +370,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                       </div>
 
                       <div>
-                        <Label htmlFor="experience">
-                          Years of Experience 
-                        </Label>
+                        <Label htmlFor="experience">Years of Experience</Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
                           <Input
                             id="experience"
@@ -431,7 +427,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                       Medical Information
                     </div>
 
-                    <div className=" md:grid-cols-2 gap-4 flex flex-col">
+                    <div className="md:grid md:grid-cols-2 gap-4 flex flex-col">
                       <div>
                         <Label htmlFor="bloodGroup">Blood Group</Label>
                         <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
@@ -516,7 +512,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                     Account Security
                   </div>
 
-                  <div className="md:grid-cols-2 gap-4 flex flex-col">
+                  <div className="md:grid md:grid-cols-2 gap-4 flex flex-col">
                     <div>
                       <Label htmlFor="password">Password *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
@@ -559,27 +555,31 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                 </div>
 
                 {/* Submit Button */}
-                <div
-                  className={`w-full h-10 flex items-center justify-center rounded-xl text-lg font-semibold transition-all duration-200 ${
+
+                <Button
+                  type="submit"
+                  className={`w-full h-10 flex items-center justify-center rounded-xl text-lg font-semibold transition-all duration-200 cursor-pointer ${
                     selectedRole === "doctor"
                       ? "bg-blue-600 hover:bg-blue-700"
                       : "bg-green-600 hover:bg-green-700"
                   }`}
                 >
-                  <Button type="submit">Register</Button>
-                </div>
+                  Register
+                </Button>
               </form>
             </CardContent>
           </Card>
-        
         )}
       </div>
 
-      <div className="mt-2 text-xl text-gray-600 flex justify-end">
+      <div className="mt-2 text-xl text-gray-600 flex justify-end items-center">
         Already Registered?{" "}
-        <div className="text-blue-600 hover:text-blue-800 font-medium ml-1">
-          <button onClick={onSwitchToLogin}>Login</button>
-        </div>
+        <Button
+          onClick={onSwitchToLogin}
+          className="text-blue-600 hover:text-blue-800 font-bold cursor-pointer text-xl"
+        >
+          Login
+        </Button>
       </div>
     </div>
   );

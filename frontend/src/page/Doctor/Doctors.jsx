@@ -1,29 +1,29 @@
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import {
-  Input,
-  InputGroup,
-  Button,
-  InputRightElement,
-  Grid,
-  Box,
-  Flex,
-  Card,
-  CardBody,
-  Stack,
-  Heading,
-  Divider,
-  CardFooter,
-  ButtonGroup,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+// // import {
+//   Input,
+//   InputGroup,
+//   Button,
+//   InputRightElement,
+//   Grid,
+//   Box,
+//   Flex,
+//   Card,
+//   CardBody,
+//   Stack,
+//   Heading,
+//   Divider,
+//   CardFooter,
+//   ButtonGroup,
+//   Image,
+//   Text,
+//   VStack,
+// // } from "@chakra-ui/react";
 import { MdPersonSearch } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
   const navigate = useNavigate();

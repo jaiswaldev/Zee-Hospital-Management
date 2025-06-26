@@ -131,9 +131,9 @@ import {
 } from "@chakra-ui/react";
 import Actions from "./Actions";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "../../../main";
+// import { Context } from "../../../main";
 import axios from "axios";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 const AccountSettings = () => {
   const { user, setUser } = useContext(Context);

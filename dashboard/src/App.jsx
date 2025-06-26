@@ -88,7 +88,7 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await api.get("/user/admin/me", {
+        const response = await api.get("/admin/me", {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

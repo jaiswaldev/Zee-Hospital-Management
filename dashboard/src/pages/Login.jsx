@@ -120,6 +120,7 @@ const Login = () => {
             type="email"
             placeholder="Email"
             value={email}
+            autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}
             style={{
               padding: "0.75rem",
@@ -132,6 +133,7 @@ const Login = () => {
             type="password"
             placeholder="Password"
             value={password}
+            autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
             style={{
               padding: "0.75rem",
@@ -144,6 +146,7 @@ const Login = () => {
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
+            autoComplete="new-password"
             onChange={(e) => setConfirmPassword(e.target.value)}
             style={{
               padding: "0.75rem",

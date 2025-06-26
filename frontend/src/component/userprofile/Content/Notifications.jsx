@@ -2,7 +2,7 @@ import { FormControl, FormLabel, Switch, Box, Button } from "@chakra-ui/react";
 import Actions from "./Actions";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "../../../main";
+// import { Context } from "../../../main";
 import { Link } from "react-router-dom";
 
 function Notifications() {

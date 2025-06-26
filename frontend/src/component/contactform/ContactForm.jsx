@@ -2,8 +2,8 @@ import { useState } from "react";
 import Button from "../../component/button/Button";
 import "./ContactFormCss.css";
 
-import { Bounce, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { Bounce, ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const ContactForm = () => {

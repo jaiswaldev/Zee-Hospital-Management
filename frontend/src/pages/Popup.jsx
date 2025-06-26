@@ -28,17 +28,17 @@ const Popup = ({ isOpen, onClose, children }) => {
       />
 
       {/* Modal Content */}
-      <div className="relative bg-white rounded-lg shadow-xl mx-4 transition-all duration-400 ease-in-out">
+      <div className="relative bg-white rounded-lg shadow-xl mx-2 sm:mx-4 max-w-2xl max-h-[80vh] overflow-y-auto transition-all duration-400 ease-in-out">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 cursor-pointer"
         >
           <X size={24} />
         </button>
 
         {/* Modal Body */}
-        <div className="p-6 transition-all duration-150 ease-in-out">{children}</div>
+        <div className="p-4 sm:p-6 transition-all duration-150 ease-in-out">{children}</div>
       </div>
     </div>
   );
