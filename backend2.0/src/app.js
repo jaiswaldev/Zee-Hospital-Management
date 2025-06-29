@@ -27,10 +27,10 @@ app.use(cookieParser())
 
 //routes
 import patientRouter from "./routes/patient.route.js"
-app.use("/api/v1/patient", patientRouter)
+app.use("/api/v1/patient/auth", patientRouter)
 
 import doctorRouter from "./routes/doctor.route.js"
-app.use("/api/v1/doctor", doctorRouter)
+app.use("/api/v1/doctor/auth", doctorRouter)
 
 // Error handling
 app.use(errorHandler);

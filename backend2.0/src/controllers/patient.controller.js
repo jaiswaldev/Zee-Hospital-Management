@@ -181,6 +181,7 @@ const loginpatient = asynchandler(async (req, res) => {
     const options = {
       httpOnly: true,
       secure: true,
+      sameSite: "Strict",
     };
 
     return res
@@ -193,8 +194,7 @@ const loginpatient = asynchandler(async (req, res) => {
           {
             user: loggedInPatient,
             role:role,
-            AccessToken,
-            RefreshToken,
+            // Do NOT return AccessToken or RefreshToken in response body in production
           },
           "Patient Logged In Successfully!!"
         )
@@ -208,4 +208,29 @@ const loginpatient = asynchandler(async (req, res) => {
   
 });
 
-export { Registerpatient , loginpatient};
+const logoutpatient = asynchandler(async(req,res)=>{
+   //delete refereshtoken from database.
+   //delete cookies from user.
+   await Patient.findByIdAndUpdate(
+      req.user._id,
+      {
+         $unset : {
+            refreshToken: ""
+         }
+      },
+      {
+         new: true
+      }
+   )
+   const options= {
+      httpOnly:true,
+      secure:true,
+      sameSite: "Strict"
+   }
+   return res.status(200).clearCookie("accessToken",options)
+   .clearCookie("refreshToken",options)
+   .json(new ApiResponse(200,{},"Successfully LoggedOut!!"))
+})
+
+
+export { Registerpatient , loginpatient, logoutpatient};

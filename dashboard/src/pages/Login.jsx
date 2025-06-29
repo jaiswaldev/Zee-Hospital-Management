@@ -112,6 +112,7 @@ const Login = () => {
             type="email"
             placeholder="Email"
             value={email}
+            autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}
             style={{
               padding: "0.75rem",
@@ -124,6 +125,7 @@ const Login = () => {
             type="password"
             placeholder="Password"
             value={password}
+            autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
             style={{
               padding: "0.75rem",
@@ -132,6 +134,22 @@ const Login = () => {
               fontSize: "1rem"
             }}
           />
+// <<<<<<< frontend_reno_shashwat
+// =======
+//           <input
+//             type="password"
+//             placeholder="Confirm Password"
+//             value={confirmPassword}
+//             autoComplete="new-password"
+//             onChange={(e) => setConfirmPassword(e.target.value)}
+//             style={{
+//               padding: "0.75rem",
+//               border: "1px solid #ddd",
+//               borderRadius: "4px",
+//               fontSize: "1rem"
+//             }}
+//           />
+// >>>>>>> main
           <button 
             type="submit"
             disabled={loading}

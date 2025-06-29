@@ -17,7 +17,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { Context } from "../../../main";
+// import { Context } from "../../../main";
 
 function Profile() {
   //   const [userProfile, setUserProfile] = useState(null);

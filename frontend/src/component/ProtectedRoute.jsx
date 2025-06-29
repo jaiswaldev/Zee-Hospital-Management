@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Navigate, useNavigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
-import { Context } from "../main";
+// import { Context } from "../main";
 import Login from "../components/Login";
 
 export function ProtectedRoute() {

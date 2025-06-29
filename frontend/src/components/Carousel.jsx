@@ -49,12 +49,12 @@ const Carousel = () => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="keen-slider__slide relative h-[300px] lg:h-[400px]"
+            className="keen-slider__slide relative h-[400px]"
           >
             <img
               src={slide.img}
               alt={slide.title}
-              className="object-cover w-full h-[300px]"
+              className="object-cover w-full"
             />
             <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-start px-6 md:px-16 text-white">
               <h2 className="text-xl md:text-3xl font-semibold">{slide.title}</h2>
@@ -65,13 +65,13 @@ const Carousel = () => {
       </div>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="flex justify-center mt-[-15px] gap-2">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => instanceRef.current?.moveToIdx(index)}
-            className={`h-3 w-3 rounded-full transition-all duration-300 ${
-              currentSlide === index ? "bg-blue-600 scale-110" : "bg-gray-400"
+            className={`h-2 w-2 rounded-full transition-all duration-300 cursor-pointer ${
+              currentSlide === index ? "bg-blue-600 scale-110" : "bg-gray-400 scale-110 "
             }`}
           />
         ))}
