@@ -7,19 +7,14 @@ import api from "../utils/axios";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
 
   const validateForm = () => {
-    if (!email || !password || !confirmPassword) {
-      toast.error("All fields are required");
-      return false;
-    }
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+    if (!email || !password) {
+      toast.error("Email and password are required");
       return false;
     }
     if (!email.includes("@")) {
@@ -38,9 +33,7 @@ const Login = () => {
     try {
       const response = await api.post("/login", {
         email,
-        password,
-        confirmPassword,
-        role: "Admin"
+        password
       });
       
       if (response.data) {
@@ -49,7 +42,6 @@ const Login = () => {
         navigateTo("/");
         setEmail("");
         setPassword("");
-        setConfirmPassword("");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -142,19 +134,22 @@ const Login = () => {
               fontSize: "1rem"
             }}
           />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            autoComplete="new-password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            style={{
-              padding: "0.75rem",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              fontSize: "1rem"
-            }}
-          />
+// <<<<<<< frontend_reno_shashwat
+// =======
+//           <input
+//             type="password"
+//             placeholder="Confirm Password"
+//             value={confirmPassword}
+//             autoComplete="new-password"
+//             onChange={(e) => setConfirmPassword(e.target.value)}
+//             style={{
+//               padding: "0.75rem",
+//               border: "1px solid #ddd",
+//               borderRadius: "4px",
+//               fontSize: "1rem"
+//             }}
+//           />
+// >>>>>>> main
           <button 
             type="submit"
             disabled={loading}
