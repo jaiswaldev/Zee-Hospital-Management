@@ -6,10 +6,11 @@ import { Label } from "./ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Stethoscope, Heart, Eye, EyeOff } from "lucide-react";
 import axios from "axios";
-import { toast } from "sonner";
+
 import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../Utils/AxiosInstance";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "sonner";
 
 const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
   const [doctorEmail, setDoctorEmail] = useState("");
@@ -36,7 +37,7 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
     try {
       const res = await axios.post(
         endpoint,
-        { email, password, role },
+        { email, password },
         { withCredentials: true }
       );
 
@@ -44,29 +45,30 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
 
       setAuth({
         isAuthenticated: true,
-        userRole: data.data.role,       // e.g., "doctor" or "patient"
-        userName: data.data.name,       // e.g., "Dr. Smith"
-        userId: data.data._id,
+        userRole: role, // e.g., "doctor" or "patient"
+        userName: data.data.user.firstName, // e.g., "Dr. Smith"
+        userId: data.data.user._id,
       });
+
       // console.log("Login successful!", data);
       const message = res?.data?.message || "Logged IN successfully.";
       const success = res?.data?.success;
-      if(success){
-        toast.success(message);
-        // setAccessToken(data.data.AccessToken);
 
+      if (success) {
+        toast.success(message);
+        // localStorage.setItem("role", role);
         setTimeout(() => {
-          if (data.data.role === "doctor") {
+          if (role === "doctor") {
             navigate("/doctor");
-          } else if (data.data.role === "patient") {
+          } else if (role === "patient") {
             navigate("/patient");
           }
-         onLoginSuccess();
+          
         }, 300);
+        onLoginSuccess();
       }
-
-      
     } catch (err) {
+      console.log("Login error:", err);
       const errorMsg = err.response?.data?.message || "Login failed";
       toast.error(errorMsg);
     }
@@ -89,21 +91,23 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
           <CardTitle className="text-2xl sm:text-3xl font-bold text-gray-800">
             ZeeCare Login
           </CardTitle>
-          <p className="text-gray-600 text-sm sm:text-base">Access your account</p>
+          <p className="text-gray-600 text-sm sm:text-base">
+            Access your account
+          </p>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="patient" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-gray-200 mb-3">
+            <TabsList className="grid w-full grid-cols-2 bg-gray-200 mb-3 ">
               <TabsTrigger
                 value="patient"
-                className="flex items-center space-x-2 "
+                className="flex items-center space-x-2 cursor-pointer "
               >
                 <Heart className="h-4 w-4" />
                 <span>Patient</span>
               </TabsTrigger>
               <TabsTrigger
                 value="doctor"
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 cursor-pointer"
               >
                 <Stethoscope className="h-4 w-4" />
                 <span>Doctor</span>
@@ -143,7 +147,7 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
@@ -151,18 +155,28 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full h-10 flex items-center justify-center rounded-xl text-lg font-semibold transition-all duration-200 bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                  className="w-full h-10 flex items-center justify-center rounded-xl text-lg font-semibold transition-all duration-200 bg-green-600 hover:bg-green-700 cursor-pointer"
                 >
                   Login
                 </Button>
                 <div className="text-center flex flex-col items-center">
                   <div className="text-blue-600 hover:text-blue-800 cursor-pointer w-40">
-                    <Button type="button" variant="link" className="p-0 h-auto min-h-0">Forgot Password?</Button>
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="p-0 h-auto min-h-0 cursor-pointer"
+                    >
+                      Forgot Password?
+                    </Button>
                   </div>
                   <div className="text-center text-sm text-gray-600 flex flex-col sm:flex-row items-center">
                     <span>Don't have an account?</span>
                     <div className="text-blue-600 hover:text-blue-800 font-medium ml-0 sm:ml-1 mt-1 sm:mt-0">
-                      <button type="button" onClick={onSwitchToRegister} className="underline">
+                      <button
+                        type="button"
+                        onClick={onSwitchToRegister}
+                        className="cursor-pointer"
+                      >
                         Register here
                       </button>
                     </div>
@@ -204,7 +218,7 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
@@ -218,12 +232,22 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
                 </Button>
                 <div className="text-center flex flex-col items-center">
                   <div className="text-blue-600 hover:text-blue-800 cursor-pointer w-40">
-                    <Button type="button" variant="link" className="p-0 h-auto min-h-0">Forgot Password?</Button>
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="p-0 h-auto min-h-0 cursor-pointer"
+                    >
+                      Forgot Password?
+                    </Button>
                   </div>
                   <div className="text-center text-sm text-gray-600 flex flex-col sm:flex-row items-center">
                     <span>Don't have an account?</span>
                     <div className="text-blue-600 hover:text-blue-800 font-medium ml-0 sm:ml-1 mt-1 sm:mt-0">
-                      <button type="button" onClick={onSwitchToRegister} className="underline">
+                      <button
+                        type="button"
+                        onClick={onSwitchToRegister}
+                        className="cursor-pointer"
+                      >
                         Register here
                       </button>
                     </div>

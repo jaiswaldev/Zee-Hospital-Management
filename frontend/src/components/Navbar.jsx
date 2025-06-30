@@ -23,7 +23,7 @@ import Popup from "../pages/Popup";
 import Login from "./Login";
 import Register from "./Register";
 import RoleSelector from "./Roleselector";
-import axiosInstance from "../Utils/AxiosInstance";
+import axios from "axios";
 import { toast } from "sonner";
 
 const Navbar = ({
@@ -72,8 +72,9 @@ const Navbar = ({
         ? `${Backend_API}/patient/auth/logout`
         : `${Backend_API}/doctor/auth/logout`;
     try {
-      const res = await axiosInstance.post(endpoint);
+      const res = await axios.post(endpoint,null, { withCredentials: true });
       const message = res?.data?.message || "Logged out successfully.";
+      // localStorage.removeItem("role");
       toast.success(message);
       if (typeof setIsAuthenticated === "function") {
          setIsAuthenticated(false);
@@ -82,6 +83,7 @@ const Navbar = ({
         navigate("/");
       }, 300);
     } catch (error) {
+      console.log("Login error:", error);
       const message = error?.response?.data?.message || "Logout failed.";
       toast.error(message);
       // window.location.href = "/";
@@ -105,7 +107,7 @@ const Navbar = ({
 };
 
   return (
-    <nav className="bg-white border-b-1 border-gray-800 shadow-xl sticky top-0 z-500 flex flex-col items-center justify-center">
+    <nav className="bg-white border-b-1 border-gray-800 shadow-xl fixed top-0 z-500 flex flex-col items-center justify-center">
       <div className="w-full mx-auto  py-3 flex items-center justify-between px-4 h-10">
         <Link to={getDashboardPath()} className="flex items-center space-x-2">
           <img src="/logo1.png" alt="Logo" className="h-20 w-40" />
@@ -118,19 +120,19 @@ const Navbar = ({
                 <>
                   <Link
                     to="/appointments"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
                   >
                     Appointments
                   </Link>
                   <Link
                     to="/patients"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
                   >
                     Patients
                   </Link>
                   <Link
                     to="/blog"
-                    className="text-gray-800 hover:text-blue-600 font-medium cursor-pointer"
+                    className="text-black hover:text-blue-600 font-medium cursor-pointer"
                   >
                     Blogs
                   </Link>
@@ -141,18 +143,18 @@ const Navbar = ({
                 <>
                   <Link
                     to="/my-appointments"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
                   >
                     My Appointments
                   </Link>
                   <Link
                     to="/doctors"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
                   >
                     Find Doctors
                   </Link>
                   <div className="relative group">
-                    <button className="text-gray-800 hover:text-blue-600 font-medium focus:outline-none cursor-pointer">
+                    <button className="text-black hover:text-blue-600 font-medium focus:outline-none cursor-pointer">
                       Dr. Profiles &#9662;
                     </button>
 
@@ -187,16 +189,16 @@ const Navbar = ({
                   </div>
                   <Link
                     to="/blog"
-                    className="text-gray-800 hover:text-blue-600 font-medium cursor-pointer"
+                    className="text-black hover:text-blue-600 font-medium cursor-pointer"
                   >
                     Blogs
                   </Link>
                 </>
               )}
             </div>
-            <div className="hidden lg:flex flex-row gap-5">
+            <div className="hidden lg:flex flex-row gap-3">
               <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
-                <Button variant="ghost" size="icon" className="relative">
+                <Button variant="ghost" size="icon" className="relative cursor-pointer">
                   <Bell className="h-5 w-5" />
                   <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
                 </Button>
@@ -205,7 +207,7 @@ const Navbar = ({
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-10 w-10 rounded-full cursor-pointer"
+                    className=" h-10 w-20 rounded-full cursor-pointer"
                   >
                     <Avatar className="h-10 w-10">
                       <AvatarFallback className="bg-blue-100 text-blue-600">
@@ -305,14 +307,14 @@ const Navbar = ({
                   <div className="mt-3 space-y-1">
                     <Button
                       variant="ghost"
-                      className="w-full justify-start text-gray-600 hover:text-blue-600"
+                      className="w-full justify-start text-black"
                     >
                       <User className="mr-2 h-4 w-4" />
                       Profile
                     </Button>
                     <Button
                       variant="ghost"
-                      className="w-full justify-start text-gray-600 hover:text-blue-600"
+                      className="w-full justify-start text-black"
                     >
                       <Settings className="mr-2 h-4 w-4" />
                       Settings
@@ -324,14 +326,14 @@ const Navbar = ({
                     <>
                       <Link
                         to="/appointments"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Appointments
                       </Link>
                       <Link
                         to="/patients"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black "
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Patients
@@ -343,14 +345,14 @@ const Navbar = ({
                     <>
                       <Link
                         to="/my-appointments"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         My Appointments
                       </Link>
                       <Link
                         to="/doctors"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Find Doctors
@@ -362,7 +364,7 @@ const Navbar = ({
 
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-red-600 hover:text-red-700"
+                  className="w-full justify-start text-red-600 "
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -377,18 +379,21 @@ const Navbar = ({
                     <Link
                       to="/"
                       className="text-gray-800 hover:text-blue-600 font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Home
                     </Link>
                     <Link
                       to="/about"
                       className="text-gray-800 hover:text-blue-600 font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       About
                     </Link>
                     <Link
                       to="/blog"
                       className="text-gray-800 hover:text-blue-600 font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Blogs
                     </Link>
