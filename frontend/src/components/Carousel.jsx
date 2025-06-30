@@ -1,27 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import { AdvancedImage } from "@cloudinary/react";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import { cld } from "../lib/cloudinary"; 
 
 
-const slides = [
-  {
-    title: "24/7 Emergency Care",
-    desc: "Immediate support with highly trained staff and modern facilities.",
-    img: "/carousel/healthcare.jpg",
-  },
-  {
-    title: "Advanced Diagnostics",
-    desc: "Get results fast with our state-of-the-art diagnostic tools.",
-    img: "/carousel/diagnostics.jpg",
-  },
-  {
-    title: "Experienced Doctors",
-    desc: "Our team includes specialists across all major disciplines.",
-    img: "/carousel/doctors.jpg",
-  },
-];
 
-const Carousel = () => {
+
+// const slides = [
+ 
+// ];
+
+const Carousel = ({slides}) => {
   const timer = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -51,11 +42,15 @@ const Carousel = () => {
             key={index}
             className="keen-slider__slide relative h-[400px]"
           >
-            <img
+            {/* <img
               src={slide.img}
               alt={slide.title}
               className="object-cover w-full"
+            /> */}
+            <AdvancedImage cldImg={cld.image(slide.img).resize(fill().width(800).height(400))} 
+            className="w-full h-full object-cover"
             />
+
             <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-start px-6 md:px-16 text-white">
               <h2 className="text-xl md:text-3xl font-semibold">{slide.title}</h2>
               <p className="text-sm md:text-lg mt-2 max-w-md">{slide.desc}</p>

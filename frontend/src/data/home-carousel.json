@@ -1,0 +1,17 @@
+ [
+    {
+    "title": "24/7 Emergency Care",
+   "desc"  : "Immediate support with highly trained staff and modern facilities.",
+    "img"  : "healthcare_jsj32b"
+  },
+  {
+    "title": "Advanced Diagnostics",
+   "desc"  : "Get results fast with our state-of-the-art diagnostic tools.",
+    "img"  : "radio_e9t7g3"
+  },
+  {
+    "title": "Experienced Doctors",
+   "desc"  : "Our team includes specialists across all major disciplines.",
+    "img"  : "doctors_ibpg85"
+  }
+]
