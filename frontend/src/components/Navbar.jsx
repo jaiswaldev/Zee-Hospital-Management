@@ -25,13 +25,9 @@ import Register from "./Register";
 import RoleSelector from "./Roleselector";
 import axiosInstance from "../Utils/AxiosInstance";
 import { toast } from "sonner";
+import { FaUserPlus } from "react-icons/fa";
 
-const Navbar = ({
-  isLoggedIn,
-  setIsAuthenticated,
-  userRole,
-  userName,
-}) => {
+const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalType, setModalType] = useState(null);
@@ -76,7 +72,7 @@ const Navbar = ({
       const message = res?.data?.message || "Logged out successfully.";
       toast.success(message);
       if (typeof setIsAuthenticated === "function") {
-         setIsAuthenticated(false);
+        setIsAuthenticated(false);
       }
       setTimeout(() => {
         navigate("/");
@@ -95,14 +91,14 @@ const Navbar = ({
   };
 
   const getUserInitials = (name) => {
-  if (!name || typeof name !== "string") return "NA";
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
+    if (!name || typeof name !== "string") return "NA";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <nav className="bg-white border-b-1 border-gray-800 shadow-xl sticky top-0 z-500 flex flex-col items-center justify-center">
@@ -111,86 +107,125 @@ const Navbar = ({
           <img src="/logo1.png" alt="Logo" className="h-20 w-40" />
         </Link>
 
-        {isLoggedIn? (
+        {isLoggedIn ? (
           <>
             <div className="hidden lg:flex items-center space-x-6">
               {userRole === "doctor" && (
                 <>
-                  <Link
-                    to="/appointments"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                  >
-                    Appointments
-                  </Link>
-                  <Link
-                    to="/patients"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                  >
-                    Patients
-                  </Link>
-                  <Link
-                    to="/blog"
-                    className="text-gray-800 hover:text-blue-600 font-medium cursor-pointer"
-                  >
-                    Blogs
-                  </Link>
+                  <div className="hidden lg:flex justify-evenly space-x-10">
+                    <Link
+                      to="/"
+                      className="relative group text-black font-semibold"
+                    >
+                      Home
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+
+                    <Link
+                      to="/store"
+                      className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                    >
+                      Store
+                    </Link>
+
+                    <Link
+                      to="/appointments"
+                      className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                    >
+                      Appointments
+                    </Link>
+
+                    <Link
+                      to="/about"
+                      className="relative group text-black font-semibold"
+                    >
+                      About
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+
+                    <Link
+                      to="/blog"
+                      className="relative group text-black font-semibold"
+                    >
+                      Blogs
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  </div>
                 </>
               )}
 
               {userRole === "patient" && (
                 <>
-                  <Link
-                    to="/my-appointments"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                  >
-                    My Appointments
-                  </Link>
-                  <Link
-                    to="/doctors"
-                    className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                  >
-                    Find Doctors
-                  </Link>
-                  <div className="relative group">
-                    <button className="text-gray-800 hover:text-blue-600 font-medium focus:outline-none cursor-pointer">
-                      Dr. Profiles &#9662;
-                    </button>
+                  <div className="hidden lg:flex justify-evenly space-x-10">
+                    <Link
+                      to="/"
+                      className="relative group text-black font-semibold"
+                    >
+                      Home
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
 
-                    <div className="absolute top-full left-0 mt-4 w-[28rem] bg-white shadow-lg rounded-lg flex p-4 border z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      <div className="w-1/2 pr-4 cursor-pointer">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                          Our Doctors
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          Meet our team of experienced healthcare professionals
-                        </p>
-                      </div>
-                      <div className="w-1/2 flex flex-col space-y-2 cursor-pointer">
-                        <div>
-                          <h4 className="text-sm font-semibold text-gray-900">
-                            Specialties
-                          </h4>
+                    <Link
+                      to="/store"
+                      className="relative group text-black font-semibold"
+                    >
+                      Store
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+
+                    <Link
+                      to="/doctors"
+                      className="relative group text-black font-semibold"
+                    >
+                      Doctors &#9662;
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                      <div className="absolute top-full left-0 mt-4 w-[28rem] bg-white shadow-lg rounded-lg flex p-4 border z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                        <div className="w-1/2 pr-4 cursor-pointer">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                            Our Doctors
+                          </h3>
                           <p className="text-sm text-gray-600">
-                            Browse doctors by medical specialty
+                            Meet our team of experienced healthcare
+                            professionals
                           </p>
                         </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-gray-900">
-                            Appointments
-                          </h4>
-                          <p className="text-sm text-gray-600">
-                            Schedule an appointment with our doctors
-                          </p>
+                        <div className="w-1/2 flex flex-col space-y-2 cursor-pointer">
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-900">
+                              Specialties
+                            </h4>
+                            <p className="text-sm text-gray-600">
+                              Browse doctors by medical specialty
+                            </p>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-900">
+                              Appointments
+                            </h4>
+                            <p className="text-sm text-gray-600">
+                              Schedule an appointment with our doctors
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
+
+                    <Link
+                      to="/about"
+                      className="relative group text-black font-semibold"
+                    >
+                      About
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+
+                    <Link
+                      to="/blog"
+                      className="relative group text-black font-semibold"
+                    >
+                      Blogs
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
                   </div>
-                  <Link
-                    to="/blog"
-                    className="text-gray-800 hover:text-blue-600 font-medium cursor-pointer"
-                  >
-                    Blogs
-                  </Link>
                 </>
               )}
             </div>
@@ -203,16 +238,26 @@ const Navbar = ({
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="relative h-10 w-10 rounded-full cursor-pointer"
-                  >
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-blue-100 text-blue-600">
-                        {getUserInitials(userName)}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
+                  {userName ? (
+                    
+                    <Button
+                      variant="ghost"
+                      className="relative h-10 w-10 rounded-full cursor-pointer"
+                    >
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback className="bg-blue-100 text-blue-600">
+                          {getUserInitials(userName)}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  ) : (
+                   
+                    <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
+                      <Button variant="ghost" size="icon" className="relative">
+                        <FaUserPlus className="text-gray-700" />
+                      </Button>
+                    </div>
+                  )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   className="w-56 bg-white"
@@ -223,6 +268,28 @@ const Navbar = ({
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </DropdownMenuItem>
+                  {userRole === "patient" && (
+                    <DropdownMenuItem className="hover:bg-gray-300 cursor-pointer">
+                      <Link
+                        to="/my-appointments"
+                        className="flex items-center w-full text-gray-700"
+                      >
+                        <Stethoscope className="mr-2 h-4 w-4" />
+                        <span>My Appointments</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  {userRole === "doctor" && (
+                    <DropdownMenuItem className="hover:bg-gray-300 cursor-pointer">
+                      <Link
+                        to="/my-appointments"
+                        className="flex items-center w-full text-gray-700"
+                      >
+                        <Stethoscope className="mr-2 h-4 w-4" />
+                        <span>My Appointments</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem className="hover:bg-gray-300 cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
@@ -242,23 +309,25 @@ const Navbar = ({
         ) : (
           <>
             <div className="hidden lg:flex justify-evenly space-x-10">
-              <Link
-                to="/"
-                className="text-gray-800 hover:text-blue-600 font-medium"
-              >
+              <Link to="/" className="relative group text-black font-semibold">
                 Home
+                <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
               </Link>
+
               <Link
                 to="/about"
-                className="text-gray-800 hover:text-blue-600 font-medium"
+                className="relative group text-black font-semibold"
               >
                 About
+                <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
               </Link>
+
               <Link
                 to="/blog"
-                className="text-gray-800 hover:text-blue-600 font-medium"
+                className="relative group text-black font-semibold"
               >
                 Blogs
+                <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </div>
             <div className="hidden lg:flex items-center  space-x-6">
@@ -281,21 +350,8 @@ const Navbar = ({
             </div>
           </>
         )}
-
-        <div className="lg:hidden">
-          <Button
-            // variant="ghost"
-            size="icon"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-8 h-8" />
-            ) : (
-              <Menu className="w-8 h-8" />
-            )}
-          </Button>
-        </div>
       </div>
+
       {isMobileMenuOpen && (
         <div className="lg:hidden w-full">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
