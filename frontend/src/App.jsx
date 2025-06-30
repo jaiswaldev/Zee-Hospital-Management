@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import {Cloudinary} from "@cloudinary/url-gen";
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,6 +21,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Blog from "./pages/blog";
+import Store from "./pages/Store";
 import DoctorDashboard from "./pages/Doctor/Home";
 import PatientDashboard from "./pages/Patient/Home";
 
@@ -46,9 +48,20 @@ import DepartmentMain from "./component/DepartmentMain";
 import DoctorViewProfile from "./page/Doctor/Doctor'sview/DoctorViewProfile";
 import DoctorWrapper from "./page/Doctor/Doctor'sview/DoctorWrapper";
 
+
 const App = () => {
   const { auth, setAuth } = useAuth();
+// <<<<<<< HEAD
   
+// =======
+
+//   const cld = new Cloudinary({
+//     cloud: {
+//       cloudName: 'duhnmjhli'
+//     }
+//   });
+
+// >>>>>>> f2976db888bc6fd80b32a832a79cc483fc3c16cd
   return (
     <>
       <Toaster richColors position="top-center" />
@@ -61,6 +74,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path= "/store" element={<Store/>}/>
         <Route path="/blog" element={<Blog />} />
         <Route
           path="/doctor"

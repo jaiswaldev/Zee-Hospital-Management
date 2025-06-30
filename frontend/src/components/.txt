@@ -1,7 +1,0 @@
-logo1.png
-carausel.jpg
-Vector.png
-hero.png
-about.png
-departments
-whoweare.png

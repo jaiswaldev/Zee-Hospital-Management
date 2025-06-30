@@ -134,7 +134,7 @@ const Login = () => {
               fontSize: "1rem"
             }}
           />
-// <<<<<<< frontend_reno_shashwat
+{/* // <<<<<<< frontend_reno_shashwat
 // =======
 //           <input
 //             type="password"
@@ -148,8 +148,8 @@ const Login = () => {
 //               borderRadius: "4px",
 //               fontSize: "1rem"
 //             }}
-//           />
-// >>>>>>> main
+//           /> */}
+
           <button 
             type="submit"
             disabled={loading}
