@@ -3,25 +3,8 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
 
-const slides = [
-  {
-    title: "24/7 Emergency Care",
-    desc: "Immediate support with highly trained staff and modern facilities.",
-    img: "/carousel/healthcare.jpg",
-  },
-  {
-    title: "Advanced Diagnostics",
-    desc: "Get results fast with our state-of-the-art diagnostic tools.",
-    img: "/carousel/diagnostics.jpg",
-  },
-  {
-    title: "Experienced Doctors",
-    desc: "Our team includes specialists across all major disciplines.",
-    img: "/carousel/doctors.jpg",
-  },
-];
 
-const Carousel = () => {
+const Carousel = ({ slides }) => {
   const timer = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -34,7 +17,6 @@ const Carousel = () => {
     },
   });
 
-  // Autoplay every 3 seconds
   useEffect(() => {
     clearInterval(timer.current);
     timer.current = setInterval(() => {
@@ -45,12 +27,9 @@ const Carousel = () => {
 
   return (
     <div className="w-full">
-      <div ref={sliderRef} className="keen-slider  shadow-lg overflow-hidden">
+      <div ref={sliderRef} className="keen-slider shadow-lg overflow-hidden">
         {slides.map((slide, index) => (
-          <div
-            key={index}
-            className="keen-slider__slide relative h-[400px]"
-          >
+          <div key={index} className="keen-slider__slide relative h-[400px]">
             <img
               src={slide.img}
               alt={slide.title}
@@ -71,7 +50,7 @@ const Carousel = () => {
             key={index}
             onClick={() => instanceRef.current?.moveToIdx(index)}
             className={`h-2 w-2 rounded-full transition-all duration-300 cursor-pointer ${
-              currentSlide === index ? "bg-blue-600 scale-110" : "bg-gray-400 scale-110 "
+              currentSlide === index ? "bg-blue-600 scale-110" : "bg-gray-400 scale-110"
             }`}
           />
         ))}

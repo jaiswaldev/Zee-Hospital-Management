@@ -54,7 +54,7 @@ const App = () => {
     <>
       <Toaster richColors position="top-center" />
 
-      <RefreshHandler />
+      <RefreshHandler >
       <Navbar
         isLoggedIn={auth.isAuthenticated}
         setIsAuthenticated={(val) => setAuth({ ...auth, isAuthenticated: val })}
@@ -102,6 +102,7 @@ const App = () => {
             <Route path="/doctorProfile" element={<DoctorProfile />} />
             <Route path="/*" element={<Login />}></Route> */}
       </Routes>
+      </RefreshHandler>
     </>
   );
 };
