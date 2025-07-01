@@ -126,13 +126,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                       className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
                     >
                       Store
-                    </Link>
-
-                    <Link
-                      to="/appointments"
-                      className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                    >
-                      Appointments
+                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
                     </Link>
 
                     <Link
@@ -239,7 +233,6 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   {userName ? (
-                    
                     <Button
                       variant="ghost"
                       className="relative h-10 w-10 rounded-full cursor-pointer"
@@ -251,7 +244,6 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                       </Avatar>
                     </Button>
                   ) : (
-                   
                     <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
                       <Button variant="ghost" size="icon" className="relative">
                         <FaUserPlus className="text-gray-700" />
@@ -311,6 +303,14 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
             <div className="hidden lg:flex justify-evenly space-x-10">
               <Link to="/" className="relative group text-black font-semibold">
                 Home
+                <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+
+              <Link
+                to="/store"
+                className="relative group text-black font-semibold"
+              >
+                Store
                 <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
               </Link>
 

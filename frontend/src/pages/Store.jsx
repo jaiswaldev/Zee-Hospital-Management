@@ -17,8 +17,8 @@ const MedicalStorePage = () => {
       _id: '1',
       name: 'Digital Thermometer',
       description: 'High precision digital thermometer with fast reading and memory function',
-      originalPrice: 29.99,
-      discountedPrice: 24.99,
+      originalPrice: 1299.9,
+      discountedPrice: 849.9,
       imagePublicId: 'medical/thermometer',
       category: 'Diagnostic Tools',
       inStock: true,
@@ -28,8 +28,8 @@ const MedicalStorePage = () => {
       _id: '2',
       name: 'Blood Pressure Monitor',
       description: 'Automatic digital blood pressure monitor with large display and memory storage',
-      originalPrice: 89.99,
-      discountedPrice: 69.99,
+      originalPrice: 4999.99,
+      discountedPrice: 4599.99,
       imagePublicId: 'medical/bp-monitor',
       category: 'Monitoring Devices',
       inStock: true,
@@ -39,8 +39,8 @@ const MedicalStorePage = () => {
       _id: '3',
       name: 'First Aid Kit',
       description: 'Complete first aid kit with essential medical supplies for emergencies',
-      originalPrice: 45.99,
-      discountedPrice: 35.99,
+      originalPrice: 2599.99,
+      discountedPrice: 1099.99,
       imagePublicId: 'medical/first-aid',
       category: 'Emergency Care',
       inStock: true,
@@ -50,8 +50,8 @@ const MedicalStorePage = () => {
       _id: '4',
       name: 'Pulse Oximeter',
       description: 'Fingertip pulse oximeter for measuring blood oxygen saturation and pulse rate',
-      originalPrice: 39.99,
-      discountedPrice: 29.99,
+      originalPrice: 2999.99,
+      discountedPrice: 1999.99,
       imagePublicId: 'medical/oximeter',
       category: 'Diagnostic Tools',
       inStock: false,
@@ -61,8 +61,8 @@ const MedicalStorePage = () => {
       _id: '5',
       name: 'Stethoscope',
       description: 'Professional quality stethoscope for accurate heart and lung sound detection',
-      originalPrice: 159.99,
-      discountedPrice: 129.99,
+      originalPrice: 3999.99,
+      discountedPrice: 2999.99,
       imagePublicId: 'medical/stethoscope',
       category: 'Diagnostic Tools',
       inStock: true,
@@ -72,8 +72,8 @@ const MedicalStorePage = () => {
       _id: '6',
       name: 'Wheelchair',
       description: 'Lightweight, foldable wheelchair with comfortable padding and safety features',
-      originalPrice: 299.99,
-      discountedPrice: 249.99,
+      originalPrice: 29999.99,
+      discountedPrice: 24999.99,
       imagePublicId: 'medical/wheelchair',
       category: 'Mobility Aids',
       inStock: true,
@@ -189,11 +189,11 @@ const MedicalStorePage = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <span className="text-2xl font-bold text-green-600">
-              ${product.discountedPrice.toFixed(2)}
+              ₹{product.discountedPrice.toFixed(2)}
             </span>
             {product.originalPrice > product.discountedPrice && (
               <span className="text-lg text-gray-500 line-through">
-                ${product.originalPrice.toFixed(2)}
+                ₹{product.originalPrice.toFixed(2)}
               </span>
             )}
           </div>
