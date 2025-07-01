@@ -3,6 +3,10 @@ import Carousel from "../components/Carousel.jsx";
 import slides from "../data/store-carousel.json";
 import React, { useState, useEffect } from 'react';
 import { Search, ShoppingCart, Star, Plus } from 'lucide-react';
+import { toast } from "sonner"
+
+import { useNavigate } from 'react-router-dom';
+
 
 const MedicalStorePage = () => {
   const [products, setProducts] = useState([]);
@@ -10,6 +14,7 @@ const MedicalStorePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Mock data for demonstration - replace with actual API call
   const mockProducts = [
@@ -17,8 +22,8 @@ const MedicalStorePage = () => {
       _id: '1',
       name: 'Digital Thermometer',
       description: 'High precision digital thermometer with fast reading and memory function',
-      originalPrice: 1299.9,
-      discountedPrice: 849.9,
+      originalPrice: 799.99,
+      discountedPrice: 549.99,
       imagePublicId: 'medical/thermometer',
       category: 'Diagnostic Tools',
       inStock: true,
@@ -28,8 +33,8 @@ const MedicalStorePage = () => {
       _id: '2',
       name: 'Blood Pressure Monitor',
       description: 'Automatic digital blood pressure monitor with large display and memory storage',
-      originalPrice: 4999.99,
-      discountedPrice: 4599.99,
+      originalPrice: 2500.99,
+      discountedPrice: 2249.99,
       imagePublicId: 'medical/bp-monitor',
       category: 'Monitoring Devices',
       inStock: true,
@@ -39,7 +44,7 @@ const MedicalStorePage = () => {
       _id: '3',
       name: 'First Aid Kit',
       description: 'Complete first aid kit with essential medical supplies for emergencies',
-      originalPrice: 2599.99,
+      originalPrice: 1599.99,
       discountedPrice: 1099.99,
       imagePublicId: 'medical/first-aid',
       category: 'Emergency Care',
@@ -50,8 +55,8 @@ const MedicalStorePage = () => {
       _id: '4',
       name: 'Pulse Oximeter',
       description: 'Fingertip pulse oximeter for measuring blood oxygen saturation and pulse rate',
-      originalPrice: 2999.99,
-      discountedPrice: 1999.99,
+      originalPrice: 1200.99,
+      discountedPrice: 950.99,
       imagePublicId: 'medical/oximeter',
       category: 'Diagnostic Tools',
       inStock: false,
@@ -61,7 +66,7 @@ const MedicalStorePage = () => {
       _id: '5',
       name: 'Stethoscope',
       description: 'Professional quality stethoscope for accurate heart and lung sound detection',
-      originalPrice: 3999.99,
+      originalPrice: 3399.99,
       discountedPrice: 2999.99,
       imagePublicId: 'medical/stethoscope',
       category: 'Diagnostic Tools',
@@ -130,7 +135,10 @@ const MedicalStorePage = () => {
     setCartCount(prev => prev + 1);
     
     // You can add toast notification here
-    alert(`${product.name} added to cart!`);
+    toast(`${product.name} added to cart`, {
+          description: `${ product.description} `,
+          
+        })
   };
 
   // Product Card Component
@@ -242,7 +250,7 @@ const MedicalStorePage = () => {
             </div>
 
             {/* Cart Button */}
-            <button className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
+            <button  onClick={() => navigate("/cart")} className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
               <ShoppingCart size={24} />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
