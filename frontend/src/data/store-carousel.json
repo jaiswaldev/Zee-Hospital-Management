@@ -2,16 +2,16 @@
   {
     "title": "Trusted Brands",
     "desc": "We stock medicines from top manufacturers worldwide.",
-   "img"  : "/carousel/healthcare.jpg"
+   "img"  : "trusted_brands_1_urjpre"
   },
   {
     "title": "Affordable Prices",
     "desc": "Access quality healthcare without breaking the bank.",
-    "img"  : "/carousel/diagnostics.jpg"
+    "img"  : "pharmacy_l5ehgr"
   },
   {
     "title": "Home Delivery",
     "desc": "Get your prescriptions delivered to your doorstep.",
-    "img"  : "/carousel/healthcare.jpg"
+    "img"  : "delivery_qkcao2"
   }
 ]
