@@ -139,7 +139,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
   return (
-    <div className="h-100 p-2 sm:p-4 md:p-8 overflow-y-auto">
+    <div className="h-100 p-2 sm:p-4 md:p-8">
       <div className="mx-auto w-full max-w-2xl">
         {/* Header */}
         <div className="text-center ">

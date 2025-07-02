@@ -12,7 +12,7 @@ const AboutUs = () => {
       <div className="pt-15">
         <Hero
           title={"Learn More About Us | ZeeCare Medical Institute"}
-          imageUrl={"/about.png"}
+          imageUrl={"/hero.png"}
         />
         <Biography imageUrl={"/whoweare.png"} />
 

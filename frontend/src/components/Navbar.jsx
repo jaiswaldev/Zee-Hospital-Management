@@ -68,7 +68,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
         ? `${Backend_API}/patient/auth/logout`
         : `${Backend_API}/doctor/auth/logout`;
     try {
-      const res = await axios.post(endpoint,null, { withCredentials: true });
+      const res = await axios.post(endpoint, null, { withCredentials: true });
       const message = res?.data?.message || "Logged out successfully.";
       // localStorage.removeItem("role");
       toast.success(message);
@@ -114,7 +114,6 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
             <div className="hidden lg:flex items-center space-x-6">
               {userRole === "doctor" && (
                 <>
-<<<<<<< HEAD
                   <Link
                     to="/appointments"
                     className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
@@ -133,53 +132,11 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                   >
                     Blogs
                   </Link>
-=======
-                  <div className="hidden lg:flex justify-evenly space-x-10">
-                    <Link
-                      to="/"
-                      className="relative group text-black font-semibold"
-                    >
-                      Home
-                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
-
-                    <Link
-                      to="/store"
-                      className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                    >
-                      Store
-                    </Link>
-
-                    <Link
-                      to="/appointments"
-                      className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
-                    >
-                      Appointments
-                    </Link>
-
-                    <Link
-                      to="/about"
-                      className="relative group text-black font-semibold"
-                    >
-                      About
-                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
-
-                    <Link
-                      to="/blog"
-                      className="relative group text-black font-semibold"
-                    >
-                      Blogs
-                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
-                  </div>
->>>>>>> f2976db888bc6fd80b32a832a79cc483fc3c16cd
                 </>
               )}
 
               {userRole === "patient" && (
                 <>
-<<<<<<< HEAD
                   <Link
                     to="/my-appointments"
                     className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
@@ -196,16 +153,6 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                     <button className="text-black hover:text-blue-600 font-medium focus:outline-none cursor-pointer">
                       Dr. Profiles &#9662;
                     </button>
-=======
-                  <div className="hidden lg:flex justify-evenly space-x-10">
-                    <Link
-                      to="/"
-                      className="relative group text-black font-semibold"
-                    >
-                      Home
-                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
->>>>>>> f2976db888bc6fd80b32a832a79cc483fc3c16cd
 
                     <Link
                       to="/store"
@@ -221,33 +168,22 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                     >
                       Doctors &#9662;
                       <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
-                      <div className="absolute top-full left-0 mt-4 w-[28rem] bg-white shadow-lg rounded-lg flex p-4 border z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                        <div className="w-1/2 pr-4 cursor-pointer">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                            Our Doctors
-                          </h3>
+                      <div className="w-1/2 pr-4 cursor-pointer">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                          Our Doctors
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          Meet our team of experienced healthcare professionals
+                        </p>
+                      </div>
+                      <div className="w-1/2 flex flex-col space-y-2 cursor-pointer">
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-900">
+                            Specialties
+                          </h4>
                           <p className="text-sm text-gray-600">
-                            Meet our team of experienced healthcare
-                            professionals
+                            Browse doctors by medical specialty
                           </p>
-                        </div>
-                        <div className="w-1/2 flex flex-col space-y-2 cursor-pointer">
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-900">
-                              Specialties
-                            </h4>
-                            <p className="text-sm text-gray-600">
-                              Browse doctors by medical specialty
-                            </p>
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-900">
-                              Appointments
-                            </h4>
-                            <p className="text-sm text-gray-600">
-                              Schedule an appointment with our doctors
-                            </p>
-                          </div>
                         </div>
                       </div>
                     </Link>
@@ -268,60 +204,38 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                       <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
                     </Link>
                   </div>
-<<<<<<< HEAD
                   <Link
                     to="/blog"
                     className="text-black hover:text-blue-600 font-medium cursor-pointer"
                   >
                     Blogs
                   </Link>
-=======
->>>>>>> f2976db888bc6fd80b32a832a79cc483fc3c16cd
                 </>
               )}
             </div>
-            <div className="hidden lg:flex flex-row gap-3">
+            <div className="hidden lg:flex flex-row gap-8">
               <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
-                <Button variant="ghost" size="icon" className="relative cursor-pointer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative cursor-pointer"
+                >
                   <Bell className="h-5 w-5" />
                   <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
                 </Button>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-<<<<<<< HEAD
                   <Button
                     variant="ghost"
-                    className=" h-10 w-20 rounded-full cursor-pointer"
+                    className=" h-10 w-10 rounded-full cursor-pointer"
                   >
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-blue-100 text-blue-600">
+                    <Avatar className="h-10 w-10 rounded-full">
+                      <AvatarFallback>
                         {getUserInitials(userName)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
-=======
-                  {userName ? (
-                    
-                    <Button
-                      variant="ghost"
-                      className="relative h-10 w-10 rounded-full cursor-pointer"
-                    >
-                      <Avatar className="h-10 w-10">
-                        <AvatarFallback className="bg-blue-100 text-blue-600">
-                          {getUserInitials(userName)}
-                        </AvatarFallback>
-                      </Avatar>
-                    </Button>
-                  ) : (
-                   
-                    <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
-                      <Button variant="ghost" size="icon" className="relative">
-                        <FaUserPlus className="text-gray-700" />
-                      </Button>
-                    </div>
-                  )}
->>>>>>> f2976db888bc6fd80b32a832a79cc483fc3c16cd
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   className="w-56 bg-white"
@@ -330,7 +244,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                 >
                   <DropdownMenuItem className="hover:bg-gray-300 cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
+                    <span>My Profile</span>
                   </DropdownMenuItem>
                   {userRole === "patient" && (
                     <DropdownMenuItem className="hover:bg-gray-300 cursor-pointer">
@@ -414,6 +328,21 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
             </div>
           </>
         )}
+
+        {/* Mobile menu button */}
+        <div className="lg:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-10 w-10" />
+            ) : (
+              <Menu className="h-10 w-10" />
+            )}
+          </Button>
+        </div>
       </div>
 
       {isMobileMenuOpen && (

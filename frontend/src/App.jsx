@@ -51,17 +51,14 @@ import DoctorWrapper from "./page/Doctor/Doctor'sview/DoctorWrapper";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
-// <<<<<<< HEAD
-  
-// =======
 
-//   const cld = new Cloudinary({
-//     cloud: {
-//       cloudName: 'duhnmjhli'
-//     }
-//   });
 
-// >>>>>>> f2976db888bc6fd80b32a832a79cc483fc3c16cd
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: 'duhnmjhli'
+    }
+  });
+
   return (
     <>
       <Toaster richColors position="top-center" />
