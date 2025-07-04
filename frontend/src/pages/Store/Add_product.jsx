@@ -1,104 +1,128 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Plus, 
-  Package, 
-  DollarSign, 
-  TrendingUp, 
-  Eye, 
-  Edit, 
-  Trash2, 
-  Upload,
-  Save,
-  X,
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Plus,
+  Package,
+  DollarSign,
+  TrendingUp,
+  Eye,
+  Edit,
+  Trash2,
   BarChart3,
   ShoppingBag,
-  Users
-} from 'lucide-react';
+  AlertCircle,
+  Loader2,
+  X,
+} from "lucide-react";
+import ProductForm from "./ProductForm";
+import { image } from "@cloudinary/url-gen/qualifiers/source";
+import { toast } from "sonner";
+import { Cloudinary } from "@cloudinary/url-gen";
+
 
 const MedicalAdminPanel = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [publicId, setPublicId] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(null);
 
-  // Form state for adding/editing products
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    category: '',
-    originalPrice: '',
-    discountedPrice: '',
-    image: null,
-    inStock: true
+   //Cloudinary config
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = "zee-hospital-upload";
+
+  // Cloudinary configuration
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName,
+    },
   });
 
-  // Mock products data with sales analytics
+  // Upload Widget Configuration
+  const uwConfig = {
+    cloudName,
+    uploadPreset,
+    // Uncomment and modify as needed:
+    // cropping: true,
+    // showAdvancedOptions: true,
+    // sources: ['local', 'url'],
+    // multiple: false,
+    // folder: 'user_images',
+    // tags: ['users', 'profile'],
+    // context: { alt: 'user_uploaded' },
+    // clientAllowedFormats: ['images'],
+    // maxImageFileSize: 2000000,
+    // maxImageWidth: 2000,
+    // theme: 'purple',
+  };
+
+  // Form state
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    category: "",
+    originalPrice: "",
+    discountedPrice: "",
+    quantity: 0,
+    image: "",
+    inStock: true,
+    totalSales: 0,
+    totalRevenue: 0,
+  });
+
+  const categories = [
+    "Diagnostic Tools",
+    "Monitoring Devices", 
+    "Emergency Care",
+    "Mobility Aids",
+    "Medical Supplies",
+    "Rehabilitation Equipment",
+    "Others",
+  ];
+
+  // Mock data for demonstration
   const mockProducts = [
     {
-      _id: '1',
-      name: 'Digital Thermometer',
-      description: 'High precision digital thermometer with fast reading and memory function',
-      category: 'Diagnostic Tools',
+      _id: "1",
+      name: "Digital Thermometer",
+      description: "High precision digital thermometer with fast reading",
+      category: "Diagnostic Tools",
       originalPrice: 29.99,
       discountedPrice: 24.99,
-      imagePublicId: 'medical/thermometer',
+      quantity: 55,
       inStock: true,
       totalSales: 45,
       totalRevenue: 1124.55,
-      createdAt: '2024-01-15',
-      lastSold: '2024-12-28'
+      createdAt: "2024-01-15",
     },
     {
-      _id: '2',
-      name: 'Blood Pressure Monitor',
-      description: 'Automatic digital blood pressure monitor with large display and memory storage',
-      category: 'Monitoring Devices',
+      _id: "2", 
+      name: "Blood Pressure Monitor",
+      description: "Automatic digital blood pressure monitor",
+      category: "Monitoring Devices",
       originalPrice: 89.99,
       discountedPrice: 69.99,
-      imagePublicId: 'medical/bp-monitor',
+      quantity: 24,
       inStock: true,
       totalSales: 23,
       totalRevenue: 1609.77,
-      createdAt: '2024-01-10',
-      lastSold: '2024-12-29'
+      createdAt: "2024-01-10",
     },
     {
-      _id: '3',
-      name: 'First Aid Kit',
-      description: 'Complete first aid kit with essential medical supplies for emergencies',
-      category: 'Emergency Care',
+      _id: "3",
+      name: "First Aid Kit", 
+      description: "Complete first aid kit with essential supplies",
+      category: "Emergency Care",
       originalPrice: 45.99,
       discountedPrice: 35.99,
-      imagePublicId: 'medical/first-aid',
+      quantity: 110,
       inStock: true,
       totalSales: 67,
       totalRevenue: 2411.33,
-      createdAt: '2024-02-01',
-      lastSold: '2024-12-30'
+      createdAt: "2024-02-01",
     },
-    {
-      _id: '4',
-      name: 'Pulse Oximeter',
-      description: 'Fingertip pulse oximeter for measuring blood oxygen saturation and pulse rate',
-      category: 'Diagnostic Tools',
-      originalPrice: 39.99,
-      discountedPrice: 29.99,
-      imagePublicId: 'medical/oximeter',
-      inStock: false,
-      totalSales: 12,
-      totalRevenue: 359.88,
-      createdAt: '2024-01-20',
-      lastSold: '2024-12-15'
-    }
-  ];
-
-  const categories = [
-    'Diagnostic Tools',
-    'Monitoring Devices',
-    'Emergency Care',
-    'Mobility Aids',
-    'Medical Supplies',
-    'Rehabilitation Equipment'
   ];
 
   useEffect(() => {
@@ -108,290 +132,184 @@ const MedicalAdminPanel = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Replace with actual API call
-      // const response = await fetch('/api/admin/products');
-      // const data = await response.json();
+      setError(null);
+    
       
-      setTimeout(() => {
-        setProducts(mockProducts);
-        setLoading(false);
-      }, 1000);
+     const response = await axios.get("http://localhost:3000/api/v1/admin/products");
+      setProducts(response.data.products);
+      
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
+      setError("Failed to load products. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    const val = type === "checkbox" ? e.target.checked : value;
+    
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: val,
     }));
+  };
+
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      showNotification("Product name is required", "error");
+      return false;
+    }
+    if (!formData.category) {
+      showNotification("Category is required", "error");
+      return false;
+    }
+    if (!formData.originalPrice || parseFloat(formData.originalPrice) <= 0) {
+      showNotification("Valid original price is required", "error");
+      return false;
+    }
+    if (!formData.discountedPrice || parseFloat(formData.discountedPrice) <= 0) {
+      showNotification("Valid discounted price is required", "error");
+      return false;
+    }
+    if (parseFloat(formData.discountedPrice) > parseFloat(formData.originalPrice)) {
+      showNotification("Discounted price cannot be higher than original price", "error");
+      return false;
+    }
+    if (formData.quantity < 0) {
+      showNotification("Quantity cannot be negative", "error");
+      return false;
+    }
+    return true;
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      image: file
+      image: file,
     }));
   };
 
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     
-    try {
+    if (!validateForm()) return;
+
+    try {   
+       const quantity = parseInt(formData.quantity);
+      if (isNaN(quantity) || quantity < 0) {
+        toast.error("Quantity must be a number and not less than 0.");
+        return;
+      }
       setLoading(true);
-      
+      const inStock = quantity > 0;
       // Create FormData for file upload
-      const submitData = new FormData();
-      Object.keys(formData).forEach(key => {
-        if (key === 'image' && formData[key]) {
-          submitData.append('image', formData[key]);
-        } else if (key !== 'image') {
-          submitData.append(key, formData[key]);
-        }
-      });
-
-      // Replace with actual API call
-      // const response = await fetch('/api/admin/products', {
-      //   method: 'POST',
-      //   body: submitData
-      // });
-      // const newProduct = await response.json();
-
-      // Mock success
-      const newProduct = {
-        _id: Date.now().toString(),
+      const payload = {
         ...formData,
-        imagePublicId: 'medical/new-product',
-        totalSales: 0,
-        totalRevenue: 0,
-        createdAt: new Date().toISOString().split('T')[0],
-        lastSold: null
+        image: publicId,
       };
+      //API Call
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/admin/products",
+        payload,{
+          headers: {
+             "Content-Type": "application/json",
+         },
+        }
+      );
 
-      setProducts(prev => [newProduct, ...prev]);
-      setFormData({
-        name: '',
-        description: '',
-        category: '',
-        originalPrice: '',
-        discountedPrice: '',
-        image: null,
-        inStock: true
-      });
+      const newProduct =  res.data.product;
+      setProducts(prev => [ ...prev, newProduct]);
+      resetForm();
       setShowAddForm(false);
-      setLoading(false);
+      showNotification("Product added successfully!", "success");
       
-      alert('Product added successfully!');
     } catch (error) {
-      console.error('Error adding product:', error);
+      console.error("Error adding product:", error);
+      showNotification("Failed to add product. Please try again.", "error");
+    } finally {
       setLoading(false);
-      alert('Error adding product. Please try again.');
     }
   };
 
   const deleteProduct = async (productId) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      // Replace with actual API call
-      // await fetch(`/api/admin/products/${productId}`, { method: 'DELETE' });
+      setDeleteLoading(productId);
+      
+        await axios.delete(
+        `http://localhost:3000/api/v1/admin/products/${productId}`
+      );
       
       setProducts(prev => prev.filter(product => product._id !== productId));
-      alert('Product deleted successfully!');
+      showNotification("Product deleted successfully!", "success");
+      
     } catch (error) {
-      console.error('Error deleting product:', error);
-      alert('Error deleting product. Please try again.');
+      console.error("Error deleting product:", error);
+      showNotification("Failed to delete product. Please try again.", "error");
+    } finally {
+      setDeleteLoading(null);
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      category: "",
+      originalPrice: "",
+      discountedPrice: "",
+      quantity: 0,
+      image: "",
+      inStock: true,
+      totalSales: 0,
+      totalRevenue: 0,
+    });
+    setPublicId("");
+  };
+
+  // Notification system
+  const [notification, setNotification] = useState(null);
+  
+  const showNotification = (message, type = "info") => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
   };
 
   // Calculate analytics
   const totalProducts = products.length;
-  const totalRevenue = products.reduce((sum, product) => sum + product.totalRevenue, 0);
-  const totalSales = products.reduce((sum, product) => sum + product.totalSales, 0);
-  const averageRevenuePerProduct = totalProducts > 0 ? totalRevenue / totalProducts : 0;
+  const totalRevenue =  products.reduce((sum, product) => sum + (product.totalRevenue || 0), 0);
+const totalSales =  products.reduce((sum, product) => sum + (product.totalSales || 0), 0);
+const averageRevenuePerProduct = totalProducts > 0 ? totalRevenue / totalProducts : 0;
 
-  // Product Form Component
-  const ProductForm = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Add New Product</h2>
-            <button
-              onClick={() => setShowAddForm(false)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              <X size={24} />
-            </button>
-          </div>
 
-          <div className="space-y-6">
-            {/* Product Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Product Name *
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter product name"
-              />
-            </div>
-
-            {/* Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description *
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                required
-                rows="3"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter product description"
-              />
-            </div>
-
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category *
-              </label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">Select a category</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Pricing */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Original Price *
-                </label>
-                <input
-                  type="number"
-                  name="originalPrice"
-                  value={formData.originalPrice}
-                  onChange={handleInputChange}
-                  required
-                  min="0"
-                  step="0.01"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="0.00"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Discounted Price *
-                </label>
-                <input
-                  type="number"
-                  name="discountedPrice"
-                  value={formData.discountedPrice}
-                  onChange={handleInputChange}
-                  required
-                  min="0"
-                  step="0.01"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="0.00"
-                />
-              </div>
-            </div>
-
-            {/* Image Upload */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Product Image *
-              </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                <div className="text-sm text-gray-600">
-                  <label className="cursor-pointer">
-                    <span className="mt-2 block text-sm font-medium text-blue-600 hover:text-blue-500">
-                      Choose file or drag and drop
-                    </span>
-                    <input
-                      type="file"
-                      name="image"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                      required
-                      className="hidden"
-                    />
-                  </label>
-                  <p className="mt-1">PNG, JPG, GIF up to 10MB</p>
-                </div>
-                {formData.image && (
-                  <p className="mt-2 text-sm text-green-600">
-                    Selected: {formData.image.name}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* In Stock */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="inStock"
-                checked={formData.inStock}
-                onChange={handleInputChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label className="ml-2 block text-sm text-gray-700">
-                Product is in stock
-              </label>
-            </div>
-
-            {/* Submit Buttons */}
-            <div className="flex gap-4 pt-4">
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={loading}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <Save size={18} />
-                {loading ? 'Adding...' : 'Add Product'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowAddForm(false)}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+  // Notification Component
+  const Notification = ({ message, type, onClose }) => (
+    <div className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500' : 
+      type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+    } text-white`}>
+      <div className="flex items-center gap-2">
+        {type === 'error' && <AlertCircle size={20} />}
+        <span>{message}</span>
+        <button onClick={onClose} className="ml-2">
+          <X size={16} />
+        </button>
       </div>
     </div>
   );
+
+
+ 
 
   // Dashboard Tab
   const DashboardTab = () => (
     <div className="space-y-6">
       {/* Analytics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 mt-16 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-2 bg-blue-100 rounded-lg">
@@ -411,7 +329,7 @@ const MedicalAdminPanel = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-              <p className="text-2xl font-bold text-gray-900">${totalRevenue.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-gray-900">₹{(totalRevenue || 0).toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -435,7 +353,7 @@ const MedicalAdminPanel = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Avg Revenue/Product</p>
-              <p className="text-2xl font-bold text-gray-900">${averageRevenuePerProduct.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-gray-900">₹{(averageRevenuePerProduct || 0).toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -446,11 +364,33 @@ const MedicalAdminPanel = () => {
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800">Product Performance</h2>
         </div>
-        
+
         {loading ? (
           <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <Loader2 className="animate-spin h-8 w-8 text-blue-600 mx-auto" />
             <p className="mt-2 text-gray-600">Loading products...</p>
+          </div>
+        ) : error ? (
+          <div className="p-8 text-center">
+            <AlertCircle className="h-8 w-8 text-red-500 mx-auto" />
+            <p className="mt-2 text-red-600">{error}</p>
+            <button
+              onClick={fetchProducts}
+              className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Retry
+            </button>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="p-8 text-center">
+            <Package className="h-8 w-8 text-gray-400 mx-auto" />
+            <p className="mt-2 text-gray-600">No products found</p>
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Add Your First Product
+            </button>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -491,8 +431,12 @@ const MedicalAdminPanel = () => {
                           </div>
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                          <div className="text-sm text-gray-500">Added {product.createdAt}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {product.name}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            Added {product.createdAt}
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -500,24 +444,30 @@ const MedicalAdminPanel = () => {
                       {product.category}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">${product.discountedPrice}</div>
+                      <div className="text-sm text-gray-900">
+                        ₹{product.discountedPrice}
+                      </div>
                       {product.originalPrice > product.discountedPrice && (
-                        <div className="text-sm text-gray-500 line-through">${product.originalPrice}</div>
+                        <div className="text-sm text-gray-500 line-through">
+                          ₹{product.originalPrice}
+                        </div>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {product.totalSales}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
-                      ${product.totalRevenue.toFixed(2)}
+                      ₹{product.totalRevenue.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        product.inStock 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {product.inStock ? 'In Stock' : 'Out of Stock'}
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          product.quantity > 0
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {product.quantity > 0 ? "In Stock" : "Out of Stock"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -527,7 +477,7 @@ const MedicalAdminPanel = () => {
                       <button className="text-green-600 hover:text-green-900">
                         <Edit size={16} />
                       </button>
-                      <button 
+                      <button
                         onClick={() => deleteProduct(product._id)}
                         className="text-red-600 hover:text-red-900"
                       >
@@ -546,9 +496,18 @@ const MedicalAdminPanel = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Notification */}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto mt-15 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-blue-600">MedStore Admin</h1>
@@ -556,7 +515,7 @@ const MedicalAdminPanel = () => {
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setShowAddForm(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
               >
                 <Plus size={18} />
                 Add Product
@@ -571,11 +530,11 @@ const MedicalAdminPanel = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-8">
             <button
-              onClick={() => setActiveTab('dashboard')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'dashboard'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              onClick={() => setActiveTab("dashboard")}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "dashboard"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               }`}
             >
               <div className="flex items-center gap-2">
@@ -589,11 +548,24 @@ const MedicalAdminPanel = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'dashboard' && <DashboardTab />}
+        {activeTab === "dashboard" && <DashboardTab />}
       </main>
 
       {/* Add Product Modal */}
-      {showAddForm && <ProductForm />}
+       <div className={showAddForm ? "block" : "hidden"}>
+        <ProductForm
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+          setShowAddForm={setShowAddForm}
+          publicId={publicId}
+          setPublicId={setPublicId}
+          loading={loading}
+          uwConfig={uwConfig}
+          categories={categories}
+        />
+      </div>
+
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Message } from "../models/messageSchema.js";
 import { Asynchandler } from "../utils/asynchandler.js";
-import ErrorHandler from "../utils/ApiError.js";
+import ErrorHandler from "../api/ApiError.js";
 
 
 export const sendMessage = Asynchandler(async (req, resp, next) => {

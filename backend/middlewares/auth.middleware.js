@@ -1,6 +1,6 @@
 import { User } from "../models/user.Schema.js";
 import { Asynchandler } from "../utils/asynchandler.js";
-import ErrorHandler from "../utils/ApiError.js";
+import ErrorHandler from "../api/ApiError.js";
 import jwt from "jsonwebtoken";
 
 export const isAdminAuthentication = Asynchandler(

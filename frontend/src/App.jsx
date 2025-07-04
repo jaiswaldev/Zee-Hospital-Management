@@ -26,6 +26,7 @@ import Store from "./pages/Store";
 import DoctorDashboard from "./pages/Doctor/Home";
 import PatientDashboard from "./pages/Patient/Home";
 import Cart from './pages/Store/Cart';
+import Add_product from './pages/Store/Add_product';
 
 import Appointment from "./Utils/Appointment";
 
@@ -78,6 +79,7 @@ const App = () => {
         <Route path = ":ProductId" element={<Store/>}/>
         <Route path="/blog" element={<Blog />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/admin/store" element={<Add_product/>}/>
         <Route
           path="/doctor"
           element={
