@@ -1,6 +1,6 @@
 import { Appointment } from "../models/appointmentSchema.js";
 import { Asynchandler } from "../utils/asynchandler.js";
-import ErrorHandler from "../utils/ApiError.js";
+import ErrorHandler from "../api/ApiError.js";
 import { User } from "../models/user.Schema.js";
 
 import cloudinary from "cloudinary";

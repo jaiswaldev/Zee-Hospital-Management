@@ -20,7 +20,7 @@
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-tabs": "^1.1.12",
     "@tailwindcss/vite": "^4.1.8",
-    "axios": "^1.9.0",
+    "axios": "^1.10.0",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.1",
     "keen-slider": "^6.8.6",
