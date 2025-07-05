@@ -60,9 +60,6 @@ const patientSchema = new Schema({
     type: String,
     enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
     trim: true,
-  },
-  refreshToken: {
-    type: String,
   }
 }, {
   timestamps: true,
@@ -79,13 +76,13 @@ patientSchema.pre("save",async function(next){
 patientSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password,this.password);
 }
+
 patientSchema.methods.generateAccessToken = async function(){
     return jwt.sign(
         {
             _id:this._id,
             email : this.email,
-            username: this.username,
-            fullname: this.fullname
+            userType: "patient",
         },
        process.env.ACCESS_TOKEN_SECRET,
        {
@@ -99,6 +96,7 @@ patientSchema.methods.generateRefreshToken = async function(){
     return jwt.sign(
         { 
             _id:this._id,
+            userType: "patient",
         },
        process.env.REFRESH_TOKEN_SECRET,
        {

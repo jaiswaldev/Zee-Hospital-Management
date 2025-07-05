@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
@@ -43,8 +43,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password Is Required!"],
-    minLength: [8, "Password Must Contain At Least 8 Characters!"],
-    select: false,
+    minLength: [8, "Password Must Contain At Least 8 Characters!"]
   },
   role: {
     type: String,
@@ -69,15 +68,16 @@ const userSchema = new mongoose.Schema({
     timestamps:true
 });
 
+
+// Remove password hashing, store as plain text
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
-  }
-  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
+
+// Remove password comparison, use plain text comparison
 userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return enteredPassword === this.password;
 };
 
 userSchema.methods.generateAccessToken = async function(){

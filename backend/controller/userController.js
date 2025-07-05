@@ -47,15 +47,10 @@ export const patientRegister = Asynchandler(async (req, resp, next) => {
 });
 
 export const login = Asynchandler(async (req, resp, next) => {
-  const { email, password, confirmPassword, role } = req.body;
+  const { email, password } = req.body;
 
-  if (!email || !password || !confirmPassword || !role) {
-    return next(new ApiError("Please Provide All Details", 400));
-  }
-  if (password !== confirmPassword) {
-    return next(
-      new ApiError("Password and confirm password do not match", 400)
-    );
+  if (!email || !password) {
+    return next(new ApiError("Please Provide Email and Password", 400));
   }
   const user = await User.findOne({ email }).select("+password");
 
@@ -68,9 +63,7 @@ export const login = Asynchandler(async (req, resp, next) => {
     return next(new ApiError("Invalid Password Or Email", 400));
   }
 
-  if (role !== user.role) {
-    return next(new ApiError("User with this role is not found", 400));
-  }
+  // Optionally, you can check for user role here if needed
   await generateToken(user, "User logged in Successfully", 200, resp);
   //   resp.status(200).send({
   //     success: true,

@@ -23,7 +23,7 @@ import Popup from "../pages/Popup";
 import Login from "./Login";
 import Register from "./Register";
 import RoleSelector from "./Roleselector";
-import axiosInstance from "../Utils/AxiosInstance";
+import axios from "axios";
 import { toast } from "sonner";
 import { FaUserPlus } from "react-icons/fa";
 
@@ -68,8 +68,9 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
         ? `${Backend_API}/patient/auth/logout`
         : `${Backend_API}/doctor/auth/logout`;
     try {
-      const res = await axiosInstance.post(endpoint);
+      const res = await axios.post(endpoint, null, { withCredentials: true });
       const message = res?.data?.message || "Logged out successfully.";
+      // localStorage.removeItem("role");
       toast.success(message);
       if (typeof setIsAuthenticated === "function") {
         setIsAuthenticated(false);
@@ -78,6 +79,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
         navigate("/");
       }, 300);
     } catch (error) {
+      console.log("Login error:", error);
       const message = error?.response?.data?.message || "Logout failed.";
       toast.error(message);
       // window.location.href = "/";
@@ -101,7 +103,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
   };
 
   return (
-    <nav className="bg-white border-b-1 border-gray-800 shadow-xl sticky top-0 z-500 flex flex-col items-center justify-center">
+    <nav className="bg-white border-b-1 border-gray-800 shadow-xl fixed top-0 z-500 flex flex-col items-center justify-center">
       <div className="w-full mx-auto  py-3 flex items-center justify-between px-4 h-10">
         <Link to={getDashboardPath()} className="flex items-center space-x-2">
           <img src="/logo1.png" alt="Logo" className="h-20 w-40" />
@@ -112,6 +114,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
             <div className="hidden lg:flex items-center space-x-6">
               {userRole === "doctor" && (
                 <>
+
                   <div className="hidden lg:flex justify-evenly space-x-10">
                     <Link
                       to="/"
@@ -145,19 +148,47 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                       <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
                     </Link>
                   </div>
+
+                  <Link
+                    to="/appointments"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                  >
+                    Appointments
+                  </Link>
+                  <Link
+                    to="/patients"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                  >
+                    Patients
+                  </Link>
+                  <Link
+                    to="/blog"
+                    className="text-black hover:text-blue-600 font-medium cursor-pointer"
+                  >
+                    Blogs
+                  </Link>
+
                 </>
               )}
 
               {userRole === "patient" && (
                 <>
-                  <div className="hidden lg:flex justify-evenly space-x-10">
-                    <Link
-                      to="/"
-                      className="relative group text-black font-semibold"
-                    >
-                      Home
-                      <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
+                  <Link
+                    to="/my-appointments"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                  >
+                    My Appointments
+                  </Link>
+                  <Link
+                    to="/doctors"
+                    className="text-black hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+                  >
+                    Find Doctors
+                  </Link>
+                  <div className="relative group">
+                    <button className="text-black hover:text-blue-600 font-medium focus:outline-none cursor-pointer">
+                      Dr. Profiles &#9662;
+                    </button>
 
                     <Link
                       to="/store"
@@ -173,33 +204,22 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                     >
                       Doctors &#9662;
                       <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
-                      <div className="absolute top-full left-0 mt-4 w-[28rem] bg-white shadow-lg rounded-lg flex p-4 border z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                        <div className="w-1/2 pr-4 cursor-pointer">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                            Our Doctors
-                          </h3>
+                      <div className="w-1/2 pr-4 cursor-pointer">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                          Our Doctors
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          Meet our team of experienced healthcare professionals
+                        </p>
+                      </div>
+                      <div className="w-1/2 flex flex-col space-y-2 cursor-pointer">
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-900">
+                            Specialties
+                          </h4>
                           <p className="text-sm text-gray-600">
-                            Meet our team of experienced healthcare
-                            professionals
+                            Browse doctors by medical specialty
                           </p>
-                        </div>
-                        <div className="w-1/2 flex flex-col space-y-2 cursor-pointer">
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-900">
-                              Specialties
-                            </h4>
-                            <p className="text-sm text-gray-600">
-                              Browse doctors by medical specialty
-                            </p>
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-900">
-                              Appointments
-                            </h4>
-                            <p className="text-sm text-gray-600">
-                              Schedule an appointment with our doctors
-                            </p>
-                          </div>
                         </div>
                       </div>
                     </Link>
@@ -220,18 +240,29 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                       <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
                     </Link>
                   </div>
+                  <Link
+                    to="/blog"
+                    className="text-black hover:text-blue-600 font-medium cursor-pointer"
+                  >
+                    Blogs
+                  </Link>
                 </>
               )}
             </div>
-            <div className="hidden lg:flex flex-row gap-5">
+            <div className="hidden lg:flex flex-row gap-8">
               <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
-                <Button variant="ghost" size="icon" className="relative">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative cursor-pointer"
+                >
                   <Bell className="h-5 w-5" />
                   <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
                 </Button>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
+
                   {userName ? (
                     <Button
                       variant="ghost"
@@ -250,6 +281,18 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                       </Button>
                     </div>
                   )}
+
+                  <Button
+                    variant="ghost"
+                    className=" h-10 w-10 rounded-full cursor-pointer"
+                  >
+                    <Avatar className="h-10 w-10 rounded-full">
+                      <AvatarFallback>
+                        {getUserInitials(userName)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   className="w-56 bg-white"
@@ -258,7 +301,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                 >
                   <DropdownMenuItem className="hover:bg-gray-300 cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
+                    <span>My Profile</span>
                   </DropdownMenuItem>
                   {userRole === "patient" && (
                     <DropdownMenuItem className="hover:bg-gray-300 cursor-pointer">
@@ -350,6 +393,21 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
             </div>
           </>
         )}
+
+        {/* Mobile menu button */}
+        <div className="lg:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-10 w-10" />
+            ) : (
+              <Menu className="h-10 w-10" />
+            )}
+          </Button>
+        </div>
       </div>
 
       {isMobileMenuOpen && (
@@ -361,14 +419,14 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                   <div className="mt-3 space-y-1">
                     <Button
                       variant="ghost"
-                      className="w-full justify-start text-gray-600 hover:text-blue-600"
+                      className="w-full justify-start text-black"
                     >
                       <User className="mr-2 h-4 w-4" />
                       Profile
                     </Button>
                     <Button
                       variant="ghost"
-                      className="w-full justify-start text-gray-600 hover:text-blue-600"
+                      className="w-full justify-start text-black"
                     >
                       <Settings className="mr-2 h-4 w-4" />
                       Settings
@@ -380,14 +438,14 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                     <>
                       <Link
                         to="/appointments"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Appointments
                       </Link>
                       <Link
                         to="/patients"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black "
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Patients
@@ -399,14 +457,14 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                     <>
                       <Link
                         to="/my-appointments"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         My Appointments
                       </Link>
                       <Link
                         to="/doctors"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                        className="block px-3 py-2 rounded-md text-base font-medium text-black"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Find Doctors
@@ -418,7 +476,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
 
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-red-600 hover:text-red-700"
+                  className="w-full justify-start text-red-600 "
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -433,18 +491,21 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                     <Link
                       to="/"
                       className="text-gray-800 hover:text-blue-600 font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Home
                     </Link>
                     <Link
                       to="/about"
                       className="text-gray-800 hover:text-blue-600 font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       About
                     </Link>
                     <Link
                       to="/blog"
                       className="text-gray-800 hover:text-blue-600 font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Blogs
                     </Link>

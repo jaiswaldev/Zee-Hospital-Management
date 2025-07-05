@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import helmet from "helmet"
+
+
 import { errorHandler } from "./middlewares/ErrorHandler.js"
 import { apiLimiter } from "./middlewares/rateLimiter.js"
 
@@ -26,6 +28,10 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 //routes
+
+import authRoutes from "./routes/auth.route.js";
+app.use("/api/v1/auth", authRoutes);
+
 import patientRouter from "./routes/patient.route.js"
 app.use("/api/v1/patient/auth", patientRouter)
 

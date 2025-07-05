@@ -7,7 +7,6 @@ const router = Router();
 
 router.route("/register").post(Registerdoctor);
 router.route("/login").post(logindoctor);
-// router.route("/refresh-token").get(refreshAccessToken);
 router.route("/logout").post(verifyUserJWT, logoutdoctor);
 
 

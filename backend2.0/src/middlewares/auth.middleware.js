@@ -3,62 +3,49 @@ import { ApiError } from "../utils/ApiError.js";
 import jwt from "jsonwebtoken";
 import { Patient } from "../models/patient.model.js";
 import { Doctor } from "../models/doctor.model.js";
-// import { Admin } from "../models/admin.models.js";
 
 const verifyToken = async (token, model) => {
   try {
-    const decodedinfo = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    // Check token expiration
-    if (decodedinfo.exp && Date.now() >= decodedinfo.exp * 1000) {
-      throw new ApiError(401, "Token has expired");
-    }
-
-    const user = await model
-      .findById(decodedinfo?._id)
-      .select("-password -refreshToken");
-
+    const user = await model.findById(decoded._id).select("-password");
     if (!user) {
-      throw new ApiError(401, "Invalid AccessToken");
+      throw new ApiError(401, "User not found or unauthorized");
     }
 
-    return user;
+    return { user, role: decoded.userType };
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-      throw new ApiError(401, "Token has expired");
+      throw new ApiError(401, "Access token expired");
     }
-    if (error instanceof jwt.JsonWebTokenError) {
-      throw new ApiError(401, "Invalid token");
-    }
-    throw error;
+    throw new ApiError(401, "Invalid access token");
   }
 };
 
-// Optional: Add a combined middleware for routes that can be accessed by both doctors and patients
 export const verifyUserJWT = asynchandler(async (req, res, next) => {
+  const token =
+    req.cookies?.accessToken ||
+    req.header("Authorization")?.replace("Bearer ", "");
+
+  if (!token) {
+    throw new ApiError(401, "Access token missing");
+  }
+
+  // Try verifying token as patient
   try {
-    const token =
-      req.cookies?.accessToken ||
-      req.header("Authorization")?.replace("Bearer ", "");
-
-    if (!token) {
-      throw new ApiError(401, "Unauthorized Request");
-    }
-
-    // Try to verify as patient first
+    const { user, role } = await verifyToken(token, Patient);
+    req.user = user;
+    req.userType = role || "patient";
+    return next();
+  } catch (_) {
+    // If patient verification fails, try doctor
     try {
-      const patient = await verifyToken(token, Patient);
-      req.user = patient;
-      req.userType = "patient";
+      const { user, role } = await verifyToken(token, Doctor);
+      req.user = user;
+      req.userType = role || "doctor";
       return next();
-    } catch (error) {
-      // If not a patient, try as doctor
-      const doctor = await verifyToken(token, Doctor);
-      req.user = doctor;
-      req.userType = "doctor";
-      return next();
+    } catch (err) {
+      throw new ApiError(401, "Invalid or expired access token");
     }
-  } catch (error) {
-    throw new ApiError(401, error?.message || "Authentication failed");
   }
 });

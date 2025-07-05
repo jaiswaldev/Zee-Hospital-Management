@@ -67,9 +67,6 @@ const doctorSchema = new Schema({
     type: String,
     // required: true,
     trim: true,
-  },
-  refreshToken: {
-    type: String,
   }
 }, {
   timestamps: true,
@@ -93,6 +90,7 @@ doctorSchema.methods.generateAccessToken = async function(){
     { 
       _id: this._id,
       email: this.email,
+      userType: "doctor",
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
@@ -103,6 +101,7 @@ doctorSchema.methods.generateRefreshToken = async function(){
   return jwt.sign(
     { 
       _id: this._id,
+      userType: "doctor",
     },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }

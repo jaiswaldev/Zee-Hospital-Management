@@ -15,7 +15,6 @@ import SimpleBar from "simplebar-react";
 
 import { Toaster } from "sonner";
 import "./Utils/Css.css";
-import RefreshHandler from "./RefreshHandler";
 import { useAuth } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
@@ -55,6 +54,7 @@ import DoctorWrapper from "./page/Doctor/Doctor'sview/DoctorWrapper";
 const App = () => {
   const { auth, setAuth } = useAuth();
 
+
   const cld = new Cloudinary({
     cloud: {
       cloudName: 'duhnmjhli'
@@ -64,8 +64,6 @@ const App = () => {
   return (
     <>
       <Toaster richColors position="top-center" />
-
-      <RefreshHandler />
       <Navbar
         isLoggedIn={auth.isAuthenticated}
         setIsAuthenticated={(val) => setAuth({ ...auth, isAuthenticated: val })}
@@ -96,6 +94,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route path="*" element={<Home />} />
         {/* <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} /> */}
 
