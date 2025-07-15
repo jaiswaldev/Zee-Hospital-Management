@@ -1,6 +1,7 @@
 import dotenv from "dotenv"
 import DBconnect from "./db/index.js"
-import {app} from "./app.js"
+import { httpServer} from "./utils/socket.js"
+import { app } from "./app.js";
 
 dotenv.config({
   path: './.env'
@@ -19,7 +20,7 @@ DBconnect()
     })
    
   
-    app.listen(process.env.PORT || 3000,()=>{
+    httpServer.listen(process.env.PORT || 3000,()=>{
       console.log(`server started at ${process.env.PORT}`)
     })
 })

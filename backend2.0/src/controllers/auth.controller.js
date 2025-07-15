@@ -8,6 +8,7 @@ import { Token, hashToken } from "../models/token.model.js";
 
 export const refreshAccessToken = asynchandler(async (req, res) => {
   const incomingRefreshToken = req.cookies?.refreshToken;
+  // console.log("Incoming refresh token:", incomingRefreshToken);
   if (!incomingRefreshToken) {
     // throw new ApiError(401, "Refresh token missing");
     return res.json(
@@ -74,8 +75,8 @@ export const refreshAccessToken = asynchandler(async (req, res) => {
 
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
+    secure: process.env.NODE_ENV === "production" ? true : false,
+    sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
     expires,
   };
 

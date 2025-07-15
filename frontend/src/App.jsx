@@ -26,6 +26,9 @@ import DoctorDashboard from "./pages/Doctor/Home";
 import PatientDashboard from "./pages/Patient/Home";
 import Cart from './pages/Store/Cart';
 import Add_product from './pages/Store/Add_product';
+import DoctorMessageApp from "./pages/Doctor/MessageApp";
+import PatientMessageApp from "./pages/Patient/MessageApp";
+
 
 import Appointment from "./Utils/Appointment";
 
@@ -63,7 +66,7 @@ const App = () => {
 
   return (
     <>
-      <Toaster richColors position="top-center" />
+      <Toaster richColors position="top-center" duration={1000} />
       <Navbar
         isLoggedIn={auth.isAuthenticated}
         setIsAuthenticated={(val) => setAuth({ ...auth, isAuthenticated: val })}
@@ -73,11 +76,48 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
-        <Route path= "/store" element={<Store/>}/>
-        <Route path = ":ProductId" element={<Store/>}/>
         <Route path="/blog" element={<Blog />} />
-        <Route path="/cart" element={<Cart />} />
         <Route path="/admin/store" element={<Add_product/>}/>
+        <Route
+          path="/store/cart"
+          element={
+            <PrivateRoute allowedRoles={["patient"]}>
+              <Cart />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/store:ProductId"
+          element={
+            <PrivateRoute allowedRoles={["patient"]}>
+              <Store />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/store"
+          element={
+            <PrivateRoute allowedRoles={["patient"]}>
+              <Store />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/doctor/chat"
+          element={
+            <PrivateRoute allowedRoles={["doctor"]}>
+              <DoctorMessageApp />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/patient/chat"
+          element={
+            <PrivateRoute allowedRoles={["patient"]}>
+              <PatientMessageApp />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/doctor"
           element={
