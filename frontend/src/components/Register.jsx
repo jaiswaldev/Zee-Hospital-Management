@@ -239,7 +239,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
                     </div>
 
                     <div>
-                      <Label htmlFor="phone">Phone Number </Label>
+                      <Label htmlFor="phone">Phone Number *</Label>
                       <div className="border-cyan-400 outline rounded-md shadow-sm h-10">
                         <Input
                           id="phone"

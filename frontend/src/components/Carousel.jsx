@@ -26,7 +26,7 @@ const Carousel = ({ slides }) => {
     clearInterval(timer.current);
     timer.current = setInterval(() => {
       instanceRef.current?.next();
-    }, 4000);
+    }, 2000);
 
     return () => clearInterval(timer.current);
   }, [instanceRef, isPaused]);
@@ -61,49 +61,37 @@ const Carousel = ({ slides }) => {
   }
 
   return (
-    <div 
+    <div
       className="w-full group relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {/* Main Carousel Container */}
-      <div className="relative rounded-xl overflow-hidden shadow-2xl">
+      <div className="relative overflow-hidden shadow-2xl">
         <div ref={sliderRef} className="keen-slider">
           {slides.map((slide, index) => (
-            <div
-              key={index}
-              className="keen-slider__slide relative  overflow-hidden"
-            >
-              
+            <div className="keen-slider__slide relative overflow-hidden" key={slide.img}>
               <AdvancedImage
                 cldImg={cld
                   .image(slide.img)
-                  .resize(fill().width(1200).height(400))
-                }
-                className="w-full h-full object-cover"
+                  .resize(fill().width(1200).height(400))}
+                className="w-full h-[400px] sm:h-[250px] md:h-[400px] lg:h-[400px] object-cover"
                 alt={slide.title || `Slide ${index + 1}`}
               />
 
-              {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
-              
-              {/* Content Overlay */}
-              <div className="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-12 lg:px-16">
-                <div className="max-w-2xl space-y-4">
-                  <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+
+              <div className="absolute inset-0 flex flex-col justify-center items-start px-4 md:px-12 lg:px-16">
+                <div className="max-w-xl space-y-2 md:space-y-4">
+                  <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white">
                     {slide.title}
                   </h2>
                   {slide.desc && (
-                    <p className="text-sm md:text-lg lg:text-xl text-gray-200 leading-relaxed drop-shadow-md max-w-lg">
+                    <p className="text-sm md:text-lg lg:text-xl text-gray-200">
                       {slide.desc}
                     </p>
                   )}
                 </div>
-              </div>
-
-              {/* Slide Number Indicator */}
-              <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">
-                {index + 1} / {slides.length}
               </div>
             </div>
           ))}
@@ -117,8 +105,18 @@ const Carousel = ({ slides }) => {
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-3 rounded-full backdrop-blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-white/50"
               aria-label="Previous slide"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
@@ -127,8 +125,18 @@ const Carousel = ({ slides }) => {
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-3 rounded-full backdrop-blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-white/50"
               aria-label="Next slide"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </>
@@ -137,7 +145,7 @@ const Carousel = ({ slides }) => {
 
       {/* Enhanced Pagination Dots */}
       {slides.length > 1 && (
-        <div className="flex justify-center items-center mt-6 gap-3">
+        <div className="flex justify-center items-center mt-[-20px] gap-3">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -159,14 +167,14 @@ const Carousel = ({ slides }) => {
       )}
 
       {/* Pause Indicator */}
-      {isPaused && (
+      {/* {isPaused && (
         <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm flex items-center gap-2">
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
           </svg>
           Paused
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -1,9 +1,12 @@
-// src/context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import axios from "axios";
-// import { toast } from "sonner";
 
+// Create the context
 export const AuthContext = createContext();
+
+// Custom hook for easy access
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -13,10 +16,13 @@ export const AuthProvider = ({ children }) => {
     userRole: "",
     userName: "",
     userId: "",
+    onlinePatients: [],
+    socket: null,
   });
+
   const Backend_API = import.meta.env.VITE_BACKEND_URL;
-  // let toastShown = false;
-  // Call this on app load
+
+  // Check JWT and refresh if needed
   const checkAuthStatus = async () => {
     try {
       const res = await axios.post(
@@ -24,37 +30,82 @@ export const AuthProvider = ({ children }) => {
         {},
         { withCredentials: true }
       );
-      const message = res?.data?.message;
-      const { user } = res.data.data;
-      setAuth({
+      // console.log("Auth check response:", res.data);
+      const user = res.data.data.user;
+      if (!user) {
+        setAuth({
+          isAuthenticated: false,
+          userRole: "",
+          userName: "",
+          userId: "",
+          onlinePatients: [],
+          socket: null,
+        });
+        return;
+      }
+      // console.log("User data:", user);
+      setAuth((prev) => ({
+        ...prev,
         isAuthenticated: true,
         userRole: user.role,
         userName: user.firstName,
         userId: user._id,
-      });
-      // if (!toastShown) {
-      //   toast.success(message);
-      //   toastShown = true;
-      // }
+      }));
     } catch (err) {
-      // if (err?.response?.status !== 401) {
-      //   console.error("Authentication check failed:", err);
-      // }
       setAuth({
         isAuthenticated: false,
         userRole: "",
         userName: "",
         userId: "",
+        onlinePatients: [],
+        socket: null,
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // Auto-refresh on page load
+  // Initialize auth + socket.io
   useEffect(() => {
     checkAuthStatus();
   }, []);
+
+  // Socket connection
+  useEffect(() => {
+    if (!auth.isAuthenticated || !auth.userId) return;
+
+    const socket = io("http://localhost:4000", {
+      withCredentials: true,
+      query: {
+        userId: auth.userId, 
+      },
+    });
+
+    socket.on("connect", () => {
+      console.log("Connected to socket server");
+    });
+
+    socket.on("getOnlineUsers", (onlineList) => {
+      setAuth((prev) => ({
+        ...prev,
+        onlineUsers: onlineList,
+      }));
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from socket server");
+    });
+
+    // Save socket
+    setAuth((prev) => ({
+      ...prev,
+      socket,
+    }));
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [auth.isAuthenticated, auth.userId]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth, loading }}>
@@ -62,5 +113,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
