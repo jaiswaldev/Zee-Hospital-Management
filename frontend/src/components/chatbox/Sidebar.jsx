@@ -37,11 +37,11 @@ const Sidebar = ({
   if (isLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-20 lg:w-72 border-1 border-base-300 flex flex-col">
+    <aside className="h-full md:w-82 border-1 border-base-300 flex flex-col">
       <div className="border-b border-base-300 w-full p-5">
         <div className="flex items-center gap-2">
           <Users className="size-6" />
-          <span className="font-medium hidden lg:block">{title}</span>
+          <span className="font-medium block">{title}</span>
         </div>
       </div>
 
@@ -50,11 +50,11 @@ const Sidebar = ({
           <button
             key={user._id}
             onClick={() => setSelectedUser(user)}
-            className={`w-61 h-15 p-3 flex gap-3 rounded-md mt-0.5
+            className={`w-full h-15 p-3 flex gap-3 rounded-md mt-0.5
               hover:bg-gray-300 transition-colors
               ${selectedUser?._id === user._id ? "bg-gray-300" : ""}`}
           >
-            <div className="relative mx-auto lg:mx-0 items-center">
+            <div className="relative mx-0 items-center">
               <Avatar className="h-10 w-10 rounded-full">
                 <AvatarFallback className="bg-blue-100 text-blue-600">
                   {getUserInitials(user.firstName + " " + user.lastName)}
@@ -64,7 +64,7 @@ const Sidebar = ({
                 <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-zinc-900" />
               )}
             </div>
-            <div className="hidden lg:block text-left min-w-0">
+            <div className="block text-left min-w-0">
               <div className="font-medium truncate">
                 {user.firstName + " " + user.lastName}
               </div>
