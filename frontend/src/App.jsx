@@ -28,7 +28,7 @@ import Cart from './pages/Store/Cart';
 import Add_product from './pages/Store/Add_product';
 import DoctorMessageApp from "./pages/Doctor/MessageApp";
 import PatientMessageApp from "./pages/Patient/MessageApp";
-
+import Doctors from "./pages/Patient/Doctors";
 
 import Appointment from "./Utils/Appointment";
 
@@ -41,7 +41,7 @@ import Contact from "./page/contact/Contact";
 import UserProfile from "./component/userprofile/UserProfile";
 
 // import ProtectedRoute from "./component/ProtectedRoute";
-import Doctors from "./page/Doctor/Doctors";
+
 import DoctorProfile from "./page/Doctor/DoctorProfile";
 import DepartmentPage from "./component/DepartmentComp";
 import DepartmentMain from "./component/DepartmentMain";
@@ -78,6 +78,51 @@ const App = () => {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/admin/store" element={<Add_product/>}/>
+
+        {/* doctor */}
+        <Route
+          path="/doctor/chat"
+          element={
+            <PrivateRoute allowedRoles={["doctor"]}>
+              <DoctorMessageApp />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/doctor"
+          element={
+            <PrivateRoute allowedRoles={["doctor"]}>
+              <DoctorDashboard />
+            </PrivateRoute>
+          }
+        />
+        {/* patient */}
+        <Route
+          path="/patient/chat"
+          element={
+            <PrivateRoute allowedRoles={["patient"]}>
+              <PatientMessageApp />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/patient"
+          element={
+            <PrivateRoute allowedRoles={["patient"]}>
+              <PatientDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/patient/find-doctors"
+          element={
+            <PrivateRoute allowedRoles={["patient"]}>
+              <Doctors />
+            </PrivateRoute>
+          }
+        />
+
+        {/* store */}
         <Route
           path="/store/cart"
           element={
@@ -99,38 +144,6 @@ const App = () => {
           element={
             <PrivateRoute allowedRoles={["patient"]}>
               <Store />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/doctor/chat"
-          element={
-            <PrivateRoute allowedRoles={["doctor"]}>
-              <DoctorMessageApp />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/patient/chat"
-          element={
-            <PrivateRoute allowedRoles={["patient"]}>
-              <PatientMessageApp />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/doctor"
-          element={
-            <PrivateRoute allowedRoles={["doctor"]}>
-              <DoctorDashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/patient"
-          element={
-            <PrivateRoute allowedRoles={["patient"]}>
-              <PatientDashboard />
             </PrivateRoute>
           }
         />

@@ -168,7 +168,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                       <span className="absolute left-1/2 -translate-x-1/2 -bottom-1 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full"></span>
                     </Link>
                     <Link
-                      to="/doctors"
+                      to="/patient/find-doctors"
                       className="relative group text-black font-semibold"
                     >
                       Find Doctors

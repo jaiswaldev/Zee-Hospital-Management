@@ -70,7 +70,17 @@ const ChatContainer = ({
   }
 
   return (
-    <div className="flex-1 flex flex-col overflow-auto">
+    <div className="flex-1 flex flex-col h-full overflow-auto">
+      {/* Mobile Back Button */}
+      {/* <div className="md:hidden p-2 border-b bg-white flex items-center">
+        <button
+          className="mr-2 px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+          onClick={() => setSelectedUser(null)}
+        >
+          Back
+        </button>
+        <span className="font-medium">{selectedUser?.firstName} {selectedUser?.lastName}</span>
+      </div> */}
       <ChatHeader selectedUser={selectedUser} setSelectedUser={setSelectedUser} onlineUserIds={onlineUserIds} />
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-100">
         {messages.map((msg) => {

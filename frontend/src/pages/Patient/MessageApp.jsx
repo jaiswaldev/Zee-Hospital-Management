@@ -27,31 +27,55 @@ const PatientMessageApp = () => {
   }, [auth.socket, subscribeToMessages, unsubscribeFromMessages]);
 
   return (
-    <div className="mt-16">
-      <div className="flex items-center justify-center">
-        <div className="bg-base-100 shadow-cl w-full h-[calc(100vh-6rem)] p-1">
+    <div className="mt-16 h-[calc(100vh-6rem)]">
+      {" "}
+      {/* Make this the height constraint */}
+      <div className="flex items-center justify-center h-full">
+        {" "}
+        {/* h-full here */}
+        <div className="bg-base-100 shadow-cl w-full h-full p-1">
+          {" "}
+          {/* h-full here */}
           <div className="flex h-full overflow-hidden border">
-            {selectedDoctor ? (
-              <ChatContainer
-                authUserId={auth?.userId}
+            {" "}
+            {/* h-full here */}
+            {/* ChatContainer: show on mobile if chat selected, always on desktop */}
+            <div
+              className={`h-full w-full flex-1 ${
+                selectedDoctor ? "block" : "hidden"
+              } md:block`}
+            >
+              {selectedDoctor ? (
+                <ChatContainer
+                  authUserId={auth?.userId}
+                  selectedUser={selectedDoctor}
+                  setSelectedUser={setSelectedDoctor}
+                  onlineUserIds={auth?.onlineDoctors}
+                  role="patient"
+                />
+              ) : (
+                <div className="hidden md:block flex-1 h-full">
+                  <NoChatSelected role="patient" />
+                </div>
+              )}
+            </div>
+            {/* Sidebar: show on mobile if no chat, always on desktop */}
+            <div
+              className={`h-full w-full md:w-auto ${
+                selectedDoctor ? "hidden" : "block"
+              } md:block`}
+            >
+              <Sidebar
+                title="Your Doctors"
+                users={doctors}
                 selectedUser={selectedDoctor}
                 setSelectedUser={setSelectedDoctor}
+                isLoading={isDoctorsLoading}
                 onlineUserIds={auth?.onlineDoctors}
+                getUsers={getDoctors}
                 role="patient"
               />
-            ) : (
-              <NoChatSelected role="patient" />
-            )}
-            <Sidebar
-              title="Your Doctors"
-              users={doctors}
-              selectedUser={selectedDoctor}
-              setSelectedUser={setSelectedDoctor}
-              isLoading={isDoctorsLoading}
-              onlineUserIds={auth?.onlineDoctors}
-              getUsers={getDoctors}
-              role="patient"
-            />
+            </div>
           </div>
         </div>
       </div>
