@@ -1,6 +1,6 @@
 import { Message } from "../models/messageSchema.js";
 import { Asynchandler } from "../utils/asynchandler.js";
-import ErrorHandler from "../api/ApiError.js";
+import {ApiError} from "../api/ApiError.js";
 
 
 export const sendMessage = Asynchandler(async (req, resp, next) => {
@@ -8,7 +8,7 @@ export const sendMessage = Asynchandler(async (req, resp, next) => {
   console.log(firstName, lastName, email, phone, message);
 
   if (!firstName || !lastName || !email || !phone || !message) {
-    return next(new ErrorHandler("Please Fill Full form", 400));
+    return next(new ApiError("Please Fill Full form", 400));
   }
   const msg = await Message.create({
     firstName,
