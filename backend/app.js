@@ -5,11 +5,6 @@ import dotenv from "dotenv";
 import fileUpload from "express-fileupload";
 
 
-
-
-// Load environment variables
-dotenv.config();
-
 const app = express();
 
 

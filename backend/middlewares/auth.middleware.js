@@ -1,6 +1,6 @@
 import { User } from "../models/user.Schema.js";
 import { Asynchandler } from "../utils/asynchandler.js";
-import ErrorHandler from "../api/ApiError.js";
+import {ApiError} from "../api/ApiError.js";
 import jwt from "jsonwebtoken";
 
 export const isAdminAuthentication = Asynchandler(
@@ -14,7 +14,7 @@ export const isAdminAuthentication = Asynchandler(
     req.user = await User.findById(decoded._id);
     if (req.user.role !== "Admin") {
       return next(
-        new ErrorHandler(
+        new ApiError(
           `${req.user.role} not authorized for this resources`,
           403
         )
@@ -35,7 +35,7 @@ export const isPatientAuthentication = Asynchandler(
     req.user = await User.findById(decoded._id);
     if (req.user.role !== "Patient") {
       return next(
-        new ErrorHandler(
+        new ApiError(
           `${req.user.role} not authorized for this resources`,
           403
         )
@@ -48,14 +48,14 @@ export const isPatientAuthentication = Asynchandler(
 export const isDoctor = Asynchandler(async (req, resp, next) => {
   const token = req.cookies.doctorToken;
   if (!token) {
-    return next(new ErrorHandler("Doctor is not Authenticated", 400));
+    return next(new ApiError("Doctor is not Authenticated", 400));
   }
 
   const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   req.user = await User.findById(decoded._id);
   if (req.user.role !== "Doctor") {
     return next(
-      new ErrorHandler(
+      new ApiError(
         `${req.user.role} not authorized for this resources`,
         403
       )

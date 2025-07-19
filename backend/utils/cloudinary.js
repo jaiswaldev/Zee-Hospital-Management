@@ -3,23 +3,23 @@ import fs from "fs";
 import dotenv from 'dotenv';
 
 // Ensure environment variables are loaded
-dotenv.config();
+
 
 // Debug logging for environment variables
-console.log("\n=== Environment Variables Debug ===");
-console.log("Current working directory:", process.cwd());
-console.log("Environment variables loaded:", Object.keys(process.env).filter(key => key.startsWith('CLOUDINARY_')));
-console.log("CLOUDINARY_CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
-console.log("CLOUDINARY_API_KEY:", process.env.CLOUDINARY_API_KEY ? "Set" : "Not Set");
-console.log("CLOUDINARY_API_SECRET:", process.env.CLOUDINARY_API_SECRET ? "Set" : "Not Set");
-console.log("================================\n");
+// console.log("\n=== Environment Variables Debug ===");
+// console.log("Current working directory:", process.cwd());
+// console.log("Environment variables loaded:", Object.keys(process.env).filter(key => key.startsWith('CLOUDINARY_')));
+// console.log("CLOUDINARY_CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
+// console.log("CLOUDINARY_API_KEY:", process.env.CLOUDINARY_API_KEY ? "Set" : "Not Set");
+// console.log("CLOUDINARY_API_SECRET:", process.env.CLOUDINARY_API_SECRET ? "Set" : "Not Set");
+// console.log("================================\n");
 
 // Log Cloudinary configuration (without sensitive data)
-console.log("Cloudinary Config:", {
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? "Set" : "Not Set",
-    api_key: process.env.CLOUDINARY_API_KEY ? "Set" : "Not Set",
-    api_secret: process.env.CLOUDINARY_API_SECRET ? "Set" : "Not Set"
-});
+// console.log("Cloudinary Config:", {
+//     cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? "Set" : "Not Set",
+//     api_key: process.env.CLOUDINARY_API_KEY ? "Set" : "Not Set",
+//     api_secret: process.env.CLOUDINARY_API_SECRET ? "Set" : "Not Set"
+// });
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 

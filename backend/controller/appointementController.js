@@ -1,6 +1,6 @@
 import { Appointment } from "../models/appointmentSchema.js";
 import { Asynchandler } from "../utils/asynchandler.js";
-import ErrorHandler from "../api/ApiError.js";
+import {ApiError} from "../api/ApiError.js";
 import { User } from "../models/user.Schema.js";
 
 import cloudinary from "cloudinary";
@@ -36,7 +36,7 @@ export const postAppointment = Asynchandler(async (req, resp, next) => {
     !address
   ) {
     return next(
-      new ErrorHandler("Provide valide details in appointement filed", 400)
+      new ApiError("Provide valide details in appointement filed", 400)
     );
   }
   const isConflict = await User.find({
@@ -47,11 +47,11 @@ export const postAppointment = Asynchandler(async (req, resp, next) => {
   });
 
   if (isConflict.length === 0) {
-    return next(new ErrorHandler("No doctor with this name exist!!", 400));
+    return next(new ApiError("No doctor with this name exist!!", 400));
   }
 
   if (isConflict.length > 1) {
-    return next(new ErrorHandler("Please contact through email or phone", 400));
+    return next(new ApiError("Please contact through email or phone", 400));
   }
   const doctorId = isConflict[0]._id;
   const patientId = req.user._id;
@@ -117,7 +117,7 @@ export const updateAppointmentStatus = Asynchandler(
     const { id } = req.params;
     let appointment = await Appointment.findById(id);
     if (!appointment) {
-      return next(new ErrorHandler("Appointment is found", 400));
+      return next(new ApiError("Appointment is found", 400));
     }
     appointment = await Appointment.findByIdAndUpdate(id, req.body, {
       new: true,
@@ -199,17 +199,17 @@ export const updateAppointmentStatus = Asynchandler(
 
 export const updateDocument = Asynchandler(async (req, resp, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
-    return next(new ErrorHandler("Files are required!", 400));
+    return next(new ApiError("Files are required!", 400));
   }
 
   const { report, receipt } = req.files;
   const allowedFormats = ["application/pdf"];
 
   if (report && !allowedFormats.includes(report.mimetype)) {
-    return next(new ErrorHandler("Report file format not supported", 400));
+    return next(new ApiError("Report file format not supported", 400));
   }
   if (receipt && !allowedFormats.includes(receipt.mimetype)) {
-    return next(new ErrorHandler("Receipt file format not supported", 400));
+    return next(new ApiError("Receipt file format not supported", 400));
   }
 
   const { id } = req.params;
@@ -223,7 +223,7 @@ export const updateDocument = Asynchandler(async (req, resp, next) => {
     }
   } catch (error) {
     //console.log(error);
-    return next(new ErrorHandler("Cloudinary Error: " + error.message, 500));
+    return next(new ApiError("Cloudinary Error: " + error.message, 500));
   }
 
   try {
@@ -234,7 +234,7 @@ export const updateDocument = Asynchandler(async (req, resp, next) => {
       throw new Error(cloudinaryResponse2.error.message);
     }
   } catch (error) {
-    return next(new ErrorHandler("Cloudinary Error: " + error.message, 500));
+    return next(new ApiError("Cloudinary Error: " + error.message, 500));
   }
 
   try {
@@ -258,7 +258,7 @@ export const updateDocument = Asynchandler(async (req, resp, next) => {
     );
 
     if (!document) {
-      return next(new ErrorHandler("Appointment not found", 404));
+      return next(new ApiError("Appointment not found", 404));
     }
 
     resp.status(200).json({
@@ -267,7 +267,7 @@ export const updateDocument = Asynchandler(async (req, resp, next) => {
       document,
     });
   } catch (error) {
-    return next(new ErrorHandler("Database Error: " + error.message, 500));
+    return next(new ApiError("Database Error: " + error.message, 500));
   }
 });
 
@@ -360,7 +360,7 @@ export const deleteAppointment = Asynchandler(async (req, resp, next) => {
   const { id } = req.params;
   let appointment = await Appointment.findById(id);
   if (!appointment) {
-    return next(new ErrorHandler("Appointment is found", 400));
+    return next(new ApiError("Appointment is found", 400));
   }
   await appointment.deleteOne();
   resp.status(200).send({

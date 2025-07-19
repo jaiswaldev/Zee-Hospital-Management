@@ -1,1 +1,1 @@
-export const DB_NAME = "Zee-Hospital-Management";
+export const DB_NAME = "Zee-Hospital-Management-Admin";

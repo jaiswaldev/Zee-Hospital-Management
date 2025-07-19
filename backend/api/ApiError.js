@@ -20,7 +20,7 @@ class ApiError extends Error {
   }
 }
 
-export const ErrorHandler = (err, req, res, next) => {
+const ErrorHandler = (err, req, res, next) => {
   err.message = err.message || "Internal Server Error";
   err.statusCode = err.statusCode || 500;
 
@@ -53,8 +53,7 @@ export const ErrorHandler = (err, req, res, next) => {
   });
 };
 
-export { ApiError };
-export default ErrorHandler;
+export { ApiError};
 
 
 
