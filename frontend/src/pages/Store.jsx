@@ -6,6 +6,7 @@ import { Search, ShoppingCart, Star, Plus } from 'lucide-react';
 import { toast } from "sonner"
 
 import { useNavigate } from 'react-router-dom';
+import axios  from 'axios';
 
 
 const MedicalStorePage = () => {
@@ -90,16 +91,16 @@ const MedicalStorePage = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Replace with your actual API endpoint
-      // const response = await fetch('/api/products');
-      // const data = await response.json();
+    
+      const response = await axios.get('http://localhost:3000/api/v1/admin/products');
+      const data = await response.data.products;
+      console.log(data);
       
-      // Using mock data for demonstration
-      setTimeout(() => {
-        setProducts(mockProducts);
-        setFilteredProducts(mockProducts);
+  
+        setProducts(data);
+        setFilteredProducts(data);
         setLoading(false);
-      }, 1000);
+   
     } catch (error) {
       console.error('Error fetching products:', error);
       setLoading(false);
@@ -121,9 +122,10 @@ const MedicalStorePage = () => {
   }, [searchTerm, products]);
 
   // Generate Cloudinary URL from public ID
+  
   const getCloudinaryUrl = (publicId) => {
     // Replace 'your_cloud_name' with your actual Cloudinary cloud name
-    return `https://res.cloudinary.com/your_cloud_name/image/upload/w_300,h_300,c_fill,f_auto,q_auto/${publicId}`;
+    return `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/w_300,h_300,c_fill,f_auto,q_auto/${publicId}`;
   };
 
   // Add to cart function
@@ -147,7 +149,7 @@ const MedicalStorePage = () => {
       {/* Product Image */}
       <div className="relative overflow-hidden h-64 bg-gray-100">
         <img
-          src={getCloudinaryUrl(product.imagePublicId)}
+          src={getCloudinaryUrl(product.image)}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
