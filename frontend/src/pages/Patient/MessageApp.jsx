@@ -27,7 +27,7 @@ const PatientMessageApp = () => {
   }, [auth.socket, subscribeToMessages, unsubscribeFromMessages]);
 
   return (
-    <div className="mt-16 h-[calc(100vh-6rem)]">
+    <div className="pt-20 h-[calc(100vh)]">
       {" "}
       {/* Make this the height constraint */}
       <div className="flex items-center justify-center h-full">

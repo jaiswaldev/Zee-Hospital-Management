@@ -11,3 +11,7 @@
   scrollbar-width: none;     /* Firefox */
 }
 
+
+span[data-radix-focus-guard] {
+  display: none !important;
+}

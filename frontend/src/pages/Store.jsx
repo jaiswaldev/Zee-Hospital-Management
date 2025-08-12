@@ -227,7 +227,7 @@ const MedicalStorePage = () => {
   );
 
   return (
-    <div className="min-h-screen relative mt-12 bg-gray-50">
+    <div className="min-h-screen relative pt-20 bg-gray-50">
       {/* Header with Search and Cart */}
       <header className="bg-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -252,7 +252,7 @@ const MedicalStorePage = () => {
             </div>
 
             {/* Cart Button */}
-            <button  onClick={() => navigate("/cart")} className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
+            <button  onClick={() => navigate("/store/cart")} className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
               <ShoppingCart size={24} />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">

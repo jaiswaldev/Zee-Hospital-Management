@@ -94,6 +94,7 @@ export const refreshAccessToken = asynchandler(async (req, res) => {
             firstName: user.firstName,
             email: user.email,
             role: decoded.userType,
+            status: user.status, // Include status in response
           },
         },
         "Token refreshed successfully!!"

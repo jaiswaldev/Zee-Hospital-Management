@@ -3,6 +3,8 @@ import { useAuth } from "../../context/AuthContext";
 
 const PatientHeader = () => {
   const { auth } = useAuth();
+  const isUnverified = auth?.status === "Unverified";
+  const isVerified = auth?.status === "Verified";
 
   return (
     <div className="bg-gradient-primary p-3">
@@ -12,14 +14,26 @@ const PatientHeader = () => {
           <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">
             Welcome back, Mr. {auth.userName || "Patient"}!
           </h2>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm sm:text-base">
-            <span className="text-red-500 font-semibold">
-              Account Verification Pending:
-            </span>
-            <p className="text-black font-medium">
-              You need to complete your verification before booking Appointments.
-            </p>
-          </div>
+          {isUnverified && (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm sm:text-base">
+              <span className="text-red-500 font-semibold">
+                Account Verification Pending:
+              </span>
+              <p className="text-black font-medium">
+                Verification Needed.
+              </p>
+            </div>
+          )}
+          {isVerified && (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm sm:text-base">
+              <span className="text-red-500 font-semibold">
+                Account Verification Completed.
+              </span>
+              <p className="text-black font-medium">
+                You can now access all Premium features.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Right Side Avatar */}

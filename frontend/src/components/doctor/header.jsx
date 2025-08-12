@@ -3,7 +3,8 @@ import { useAuth } from "../../context/AuthContext";
 
 const DoctorHeader = () => {
   const { auth } = useAuth();
-
+  const isUnverified = auth?.status === "Unverified";
+  const isVerified = auth?.status === "Verified";
   return (
     <div className="bg-gradient-primary p-3">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 rounded-2xl bg-blue-400 p-4 sm:p-6">
@@ -12,16 +13,28 @@ const DoctorHeader = () => {
           <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">
             Welcome back, Dr. {auth.userName || "Doctor"}!
           </h2>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm sm:text-base">
-            <span className="text-red-500 font-semibold">
-              Account Verification Pending:
-            </span>
-            <p className="text-black font-medium">
-              You need to complete your verification.
-            </p>
-          </div>
+          {isUnverified && (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm sm:text-base">
+              <span className="text-red-500 font-semibold">
+                Account Verification Pending:
+              </span>
+              <p className="text-black font-medium">
+                You need to complete your verification.
+              </p>
+            </div>
+          )}
+          {isVerified && (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm sm:text-base">
+              <span className="text-red-500 font-semibold">
+                Account Verification Completed.
+              </span>
+              <p className="text-black font-medium">
+                You can now access all features.
+              </p>
+            </div>
+          )}
         </div>
-
+        
         {/* Right Side Avatar */}
         <div className="hidden md:block flex-shrink-0">
           <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-300 rounded-full flex items-center justify-center">

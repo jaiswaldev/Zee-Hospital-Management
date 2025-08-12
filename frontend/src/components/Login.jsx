@@ -48,6 +48,7 @@ const Login = ({ onSwitchToRegister, onLoginSuccess }) => {
         userRole: role, // e.g., "doctor" or "patient"
         userName: data.data.user.firstName, // e.g., "Dr. Smith"
         userId: data.data.user._id,
+        status: data.data.user.status,
       });
 
       // console.log("Login successful!", data);

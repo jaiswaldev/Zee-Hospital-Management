@@ -82,6 +82,7 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
         dateOfBirth: formData.dateOfBirth,
         gender: formData.gender,
         address: formData.address,
+        
       };
 
       if (selectedRole === "patient") {
@@ -121,19 +122,12 @@ const Register = ({ selectedRole, onSwitchToLogin, onBackToRoleSelector }) => {
   };
 
   const doctorSpecializations = [
-    "Cardiology",
-    "Dermatology",
-    "Emergency Medicine",
-    "Endocrinology",
-    "Gastroenterology",
-    "General Medicine",
-    "Neurology",
-    "Oncology",
-    "Orthopedics",
-    "Pediatrics",
-    "Psychiatry",
-    "Radiology",
-    "Surgery",
+    "General physician",
+    "Gynecologist",
+    "Dermatologist",
+    "Pediatricians",
+    "Neurologist",
+    "Gastroenterologist"
   ];
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];

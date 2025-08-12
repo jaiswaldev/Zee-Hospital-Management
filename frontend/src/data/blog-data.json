@@ -1,0 +1,81 @@
+{
+  "featuredArticle": {
+    "id": 1,
+    "title": "New Advanced MRI Technology Now Available at ZeeCare",
+    "excerpt": "ZeeCare has recently acquired state-of-the-art MRI technology that provides clearer images and faster scan times, improving patient comfort and diagnostic accuracy.",
+    "image": "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1200&q=80",
+    "date": "May 15, 2023",
+    "category": "Medical Research",
+    "author": "Dr. Raj Boom",
+    "authorRole": "Chief of Radiology",
+    "authorImage": "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah"
+  },
+  "articles": [
+    {
+      "id": 2,
+      "title": "Hospital Staff Recognized for Excellence in Patient Care",
+      "excerpt": "Our nursing team has received national recognition for their outstanding dedication to patient care during the pandemic.",
+      "image": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=600&q=80",
+      "date": "May 10, 2023",
+      "category": "Staff Updates"
+    },
+    {
+      "id": 3,
+      "title": "New Patient Portal Features Released",
+      "excerpt": "We've enhanced our patient portal with new features to make managing your healthcare easier than ever.",
+      "image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80",
+      "date": "May 5, 2023",
+      "category": "Patient Information"
+    },
+    {
+      "id": 4,
+      "title": "Hospital Expansion Project Breaks Ground",
+      "excerpt": "Construction has begun on our new wing that will add 50 additional beds and state-of-the-art facilities.",
+      "image": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&q=80",
+      "date": "April 28, 2023",
+      "category": "News"
+    },
+    {
+      "id": 5,
+      "title": "Research Study on Diabetes Treatment Shows Promising Results",
+      "excerpt": "Our research team has published findings from a groundbreaking study on new diabetes treatment approaches.",
+      "image": "https://images.unsplash.com/photo-1579165466741-7f35e4755182?w=600&q=80",
+      "date": "April 22, 2023",
+      "category": "Medical Research"
+    },
+    {
+      "id": 6,
+      "title": "New Pediatric Specialists Join Our Team",
+      "excerpt": "We're pleased to welcome three new pediatric specialists to our growing children's health department.",
+      "image": "https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=600&q=80",
+      "date": "April 15, 2023",
+      "category": "Staff Updates"
+    },
+    {
+      "id": 7,
+      "title": "COVID-19 Vaccination Update for Patients",
+      "excerpt": "Important information about our current vaccination program and eligibility requirements.",
+      "image": "https://images.unsplash.com/photo-1618961734760-466979ce35b0?w=600&q=80",
+      "date": "April 10, 2023",
+      "category": "Patient Information"
+    },
+    {
+      "id": 8,
+      "title": "Hospital Receives Award for Sustainability Initiatives",
+      "excerpt": "Our hospital has been recognized for its commitment to environmental sustainability and green practices.",
+      "image": "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&q=80",
+      "date": "April 5, 2023",
+      "category": "News"
+    }
+  ],
+  "popularTags": [
+    { "id": 1, "name": "COVID-19" },
+    { "id": 2, "name": "Patient Care" },
+    { "id": 3, "name": "Research" },
+    { "id": 4, "name": "Technology" },
+    { "id": 5, "name": "Staff" },
+    { "id": 6, "name": "Wellness" },
+    { "id": 7, "name": "Community" },
+    { "id": 8, "name": "Nutrition" }
+  ]
+}

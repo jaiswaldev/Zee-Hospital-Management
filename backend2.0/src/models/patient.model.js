@@ -60,7 +60,14 @@ const patientSchema = new Schema({
     type: String,
     enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
     trim: true,
+  },
+  status: {
+    type: String,
+    enum: ["Verified", "Unverified", "Under-verification"],
+    default: "Unverified",
+    required: true,
   }
+
 }, {
   timestamps: true,
 });

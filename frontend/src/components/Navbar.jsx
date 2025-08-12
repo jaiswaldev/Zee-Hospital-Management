@@ -19,6 +19,7 @@ import {
   Settings,
   Bell,
 } from "lucide-react";
+import "./../index.css";
 import Popup from "../pages/Popup";
 import Login from "./Login";
 import Register from "./Register";
@@ -28,6 +29,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { FaUserPlus } from "react-icons/fa";
 import { getUserInitials } from "../lib/utils";
+
 const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -112,7 +114,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
   };
 
   return (
-    <nav className="bg-white border-b-1 border-gray-800 shadow-xl fixed top-0 z-500 flex flex-col items-center justify-center">
+    <nav className="bg-white border-b-1 border-gray-800 shadow-xl fixed top-0 z-500 flex flex-col items-center justify-center h-[80px] overflow-hidden">
       <div className="w-full mx-auto  py-3 flex items-center justify-between px-4 h-10">
         <Link to={getDashboardPath()} className="flex items-center space-x-2">
           <img src="/logo1.png" alt="Logo" className="h-20 w-40" />
@@ -221,7 +223,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
               )}
             </div>
             <div className="hidden lg:flex flex-row gap-8">
-              <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
+              
                 <NotificationPanel
                   notifications={notifications}
                   onMarkAsRead={(id) => {
@@ -232,7 +234,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                     );
                   }}
                 />
-              </div>
+              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -356,7 +358,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
         <div className="lg:hidden flex items-center gap-4">
           {/* Notification Bell */}
           {isLoggedIn && (
-            <div className="bg-gray-200 rounded-xl hover:bg-gray-300">
+            
               <NotificationPanel
                 notifications={notifications}
                 onMarkAsRead={(id) => {
@@ -367,7 +369,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
                   );
                 }}
               />
-            </div>
+            
           )}
 
           <Button
