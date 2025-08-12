@@ -5,7 +5,7 @@ import RecentActivity from "../../components/patient/recentActivity";
 
 function PatientDashboard() {
   return (
-    <div className="mt-15">
+    <div className="pt-20">
       <PatientHeader />
 
       <div className="flex flex-col lg:flex-row gap-4 mt-4">

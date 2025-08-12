@@ -10,13 +10,10 @@ const BlogSidebar = ({ recentPosts = [], popularTags = [] }) => {
 
   const handleSubscribe = (e) => {
     e.preventDefault();
-    // Handle newsletter subscription logic here
     console.log("Subscribing email:", email);
     setEmail("");
-    // Show success message or toast notification
   };
 
-  // Default recent posts if none provided
   const defaultRecentPosts = [
     {
       id: 1,
@@ -48,7 +45,6 @@ const BlogSidebar = ({ recentPosts = [], popularTags = [] }) => {
     },
   ];
 
-  // Default popular tags if none provided
   const defaultPopularTags = [
     { id: 1, name: "Medical Research" },
     { id: 2, name: "Patient Care" },
@@ -66,21 +62,24 @@ const BlogSidebar = ({ recentPosts = [], popularTags = [] }) => {
     popularTags.length > 0 ? popularTags : defaultPopularTags;
 
   return (
-    <div className="bg-white w-full max-w-[350px] space-y-8">
-      {/* Recent Posts Section */}
+    <div className="bg-white w-full max-w-full md:max-w-[350px] space-y-8 px-4 md:px-0">
+      {/* Recent Posts */}
       <Card>
         <CardContent className="pt-6">
-          <h3 className="text-xl font-bold mb-4">Recent Posts</h3>
+          <h3 className="text-lg md:text-xl font-bold mb-4">Recent Posts</h3>
           <div className="space-y-4">
             {postsToDisplay.map((post) => (
-              <div key={post.id} className="flex items-start space-x-3">
+              <div
+                key={post.id}
+                className="flex items-start space-x-3"
+              >
                 <img
-                  src={post.thumbnail}
+                  src={post.image}
                   alt={post.title}
-                  className="w-16 h-16 object-cover rounded-md"
+                  className="w-14 h-14 md:w-16 md:h-16 object-cover rounded-md flex-shrink-0"
                 />
                 <div>
-                  <h4 className="font-medium text-sm hover:text-blue-600 cursor-pointer">
+                  <h4 className="font-medium text-sm md:text-base hover:text-blue-600 cursor-pointer">
                     {post.title}
                   </h4>
                   <p className="text-xs text-gray-500 mt-1">{post.date}</p>
@@ -91,16 +90,16 @@ const BlogSidebar = ({ recentPosts = [], popularTags = [] }) => {
         </CardContent>
       </Card>
 
-      {/* Popular Tags Section */}
+      {/* Popular Tags */}
       <Card>
         <CardContent className="pt-6">
-          <h3 className="text-xl font-bold mb-4">Popular Tags</h3>
+          <h3 className="text-lg md:text-xl font-bold mb-4">Popular Tags</h3>
           <div className="flex flex-wrap gap-2">
             {tagsToDisplay.map((tag) => (
               <Badge
                 key={tag.id}
                 variant="outline"
-                className="cursor-pointer hover:bg-blue-50"
+                className="cursor-pointer hover:bg-blue-50 text-xs md:text-sm"
               >
                 {tag.name}
               </Badge>
@@ -109,10 +108,10 @@ const BlogSidebar = ({ recentPosts = [], popularTags = [] }) => {
         </CardContent>
       </Card>
 
-      {/* Newsletter Subscription */}
+      {/* Newsletter */}
       <Card>
         <CardContent className="pt-6">
-          <h3 className="text-xl font-bold mb-2">Newsletter</h3>
+          <h3 className="text-lg md:text-xl font-bold mb-2">Newsletter</h3>
           <p className="text-sm text-gray-600 mb-4">
             Subscribe to our newsletter for the latest updates and health tips.
           </p>
@@ -124,7 +123,7 @@ const BlogSidebar = ({ recentPosts = [], popularTags = [] }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full "
+              className="w-full"
             />
             <Button type="submit" className="w-full">
               Subscribe

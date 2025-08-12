@@ -16,8 +16,9 @@ export const AuthProvider = ({ children }) => {
     userRole: "",
     userName: "",
     userId: "",
-    onlinePatients: [],
+    onlineUsers: [],
     socket: null,
+    status: ""
   });
 
   const Backend_API = import.meta.env.VITE_BACKEND_URL;
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         {},
         { withCredentials: true }
       );
-      // console.log("Auth check response:", res.data);
+      // console.log("Auth check response:", res.data.data.user);
       const user = res.data.data.user;
       if (!user) {
         setAuth({
@@ -38,8 +39,9 @@ export const AuthProvider = ({ children }) => {
           userRole: "",
           userName: "",
           userId: "",
-          onlinePatients: [],
+          onlineUsers: [],
           socket: null,
+          status: ""
         });
         return;
       }
@@ -50,6 +52,7 @@ export const AuthProvider = ({ children }) => {
         userRole: user.role,
         userName: user.firstName,
         userId: user._id,
+        status: user.status,
       }));
     } catch (err) {
       setAuth({
@@ -57,8 +60,9 @@ export const AuthProvider = ({ children }) => {
         userRole: "",
         userName: "",
         userId: "",
-        onlinePatients: [],
+        onlineUsers: [],
         socket: null,
+        status: ""
       });
     } finally {
       setLoading(false);

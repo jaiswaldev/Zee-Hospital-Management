@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Carousel from "../components/Carousel";
 import Tagline from "../components/Tagline";
 import Features from "../components/Features";
-import Department from "../components/Department";
+import Department from "../components/Departments";
 import Footer from "../components/Footer";
 import Popup from "./Popup";
 import Register from "../components/Register";
@@ -38,7 +38,7 @@ const Home = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <div style={{ overflowX: "hidden" }} className="pt-15 gap-0">
+      <div style={{ overflowX: "hidden" }} className="pt-20 gap-0">
         <Carousel slides={slides} />
         <Tagline onGetStarted={handleGetStarted} />
         <Features />

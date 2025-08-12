@@ -24,7 +24,7 @@ const doctorSchema = new Schema({
   },
   phone: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   password: {
@@ -46,13 +46,13 @@ const doctorSchema = new Schema({
   licenseNumber: {
     type: String,
     // required: true,
-   
     trim: true,
   },
   specialization: {
     type: String,
-    // required: true,
     trim: true,
+    default: "General physician",
+    set: v => (!v || v.trim() === "") ? "General physician" : v
   },
   experience: {
     type: Number,
@@ -67,7 +67,14 @@ const doctorSchema = new Schema({
     type: String,
     // required: true,
     trim: true,
+  },
+  status: {
+    type: String,
+    enum: ["Verified", "Unverified", "Under-verification"],
+    default: "Unverified",
+    required: true,
   }
+
 }, {
   timestamps: true,
 });

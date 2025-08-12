@@ -4,6 +4,7 @@ import { asynchandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { isValidEmail, validatePassword } from "../utils/validations.js";
 import { Patient } from "../models/patient.model.js";
+import { Doctor } from "../models/doctor.model.js";
 import { Token, hashToken } from "../models/token.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
@@ -172,4 +173,23 @@ const logoutpatient = asynchandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Successfully logged out"));
 });
 
-export { Registerpatient, loginpatient, logoutpatient };
+const getVerifiedDoctors = asynchandler(async (req, res) => {
+  try {
+    const doctors = await Doctor.find({status: "Unverified"}).select("-password");
+    if (!doctors || doctors.length === 0) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, [], "No verified doctors found"));
+    }
+    return res
+      .status(200)
+      .json(new ApiResponse(200, doctors, "Doctors fetched successfully!!"));
+  } catch (error) {
+    console.error("Error fetching verified doctors:", error);
+    throw new ApiError(500, "Error fetching verified doctors: " + error.message);
+  }
+});
+
+export {
+  Registerpatient, loginpatient, logoutpatient, getVerifiedDoctors
+};
