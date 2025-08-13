@@ -20,7 +20,7 @@ DBconnect()
     })
    
   
-    httpServer.listen(process.env.PORT || 3000,()=>{
+    httpServer.listen(process.env.PORT || '0.0.0.0',()=>{
       console.log(`server started at ${process.env.PORT}`)
     })
 })
