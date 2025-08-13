@@ -2,7 +2,7 @@
 
 import { asynchandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { isValidEmail, validatePassword } from "../utils/validations.js";
+import { isValidEmail, validatePassword } from "../utils/Validations.js";
 import { Patient } from "../models/patient.model.js";
 import { Doctor } from "../models/doctor.model.js";
 import { Token, hashToken } from "../models/token.model.js";
