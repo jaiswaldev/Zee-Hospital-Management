@@ -127,7 +127,7 @@ const logindoctor = asynchandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: isProduction,
-    sameSite: "Strict",
+    sameSite: "None",
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   };
 
@@ -154,7 +154,7 @@ const logoutdoctor = asynchandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: isProduction,
-    sameSite: "Strict",
+    sameSite: "None",
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   };
 
