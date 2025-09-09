@@ -114,7 +114,7 @@ const Navbar = ({ isLoggedIn, setIsAuthenticated, userRole, userName }) => {
   };
 
   return (
-    <nav className="bg-white border-b-1 border-gray-800 shadow-xl fixed top-0 z-500 flex flex-col items-center justify-center h-[80px] overflow-hidden">
+    <nav className="bg-white border-b-1 border-gray-800 shadow-xl top-0 z-500 flex flex-col items-center justify-center overflow-hidden">
       <div className="w-full mx-auto  py-3 flex items-center justify-between px-4 h-10">
         <Link to={getDashboardPath()} className="flex items-center space-x-2">
           <img src="/logo1.png" alt="Logo" className="h-20 w-40" />
