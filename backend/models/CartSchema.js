@@ -30,7 +30,9 @@ const CartSchema = new mongoose.Schema({
     unique: true, // 1 cart per user
   },
   items: [CartItemSchema],
-}, { timestamps: true });
+}, { 
+  timestamps: true
+});
 
 const Cart = mongoose.model("Cart", CartSchema);
 
