@@ -220,7 +220,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 ---
 
 ## 📄 License
-
+All Rights Reserved by ZeeCare.
 
 
 ---
@@ -234,11 +234,3 @@ Aditya Raj Boum - [Aditya Raj Boum](https://www.linkedin.com/in/aditya-raj-boum-
 Shashwat Tripathi - [Shashwat Tripathi](https://www.linkedin.com/in/shashwat-tripathi-83a156282/) - adityarajboum@gmail.com
 
 Project Link: [https://github.com/jaiswaldev/Zee-Hospital-Management](https://github.com/jaiswaldev/Zee-Hospital-Management)
-
----
-
-## 🙏 Acknowledgements
-
-* [Awesome README Template](https://github.com/othneildrew/Best-README-Template)
-* [Shields.io](https://shields.io/)
-* [Font Awesome](https://fontawesome.com)
