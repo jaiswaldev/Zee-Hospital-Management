@@ -16,6 +16,7 @@ const generateAccessAndRefreshTokens = async (patientId) => {
 
     const AccessToken = await patient.generateAccessToken();
     const RefreshToken = await patient.generateRefreshToken();
+    const userId = patient._id;
 
     await Token.create({
       userId: patient._id,
@@ -24,7 +25,7 @@ const generateAccessAndRefreshTokens = async (patientId) => {
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
 
-    return { AccessToken, RefreshToken };
+    return { userId, AccessToken, RefreshToken };
   } catch (error) {
     throw new ApiError(
       500,
@@ -143,6 +144,8 @@ const loginpatient = asynchandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", AccessToken, options)
     .cookie("refreshToken", RefreshToken, options)
+    .cookie("role", "patient", options)
+    .cookie("userId", userId, options)
     .json(
       new ApiResponse(
         200,

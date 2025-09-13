@@ -7,7 +7,6 @@ import { Doctor } from "../models/doctor.model.js";
 const verifyToken = async (token, model) => {
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
     const user = await model.findById(decoded._id).select("-password");
     if (!user) {
       throw new ApiError(401, "User not found or unauthorized");

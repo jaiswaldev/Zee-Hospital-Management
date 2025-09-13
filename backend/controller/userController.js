@@ -1,7 +1,6 @@
 import { Asynchandler } from "../utils/asynchandler.js";
 import { ApiError } from "../api/ApiError.js";
 import { User } from "../models/user.Schema.js";
-import { generateToken } from "../utils/jwtTokens.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 

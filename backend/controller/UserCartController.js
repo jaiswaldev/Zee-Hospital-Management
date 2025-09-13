@@ -5,14 +5,37 @@ import Product from "../models/ProductSchema.js";
 // Get user's cart
 export const getCart = async (req, res) => {
   try {
+
+//     console.log("i am here");
+    // console.log(req.user);
+
+    
+    let cart = await Cart.findOne({ user: userId }).populate("items.product");
+
+
     const userId = req.user.id; // Assuming user ID comes from auth middleware
 
     let cart = await Cart.findOne({ user: userId }).populate('items.product');
     
+
     if (!cart) {
       cart = new Cart({ user: userId, items: [] });
       await cart.save();
     }
+
+
+    res.status(200).json({ success: true, cart });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error while fetching cart" });
+  }
+};
+
+
+// Add item to cart
+export const addToCart = async (req, res) => {
+  try {
+    
+    const { userId, productId, quantity = 1, price, image } = req.body;
 
     res.status(200).json({
       success: true,
@@ -33,6 +56,7 @@ export const addToCart = async (req, res) => {
     const userId = req.user;
     const { productId, quantity = 1 } = req.body;
     
+
     
     if (!productId) {
       return res.status(400).json({
@@ -69,8 +93,10 @@ export const addToCart = async (req, res) => {
       cart.items.push({
         product: productId,
         quantity,
-        price: product.price,
-        image: product.image
+
+        price: price,
+        image: image
+
       });
     }
 

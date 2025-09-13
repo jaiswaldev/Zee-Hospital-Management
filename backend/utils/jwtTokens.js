@@ -1,20 +1,9 @@
-export const generateToken = async (user, message, statusCode, res) => {
-  const token = await user.generateAccessToken();
-  const cookieName = user.role === "Admin" ? "adminToken" : "patientToken";
-  res
-    .status(statusCode)
-    .cookie(cookieName, token, {
-      expires: new Date(
-        Date.now() +  Number(process.env.COOKIE_EXPIRE) * 24 * 60 * 60 * 1000
-      ),
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-    })
-    .send({
-      success: true,
-      message,
-      user,
-      token,
-    });
-};
+
+import jwt from "jsonwebtoken";
+
+userSchema.methods.generateAccessToken = function () {
+  return jwt.sign(
+    { id: this._id, role: this.role }, // 👈 include userId here
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" } // or use COOKIE_EXPIRE if you want the same
+  );
