@@ -1,3 +1,4 @@
+
 import React, { useState, useContext, useEffect, lazy, Suspense } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import {
@@ -7,11 +8,16 @@ import {
   Navigate,
 } from "react-router-dom";
 
+
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import { Toaster } from "sonner";
 import "./Utils/Css.css";
 import { useAuth } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
+
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Blog from "./pages/blog";
@@ -27,6 +33,22 @@ import Add_product from "./pages/Store/Add_product";
 
 import Doctors from "./pages/Patient/Doctors";
 
+import Home from "./pages/Home"; 
+
+// Lazy-loaded pages
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const Blog = lazy(() => import("./pages/blog"));
+const Store = lazy(() => import("./pages/Store"));
+const Cart = lazy(() => import("./pages/Store/Cart"));
+const Add_product = lazy(() => import("./pages/Store/Add_product"));
+const Doctors = lazy(() => import("./pages/Patient/Doctors"));
+
+const DoctorDashboard = lazy(() => import("./pages/Doctor/Home"));
+const PatientDashboard = lazy(() => import("./pages/Patient/Home"));
+const DoctorMessageApp = lazy(() => import("./pages/Doctor/MessageApp"));
+const PatientMessageApp = lazy(() => import("./pages/Patient/MessageApp"));
+
+
 const App = () => {
   const { auth, setAuth } = useAuth();
 
@@ -35,6 +57,7 @@ const App = () => {
       cloudName: "duhnmjhli",
     },
   });
+
 
   return (
     <>
@@ -69,7 +92,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-
 
           {/* patient */}
           <Route
@@ -109,6 +131,7 @@ const App = () => {
           <Route path="/store/cart" element={<Cart />} />
           <Route path="/store:ProductId" element={<Store />} />
           <Route path="/store" element={<Store />} />
+
           <Route path="*" element={<Home />} />
           {/* <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} /> */}
@@ -130,6 +153,10 @@ const App = () => {
             </Route>
             <Route path="/doctorProfile" element={<DoctorProfile />} />
             <Route path="/*" element={<Login />}></Route> */}
+
+          {/* fallback */}
+          <Route path="*" element={<Home />} />
+
         </Routes>
       </Suspense>
     </>
@@ -137,3 +164,25 @@ const App = () => {
 };
 
 export default App;
+
+
+{/* <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} /> */}
+
+{/* <Route path="/doctors" element={<Doctors />} />
+
+<Router>
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/doctors" element={<Doctors />} />
+  <Route path="/doctorView" element={<DoctorWrapper />} />
+  <Route path="/dept" element={<DepartmentMain />} />
+  <Route path="/appointment" element={<Appointment />} />
+  
+  
+  <Route path="/contact" element={<Contact />} />
+  <Route path="/user" element={<ProtectedRoute />}>
+    <Route path="profile" element={<UserProfile />} />
+  </Route>
+  <Route path="/doctorProfile" element={<DoctorProfile />} />
+  <Route path="/*" element={<Login />}></Route> */}
