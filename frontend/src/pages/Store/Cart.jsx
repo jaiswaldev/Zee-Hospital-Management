@@ -18,15 +18,13 @@ const MedicalCartPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const { auth } = useAuth();
 
- 
- 
+  const { auth } = useAuth();
 
   useEffect(() => {
     const loadCartItems = async () => {
       try {
-
+        
         setLoading(true);  
         
        const CartItems = await axios.get("http://localhost:3000/api/v1/user/cart", {

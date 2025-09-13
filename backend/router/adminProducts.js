@@ -5,9 +5,9 @@ import { addProduct, getAllProducts, deleteProduct, updateProduct } from "../con
 
 const router = Router();
 
-router.post('/', addProduct);
-router.get('/', getAllProducts);
-router.delete('/:id', deleteProduct);
+router.get('/products', getAllProducts);
+router.post('/addproduct', addProduct);
+router.delete('/deleteproduct/:id', deleteProduct);
 router.put('/:id', updateProduct);
 
 export default router;

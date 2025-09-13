@@ -6,12 +6,12 @@ import Product from "../models/ProductSchema.js";
 export const getCart = async (req, res) => {
   try {
 
-    const userId = req.user.id; // Assuming user ID comes from auth middleware
+    const userId = req.user._id; // Assuming user ID comes from auth middleware
 
     let cart = await Cart.findOne({ user: userId }).populate('items.product');
     
 
-    if (!cart) {
+    if (!cart){
       cart = new Cart({ user: userId, items: [] });
       await cart.save();
     }
@@ -27,11 +27,12 @@ export const getCart = async (req, res) => {
 // Add item to cart
 export const addToCart = async (req, res) => {
   try {
-    const userId = req.user;
-    const { productId, quantity = 1 } = req.body;
-    
+    const { userId ,productId,quantity} = req.body;
+    // console.log(userId);
+    // console.log(productId);
+    // console.log(quantity);
+    // Validate input
 
-    
     if (!productId) {
       return res.status(400).json({
         success: false,
@@ -41,7 +42,7 @@ export const addToCart = async (req, res) => {
 
     // Check if product exists
     const product = await Product.findById(productId);
-    if (!product) {
+    if (!product){
       return res.status(404).json({
         success: false,
         message: 'Product not found'

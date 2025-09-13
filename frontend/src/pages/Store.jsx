@@ -7,9 +7,10 @@ import { toast } from "sonner"
 import { useNavigate } from 'react-router-dom';
 import axios  from 'axios';
 import { useAuth } from "../context/AuthContext.jsx";
+import { use } from "react";
 
+const Backend_API = import.meta.env.VITE_ADMIN_BACKEND_URL;
 
-// const {auth} = useAuth(); 
 
 const MedicalStorePage = () => {
   const [products, setProducts] = useState([]);
@@ -18,87 +19,16 @@ const MedicalStorePage = () => {
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  const { auth } = useAuth();
-
-  // Mock data for demonstration - replace with actual API call
-  const mockProducts = [
-    {
-      _id: '1',
-      name: 'Digital Thermometer',
-      description: 'High precision digital thermometer with fast reading and memory function',
-      originalPrice: 799.99,
-      discountedPrice: 549.99,
-      imagePublicId: 'medical/thermometer',
-      category: 'Diagnostic Tools',
-      inStock: true,
-      rating: 4.5
-    },
-    {
-      _id: '2',
-      name: 'Blood Pressure Monitor',
-      description: 'Automatic digital blood pressure monitor with large display and memory storage',
-      originalPrice: 2500.99,
-      discountedPrice: 2249.99,
-      imagePublicId: 'medical/bp-monitor',
-      category: 'Monitoring Devices',
-      inStock: true,
-      rating: 4.7
-    },
-    {
-      _id: '3',
-      name: 'First Aid Kit',
-      description: 'Complete first aid kit with essential medical supplies for emergencies',
-      originalPrice: 1599.99,
-      discountedPrice: 1099.99,
-      imagePublicId: 'medical/first-aid',
-      category: 'Emergency Care',
-      inStock: true,
-      rating: 4.3
-    },
-    {
-      _id: '4',
-      name: 'Pulse Oximeter',
-      description: 'Fingertip pulse oximeter for measuring blood oxygen saturation and pulse rate',
-      originalPrice: 1200.99,
-      discountedPrice: 950.99,
-      imagePublicId: 'medical/oximeter',
-      category: 'Diagnostic Tools',
-      inStock: false,
-      rating: 4.6
-    },
-    {
-      _id: '5',
-      name: 'Stethoscope',
-      description: 'Professional quality stethoscope for accurate heart and lung sound detection',
-      originalPrice: 3399.99,
-      discountedPrice: 2999.99,
-      imagePublicId: 'medical/stethoscope',
-      category: 'Diagnostic Tools',
-      inStock: true,
-      rating: 4.8
-    },
-    {
-      _id: '6',
-      name: 'Wheelchair',
-      description: 'Lightweight, foldable wheelchair with comfortable padding and safety features',
-      originalPrice: 29999.99,
-      discountedPrice: 24999.99,
-      imagePublicId: 'medical/wheelchair',
-      category: 'Mobility Aids',
-      inStock: true,
-      rating: 4.4
-    }
-  ];
-
+ 
+  const {auth} = useAuth(); 
   // Fetch products from MongoDB - replace with actual API endpoint
   const fetchProducts = async () => {
     try {
       setLoading(true);
     
-      const response = await axios.get('http://localhost:3000/api/v1/admin/products');
+      const response = await axios.get(`${Backend_API}/store/products`);
       const data = await response.data.products;
-      console.log(data);
+      // console.log(data);
       
   
         setProducts(data);
@@ -156,13 +86,9 @@ const MedicalStorePage = () => {
     }
    );
 
+    const data = await response.data;
+
     
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Failed to add item to cart');
-    }
 
     if (data.success) {
       console.log('Successfully added to cart:', product);

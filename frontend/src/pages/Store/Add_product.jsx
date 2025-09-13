@@ -19,6 +19,7 @@ import { image } from "@cloudinary/url-gen/qualifiers/source";
 import { toast } from "sonner";
 import { Cloudinary } from "@cloudinary/url-gen";
 
+const Backend_API = import.meta.env.VITE_ADMIN_BACKEND_URL;
 
 const MedicalAdminPanel = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -94,7 +95,7 @@ const MedicalAdminPanel = () => {
       setError(null);
     
       
-     const response = await axios.get("http://localhost:3000/api/v1/admin/products");
+     const response = await axios.get(`${Backend_API}/store/products`);
       setProducts(response.data.products);
       
     } catch (error) {
@@ -171,7 +172,7 @@ const MedicalAdminPanel = () => {
       };
       //API Call
       const res = await axios.post(
-        "http://localhost:3000/api/v1/admin/products",
+        `${Backend_API}/store/addproduct`,
         payload,{
           headers: {
              "Content-Type": "application/json",
@@ -200,7 +201,7 @@ const MedicalAdminPanel = () => {
       setDeleteLoading(productId);
       
         await axios.delete(
-        `http://localhost:3000/api/v1/admin/products/${productId}`
+        `${Backend_API}/store/deleteproduct/${productId}`
       );
       
       setProducts(prev => prev.filter(product => product._id !== productId));
