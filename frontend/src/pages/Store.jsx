@@ -19,6 +19,8 @@ const MedicalStorePage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const { auth } = useAuth();
+
   // Mock data for demonstration - replace with actual API call
   const mockProducts = [
     {
@@ -126,7 +128,7 @@ const MedicalStorePage = () => {
   // Generate Cloudinary URL from public ID
   
   const getCloudinaryUrl = (publicId) => {
-    // Replace 'your_cloud_name' with your actual Cloudinary cloud name
+   
     return `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/w_300,h_300,c_fill,f_auto,q_auto/${publicId}`;
   };
 
@@ -140,23 +142,24 @@ const MedicalStorePage = () => {
   }
 
   try {
-
+    console.log("i am here");
    const response = await axios.post('http://localhost:3000/api/v1/user/cart/add',
     {
+      userId: auth.userId,
       productId: product._id,
       quantity,
+      price : product.discountedPrice,
+      image : product.image,
     },
     {
       withCredentials : true,
     }
    );
 
+    const data = await response.data;
+    console.log(data);
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Failed to add item to cart');
-    }
+    
 
     if (data.success) {
       console.log('Successfully added to cart:', product);

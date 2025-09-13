@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   CreditCard,
 } from "lucide-react";
+import { useAuth } from "../../context/AuthContext.jsx";
 import axios from "axios";
 
 const MedicalCartPage = () => {
@@ -15,54 +16,62 @@ const MedicalCartPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Mock cart data for demonstration - replace with actual cart state/API
-  // const mockCartItems = [
-  //   {
-  //     _id: "1",
-  //     productId: "1",
-  //     name: "Digital Thermometer",
-  //     description:
-  //       "High precision digital thermometer with fast reading and memory function",
-  //     originalPrice: 999.99,
-  //     discountedPrice: 549.99,
-  //     imagePublicId: "medical/thermometer",
-  //     quantity: 2,
-  //     inStock: true,
-  //   },
-  //   {
-  //     _id: "2",
-  //     productId: "2",
-  //     name: "Blood Pressure Monitor",
-  //     description:
-  //       "Automatic digital blood pressure monitor with large display and memory storage",
-  //     originalPrice: 2500.99,
-  //     discountedPrice: 2249.99,
-  //     imagePublicId: "medical/bp-monitor",
-  //     quantity: 1,
-  //     inStock: true,
-  //   },
-  //   {
-  //     _id: "3",
-  //     productId: "5",
-  //     name: "Stethoscope",
-  //     description:
-  //       "Professional quality stethoscope for accurate heart and lung sound detection",
-  //     originalPrice: 3399.99,
-  //     discountedPrice: 2999.99,
-  //     imagePublicId: "medical/stethoscope",
-  //     quantity: 1,
-  //     inStock: true,
-  //   },
-  // ];
+  const { auth } = useAuth();
 
+ 
+  const mockCartItems = [
+    {
+      _id: "1",
+      productId: "1",
+      name: "Digital Thermometer",
+      description:
+        "High precision digital thermometer with fast reading and memory function",
+      originalPrice: 999.99,
+      price: 549.99,
+      imagePublicId: "medical/thermometer",
+      quantity: 2,
+      inStock: true,
+    },
+    {
+      _id: "2",
+      productId: "2",
+      name: "Blood Pressure Monitor",
+      description:
+        "Automatic digital blood pressure monitor with large display and memory storage",
+      originalPrice: 2500.99,
+      price: 2249.99,
+      imagePublicId: "medical/bp-monitor",
+      quantity: 1,
+      inStock: true,
+    },
+    {
+      _id: "3",
+      productId: "5",
+      name: "Stethoscope",
+      description:
+        "Professional quality stethoscope for accurate heart and lung sound detection",
+      originalPrice: 3399.99,
+      price: 2999.99,
+      imagePublicId: "medical/stethoscope",
+      quantity: 1,
+      inStock: true,
+    },
+  ];
+  
   // Load cart items on component mount
   useEffect(() => {
     const loadCartItems = async () => {
       try {
-        setLoading(true);
+        setLoading(true);  
         
-        const CartItems = await axios.get("http://localhost:3000/api/v1/user/cart");
-        setCartItems(CartItems.data.cartItems);
+       const CartItems = await axios.get("http://localhost:3000/api/v1/user/cart", {
+          withCredentials: true
+        });
+
+        console.log(CartItems);
+
+
+        setCartItems(CartItems.data.cart.items);
         setLoading(false);
 
       } catch (error) {
@@ -122,13 +131,13 @@ const MedicalCartPage = () => {
 
   // Calculate totals
   const calculateItemTotal = (item) => {
-    return (item.discountedPrice * item.quantity).toFixed(2);
+    return (item.price * item.quantity).toFixed(2);
   };
 
   const calculateCartTotal = () => {
     return cartItems
       .reduce((total, item) => {
-        return total + item.discountedPrice * item.quantity;
+        return total + item.price * item.quantity;
       }, 0)
       .toFixed(2);
   };
@@ -158,8 +167,20 @@ const MedicalCartPage = () => {
   };
 
   // Proceed to checkout
-  const proceedToCheckout = () => {
-    // Handle checkout logic here
+  const proceedToCheckout = async() => {
+    
+      const amount = document.getElementById('amount').value;
+
+      // Create order by calling the server endpoint
+      const response = await axios.post('http://localhost:3000/api/v1/user/order/create',
+        { 
+          amount, 
+          currency: 'INR',
+           receipt: 'receipt#1',
+            notes: {} 
+        }
+      );
+    
     console.log("Proceeding to checkout with items:", cartItems);
     alert("Proceeding to checkout...");
   };
@@ -197,9 +218,9 @@ const MedicalCartPage = () => {
               </p>
               <div className="flex items-center mt-2 gap-2">
                 <span className="text-green-600 font-semibold">
-                  ₹{item.discountedPrice.toFixed(2)}
+                  ₹{item.price.toFixed(2)}
                 </span>
-                {item.originalPrice > item.discountedPrice && (
+                {item.originalPrice > item.price && (
                   <span className="text-gray-500 line-through text-sm">
                     ₹{item.originalPrice.toFixed(2)}
                   </span>
@@ -244,7 +265,7 @@ const MedicalCartPage = () => {
                 ₹{calculateItemTotal(item)}
               </div>
               <div className="text-sm text-gray-500">
-                ₹{item.discountedPrice.toFixed(2)} × {item.quantity}
+                ₹{item.price.toFixed(2)} × {item.quantity}
               </div>
             </div>
           </div>

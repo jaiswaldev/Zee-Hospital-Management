@@ -6,6 +6,7 @@ import { Token, hashToken } from "../models/token.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 
+
 const generateAccessAndRefreshTokens = async (doctorId) => {
   try {
     const doctor = await Doctor.findById(doctorId);
@@ -13,6 +14,7 @@ const generateAccessAndRefreshTokens = async (doctorId) => {
 
     const AccessToken = await doctor.generateAccessToken();
     const RefreshToken = await doctor.generateRefreshToken();
+    const userId = doctor._id;
 
     await Token.create({
       userId: doctor._id,
@@ -21,7 +23,7 @@ const generateAccessAndRefreshTokens = async (doctorId) => {
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
 
-    return { AccessToken, RefreshToken };
+    return { userId,  AccessToken, RefreshToken };
   } catch (error) {
     throw new ApiError(
       500,
@@ -135,6 +137,8 @@ const logindoctor = asynchandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", AccessToken, options)
     .cookie("refreshToken", RefreshToken, options)
+    .cookie("role", "doctor", options)
+    .cookie("userId", userId, options)
     .json(
       new ApiResponse(
         200,
