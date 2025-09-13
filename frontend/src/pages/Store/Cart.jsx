@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   CreditCard,
 } from "lucide-react";
+import axios from "axios";
 
 const MedicalCartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -15,59 +16,55 @@ const MedicalCartPage = () => {
   const navigate = useNavigate();
 
   // Mock cart data for demonstration - replace with actual cart state/API
-  const mockCartItems = [
-    {
-      _id: "1",
-      productId: "1",
-      name: "Digital Thermometer",
-      description:
-        "High precision digital thermometer with fast reading and memory function",
-      originalPrice: 999.99,
-      discountedPrice: 549.99,
-      imagePublicId: "medical/thermometer",
-      quantity: 2,
-      inStock: true,
-    },
-    {
-      _id: "2",
-      productId: "2",
-      name: "Blood Pressure Monitor",
-      description:
-        "Automatic digital blood pressure monitor with large display and memory storage",
-      originalPrice: 2500.99,
-      discountedPrice: 2249.99,
-      imagePublicId: "medical/bp-monitor",
-      quantity: 1,
-      inStock: true,
-    },
-    {
-      _id: "3",
-      productId: "5",
-      name: "Stethoscope",
-      description:
-        "Professional quality stethoscope for accurate heart and lung sound detection",
-      originalPrice: 3399.99,
-      discountedPrice: 2999.99,
-      imagePublicId: "medical/stethoscope",
-      quantity: 1,
-      inStock: true,
-    },
-  ];
+  // const mockCartItems = [
+  //   {
+  //     _id: "1",
+  //     productId: "1",
+  //     name: "Digital Thermometer",
+  //     description:
+  //       "High precision digital thermometer with fast reading and memory function",
+  //     originalPrice: 999.99,
+  //     discountedPrice: 549.99,
+  //     imagePublicId: "medical/thermometer",
+  //     quantity: 2,
+  //     inStock: true,
+  //   },
+  //   {
+  //     _id: "2",
+  //     productId: "2",
+  //     name: "Blood Pressure Monitor",
+  //     description:
+  //       "Automatic digital blood pressure monitor with large display and memory storage",
+  //     originalPrice: 2500.99,
+  //     discountedPrice: 2249.99,
+  //     imagePublicId: "medical/bp-monitor",
+  //     quantity: 1,
+  //     inStock: true,
+  //   },
+  //   {
+  //     _id: "3",
+  //     productId: "5",
+  //     name: "Stethoscope",
+  //     description:
+  //       "Professional quality stethoscope for accurate heart and lung sound detection",
+  //     originalPrice: 3399.99,
+  //     discountedPrice: 2999.99,
+  //     imagePublicId: "medical/stethoscope",
+  //     quantity: 1,
+  //     inStock: true,
+  //   },
+  // ];
 
   // Load cart items on component mount
   useEffect(() => {
     const loadCartItems = async () => {
       try {
         setLoading(true);
-        // Replace with actual API call to fetch cart items
-        // const response = await fetch('/api/cart');
-        // const data = await response.json();
+        
+        const CartItems = await axios.get("http://localhost:3000/api/v1/user/cart");
+        setCartItems(CartItems.data.cartItems);
+        setLoading(false);
 
-        // Using mock data for demonstration
-        setTimeout(() => {
-          setCartItems(mockCartItems);
-          setLoading(false);
-        }, 1000);
       } catch (error) {
         console.error("Error loading cart items:", error);
         setLoading(false);
@@ -87,12 +84,11 @@ const MedicalCartPage = () => {
     if (newQuantity < 1) return;
 
     try {
-      // API call to update quantity
-      // await fetch(`/api/cart/${itemId}`, {
-      //   method: 'PUT',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ quantity: newQuantity })
-      // });
+      await fetch("http://localhost:3000/api/v1/user/cart/add", {
+        method : "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId: itemId, quantity: newQuantity })
+      });
 
       // Update local state
       setCartItems((prevItems) =>
@@ -109,7 +105,11 @@ const MedicalCartPage = () => {
   const removeFromCart = async (itemId) => {
     try {
       // API call to remove item
-      // await fetch(`/api/cart/${itemId}`, { method: 'DELETE' });
+      await fetch("http://localhost:3000/api/v1/user/cart/remove", {
+        method : "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId: itemId })
+      })
 
       // Update local state
       setCartItems((prevItems) =>

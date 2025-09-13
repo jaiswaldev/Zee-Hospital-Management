@@ -1,13 +1,13 @@
 import { User } from "../models/user.Schema.js";
 import { Asynchandler } from "../utils/asynchandler.js";
-import {ApiError} from "../api/ApiError.js";
+import {ApiError, ErrorHandler} from "../api/ApiError.js";
 import jwt from "jsonwebtoken";
 
 export const isAdminAuthentication = Asynchandler(
   async (req, resp, next) => {
     const token = req.cookies.adminToken;
     if (!token) {
-      return next(new ErrorHandler("Admin is not Authenticated", 400));
+      return next(new ApiError("Admin is not Authenticated", 400));
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -28,7 +28,7 @@ export const isPatientAuthentication = Asynchandler(
   async (req, resp, next) => {
     const token = req.cookies.patientToken;
     if (!token) {
-      return next(new ErrorHandler("Patient is not Authenticated", 400));
+      return next(new ApiError("Patient is not Authenticated", 400));
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);

@@ -53,7 +53,7 @@ const ErrorHandler = (err, req, res, next) => {
   });
 };
 
-export { ApiError};
+export { ApiError, ErrorHandler};
 
 
 
