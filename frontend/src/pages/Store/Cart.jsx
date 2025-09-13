@@ -8,7 +8,9 @@ import {
   ArrowLeft,
   CreditCard,
 } from "lucide-react";
+
 import { useAuth } from "../../context/AuthContext.jsx";
+
 import axios from "axios";
 
 const MedicalCartPage = () => {
@@ -19,49 +21,12 @@ const MedicalCartPage = () => {
   const { auth } = useAuth();
 
  
-  const mockCartItems = [
-    {
-      _id: "1",
-      productId: "1",
-      name: "Digital Thermometer",
-      description:
-        "High precision digital thermometer with fast reading and memory function",
-      originalPrice: 999.99,
-      price: 549.99,
-      imagePublicId: "medical/thermometer",
-      quantity: 2,
-      inStock: true,
-    },
-    {
-      _id: "2",
-      productId: "2",
-      name: "Blood Pressure Monitor",
-      description:
-        "Automatic digital blood pressure monitor with large display and memory storage",
-      originalPrice: 2500.99,
-      price: 2249.99,
-      imagePublicId: "medical/bp-monitor",
-      quantity: 1,
-      inStock: true,
-    },
-    {
-      _id: "3",
-      productId: "5",
-      name: "Stethoscope",
-      description:
-        "Professional quality stethoscope for accurate heart and lung sound detection",
-      originalPrice: 3399.99,
-      price: 2999.99,
-      imagePublicId: "medical/stethoscope",
-      quantity: 1,
-      inStock: true,
-    },
-  ];
-  
-  // Load cart items on component mount
+ 
+
   useEffect(() => {
     const loadCartItems = async () => {
       try {
+
         setLoading(true);  
         
        const CartItems = await axios.get("http://localhost:3000/api/v1/user/cart", {
@@ -72,6 +37,7 @@ const MedicalCartPage = () => {
 
 
         setCartItems(CartItems.data.cart.items);
+
         setLoading(false);
 
       } catch (error) {

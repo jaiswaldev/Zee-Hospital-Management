@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 
+
 export const protect = (req, res, next) => { 
   const token = req.cookies.accessToken;
 

@@ -128,7 +128,6 @@ const MedicalStorePage = () => {
   // Generate Cloudinary URL from public ID
   
   const getCloudinaryUrl = (publicId) => {
-   
     return `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/w_300,h_300,c_fill,f_auto,q_auto/${publicId}`;
   };
 
@@ -142,6 +141,7 @@ const MedicalStorePage = () => {
   }
 
   try {
+
     console.log("i am here");
    const response = await axios.post('http://localhost:3000/api/v1/user/cart/add',
     {
@@ -156,10 +156,13 @@ const MedicalStorePage = () => {
     }
    );
 
-    const data = await response.data;
-    console.log(data);
-
     
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to add item to cart');
+    }
 
     if (data.success) {
       console.log('Successfully added to cart:', product);

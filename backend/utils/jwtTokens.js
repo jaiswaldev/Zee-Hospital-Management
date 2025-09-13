@@ -1,3 +1,4 @@
+
 import jwt from "jsonwebtoken";
 
 userSchema.methods.generateAccessToken = function () {
@@ -6,4 +7,3 @@ userSchema.methods.generateAccessToken = function () {
     process.env.JWT_SECRET,
     { expiresIn: "1d" } // or use COOKIE_EXPIRE if you want the same
   );
-};
