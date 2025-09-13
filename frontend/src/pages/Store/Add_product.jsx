@@ -83,47 +83,6 @@ const MedicalAdminPanel = () => {
   ];
 
   // Mock data for demonstration
-  const mockProducts = [
-    {
-      _id: "1",
-      name: "Digital Thermometer",
-      description: "High precision digital thermometer with fast reading",
-      category: "Diagnostic Tools",
-      originalPrice: 29.99,
-      discountedPrice: 24.99,
-      quantity: 55,
-      inStock: true,
-      totalSales: 45,
-      totalRevenue: 1124.55,
-      createdAt: "2024-01-15",
-    },
-    {
-      _id: "2", 
-      name: "Blood Pressure Monitor",
-      description: "Automatic digital blood pressure monitor",
-      category: "Monitoring Devices",
-      originalPrice: 89.99,
-      discountedPrice: 69.99,
-      quantity: 24,
-      inStock: true,
-      totalSales: 23,
-      totalRevenue: 1609.77,
-      createdAt: "2024-01-10",
-    },
-    {
-      _id: "3",
-      name: "First Aid Kit", 
-      description: "Complete first aid kit with essential supplies",
-      category: "Emergency Care",
-      originalPrice: 45.99,
-      discountedPrice: 35.99,
-      quantity: 110,
-      inStock: true,
-      totalSales: 67,
-      totalRevenue: 2411.33,
-      createdAt: "2024-02-01",
-    },
-  ];
 
   useEffect(() => {
     fetchProducts();
@@ -495,7 +454,7 @@ const averageRevenuePerProduct = totalProducts > 0 ? totalRevenue / totalProduct
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-20">
       {/* Notification */}
       {notification && (
         <Notification

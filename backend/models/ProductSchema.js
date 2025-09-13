@@ -31,7 +31,7 @@ const ProductSchema = new mongoose.Schema({
     required: true
   },
   image: {
-    type: String, // publicId from Cloudinary or ImageKit
+    type: String, 
     required: true
   },
   quantity: {

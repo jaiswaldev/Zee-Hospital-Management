@@ -56,4 +56,7 @@ app.use("/api/v1/appointment", appointmentRouter);
 import adminProductRouter from "./router/adminProducts.js";
 app.use("/api/v1/admin/products", adminProductRouter);
 
+import userCartRouter from "./router/cartRouter.js";
+app.use("/api/v1/user/cart", userCartRouter);
+
 export { app };

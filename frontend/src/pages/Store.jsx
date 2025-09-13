@@ -4,9 +4,12 @@ import slides from "../data/store-carousel.json";
 import React, { useState, useEffect } from 'react';
 import { Search, ShoppingCart, Star, Plus } from 'lucide-react';
 import { toast } from "sonner"
-
 import { useNavigate } from 'react-router-dom';
+import axios  from 'axios';
+import { useAuth } from "../context/AuthContext.jsx";
 
+
+// const {auth} = useAuth(); 
 
 const MedicalStorePage = () => {
   const [products, setProducts] = useState([]);
@@ -90,16 +93,16 @@ const MedicalStorePage = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Replace with your actual API endpoint
-      // const response = await fetch('/api/products');
-      // const data = await response.json();
+    
+      const response = await axios.get('http://localhost:3000/api/v1/admin/products');
+      const data = await response.data.products;
+      console.log(data);
       
-      // Using mock data for demonstration
-      setTimeout(() => {
-        setProducts(mockProducts);
-        setFilteredProducts(mockProducts);
+  
+        setProducts(data);
+        setFilteredProducts(data);
         setLoading(false);
-      }, 1000);
+   
     } catch (error) {
       console.error('Error fetching products:', error);
       setLoading(false);
@@ -121,25 +124,59 @@ const MedicalStorePage = () => {
   }, [searchTerm, products]);
 
   // Generate Cloudinary URL from public ID
+  
   const getCloudinaryUrl = (publicId) => {
     // Replace 'your_cloud_name' with your actual Cloudinary cloud name
-    return `https://res.cloudinary.com/your_cloud_name/image/upload/w_300,h_300,c_fill,f_auto,q_auto/${publicId}`;
+    return `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/w_300,h_300,c_fill,f_auto,q_auto/${publicId}`;
   };
 
+  
   // Add to cart function
-  const addToCart = (product) => {
-    if (!product.inStock) return;
-    
-    // Here you would typically add the product to cart state or send to backend
-    console.log('Adding to cart:', product);
-    setCartCount(prev => prev + 1);
-    
-    // You can add toast notification here
-    toast(`${product.name} added to cart`, {
-          description: `${ product.description} `,
-          
-        })
-  };
+  const addToCart = async (product, quantity = 1) => {
+  // Check if product is in stock
+  if (!product.inStock) {
+    toast.error(`${product.name} is currently out of stock`);
+    return;
+  }
+
+  try {
+
+   const response = await axios.post('http://localhost:3000/api/v1/user/cart/add',
+    {
+      productId: product._id,
+      quantity,
+    },
+    {
+      withCredentials : true,
+    }
+   );
+
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to add item to cart');
+    }
+
+    if (data.success) {
+      console.log('Successfully added to cart:', product);
+      
+      // Update cart count with actual quantity added
+      setCartCount(prev => prev + quantity);
+      
+      // Show success message
+      toast.success(`${product.name} added to cart`);
+      
+      // Optionally update cart state if you're managing it globally
+      // updateCartState(data.cart);
+    }
+
+  } catch (error) {
+    console.error('Add to cart error:', error);
+    toast.error(error.message || 'Failed to add item to cart');
+  }
+};
+
 
   // Product Card Component
   const ProductCard = ({ product }) => (
@@ -147,7 +184,7 @@ const MedicalStorePage = () => {
       {/* Product Image */}
       <div className="relative overflow-hidden h-64 bg-gray-100">
         <img
-          src={getCloudinaryUrl(product.imagePublicId)}
+          src={getCloudinaryUrl(product.image)}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {

@@ -1,7 +1,7 @@
-export const generateToken = async (user, message, statusCode, resp) => {
+export const generateToken = async (user, message, statusCode, res) => {
   const token = await user.generateAccessToken();
   const cookieName = user.role === "Admin" ? "adminToken" : "patientToken";
-  resp
+  res
     .status(statusCode)
     .cookie(cookieName, token, {
       expires: new Date(
