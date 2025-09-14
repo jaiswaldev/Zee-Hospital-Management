@@ -26,7 +26,7 @@ const Doctors = () => {
         ? res.data.data
         : [];
 
-      if (speciality) {
+      if (speciality){
         setFilterDoc(
           doctorsArray.filter((doc) => doc.specialization === speciality)
         );
