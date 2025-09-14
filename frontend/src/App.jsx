@@ -105,6 +105,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          
 
           {/* store */}
           <Route path="/store" element={<Store />} />
