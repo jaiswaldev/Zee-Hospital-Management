@@ -231,6 +231,6 @@ Dev Jaiswal - [Dev Jaiswal](https://www.linkedin.com/in/dev-jaiswal-144922253/) 
 
 Aditya Raj Boum - [Aditya Raj Boum](https://www.linkedin.com/in/aditya-raj-boum-596485255/) - adityarajboum@gmail.com
 
-Shashwat Tripathi - [Shashwat Tripathi](https://www.linkedin.com/in/shashwat-tripathi-83a156282/) - adityarajboum@gmail.com
+Shashwat Tripathi - [Shashwat Tripathi](https://www.linkedin.com/in/shashwat-tripathi-83a156282/) - tshashwat093@gmail.com
 
 Project Link: [https://github.com/jaiswaldev/Zee-Hospital-Management](https://github.com/jaiswaldev/Zee-Hospital-Management)
